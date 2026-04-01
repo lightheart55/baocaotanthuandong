@@ -178,7 +178,7 @@
         ];
 
         const DEFAULT_PASSWORD = '123456';
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyxwE6zBjMYsvfsY59P51R7Sm6Fgm4FFHm8ksHg_0uiSGjicnajYab7zzw8yjjP8ZBisg/exec';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzL8P67sUB29KdXK2IK8UyHPQfoQHuHIhd4a0Qk3yU1iXvqnBamzjv4sNAHXfUpna-D5Q/exec';
 
         // 2. DOM Elements
         const loginSection = document.getElementById('login-section');
@@ -287,9 +287,9 @@
             // Thu thập dữ liệu
             const reportType = document.querySelector('input[name="report-type"]:checked').value;
             
-            // Format thời gian: Giờ/Ngày
+            // Format thời gian: Ngày/Giờ
             const now = new Date();
-            const timeString = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')} ${String(now.getDate()).padStart(2, '0')}/${String(now.getMonth() + 1).padStart(2, '0')}/${now.getFullYear()}`;
+            const timeString = `${String(now.getDate()).padStart(2, '0')}/${String(now.getMonth() + 1).padStart(2, '0')}/${now.getFullYear()} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
             
             // Format danh sách nhiệm vụ (bullet points)
             const taskList = currentUser.tasks.split(',').map(task => `- ${task.trim()}`).join('\n');
@@ -312,19 +312,19 @@
             const issuesText = formatText(document.getElementById('task-issues').value);
 
             // Tạo nội dung report có cấu trúc rõ ràng (RAW STRING)
-            const payload = `------------------------------------------
-THỜI GIAN GỬI: ${timeString}
-BÁO CÁO: ${reportType}
+            const payload = `LOẠI BÁO CÁO: (${reportType.toUpperCase()})
+THỜI GIAN: ${timeString}
 NHÂN VIÊN: ${currentUser.name}
-NHIỆM VỤ:
-${taskList}
-NỘI DUNG:
+NHIỆM VỤ PHỤ TRÁCH: ${currentUser.tasks}
+------------------------------------------
+NỘI DUNG ĐÃ LÀM:
 ${contentText}
-PHƯƠNG HƯỚNG:
+
+PHƯƠNG HƯỚNG TỚI:
 ${planText}
+
 KHÓ KHĂN / KIẾN NGHỊ:
-${issuesText}
-------------------------------------------`;
+${issuesText}`;
 
             try {
                 // Gửi POST request (RAW TEXT)
