@@ -93,7 +93,7 @@
             </div>
             
             <div class="bg-blue-50 border-l-4 border-medical p-4 mb-6 rounded-r-lg shadow-sm">
-                <p class="text-gray-800">Xin chào, <span id="current-user-name" class="font-bold text-medical"></span></p>
+                <p class="text-gray-800 uppercase text-sm font-bold mb-1">NHÂN VIÊN: <span id="current-user-name" class="text-medical"></span></p>
                 <div class="mt-2 pt-2 border-t border-blue-100">
                     <p class="text-sm text-gray-600 font-semibold mb-1">Nhiệm vụ phụ trách:</p>
                     <p id="current-user-tasks" class="text-sm text-gray-800 font-medium leading-relaxed"></p>
@@ -101,20 +101,27 @@
             </div>
 
             <form id="report-form">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
-                    <div>
-                        <label class="block text-gray-700 text-sm font-bold mb-2" for="report-month">
-                            Tháng báo cáo <span class="text-red-500">*</span>
+                <div class="mb-5">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">
+                        Loại báo cáo <span class="text-red-500">*</span>
+                    </label>
+                    <div class="flex space-x-6">
+                        <label class="flex items-center cursor-pointer">
+                            <input type="radio" name="report-type" value="Tuần" class="form-radio h-5 w-5 text-medical focus:ring-medical border-gray-300" checked>
+                            <span class="ml-2 text-gray-700 font-medium">Giao ban Tuần</span>
                         </label>
-                        <input type="month" id="report-month" class="shadow-sm border border-gray-300 rounded-lg w-full py-2.5 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-medical focus:border-transparent bg-white" required>
+                        <label class="flex items-center cursor-pointer">
+                            <input type="radio" name="report-type" value="Tháng" class="form-radio h-5 w-5 text-medical focus:ring-medical border-gray-300">
+                            <span class="ml-2 text-gray-700 font-medium">Báo cáo Tháng</span>
+                        </label>
                     </div>
+                </div>
 
-                    <div>
-                        <label class="block text-gray-700 text-sm font-bold mb-2" for="task-metrics">
-                            Số liệu thực hiện (nếu có)
-                        </label>
-                        <input type="number" id="task-metrics" placeholder="VD: 150 (lượt/người/ca...)" class="shadow-sm border border-gray-300 rounded-lg w-full py-2.5 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-medical focus:border-transparent bg-white">
-                    </div>
+                <div class="mb-5">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="report-date">
+                        Thời gian báo cáo <span class="text-red-500">*</span>
+                    </label>
+                    <input type="date" id="report-date" class="shadow-sm border border-gray-300 rounded-lg w-full py-2.5 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-medical focus:border-transparent bg-white" required>
                 </div>
 
                 <div class="mb-5">
@@ -122,6 +129,13 @@
                         Nội dung đã làm <span class="text-red-500">*</span>
                     </label>
                     <textarea id="task-content" rows="4" placeholder="- Khám sàng lọc được...&#10;- Truyền thông GDSK...&#10;- Quản lý hồ sơ..." class="shadow-sm border border-gray-300 rounded-lg w-full py-3 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-medical focus:border-transparent bg-white" required></textarea>
+                </div>
+
+                <div class="mb-5">
+                    <label id="plan-label" class="block text-gray-700 text-sm font-bold mb-2" for="task-plan">
+                        Phương hướng tuần tới
+                    </label>
+                    <textarea id="task-plan" rows="3" placeholder="Ghi rõ các công việc dự kiến thực hiện..." class="shadow-sm border border-gray-300 rounded-lg w-full py-3 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-medical focus:border-transparent bg-white"></textarea>
                 </div>
 
                 <div class="mb-6">
@@ -164,7 +178,7 @@
         ];
 
         const DEFAULT_PASSWORD = '123456';
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyno2-e1HPH8SUWmNHMvjLO4d7-KtvesiHNZaFyPopBkay6KRGD9Chkew2F-ntz3cq_0A/exec';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyIQPnqXN0Mt2F1HTvGzRE4zsAWEsFOS4_DfdVYHhDGjbLXvsPmKfT2rRmu2z2QNmh4LQ/exec';
 
         // 2. DOM Elements
         const loginSection = document.getElementById('login-section');
@@ -183,6 +197,8 @@
         const submitText = document.getElementById('submit-text');
         const submitSpinner = document.getElementById('submit-spinner');
         const submitMessage = document.getElementById('submit-message');
+        const planLabel = document.getElementById('plan-label');
+        const reportTypeRadios = document.querySelectorAll('input[name="report-type"]');
 
         let currentUser = null;
 
@@ -199,12 +215,23 @@
                 employeeSelect.appendChild(option);
             });
 
-            // Set mặc định tháng hiện tại cho input type="month"
+            // Set mặc định ngày hiện tại cho input type="date"
             const now = new Date();
-            // Format YYYY-MM
             const year = now.getFullYear();
             const month = String(now.getMonth() + 1).padStart(2, '0');
-            document.getElementById('report-month').value = `${year}-${month}`;
+            const day = String(now.getDate()).padStart(2, '0');
+            document.getElementById('report-date').value = `${year}-${month}-${day}`;
+
+            // Lắng nghe sự kiện thay đổi loại báo cáo
+            reportTypeRadios.forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    if (e.target.value === 'Tuần') {
+                        planLabel.textContent = 'Phương hướng tuần tới';
+                    } else {
+                        planLabel.textContent = 'Phương hướng tháng tới';
+                    }
+                });
+            });
         }
 
         // 4. Xử lý Đăng nhập
@@ -258,14 +285,18 @@
             submitMessage.classList.add('hidden');
 
             // Thu thập dữ liệu
+            const reportType = document.querySelector('input[name="report-type"]:checked').value;
             const reportData = {
-                name: currentUser.name,
-                tasks: currentUser.tasks,
-                month: document.getElementById('report-month').value,
-                metrics: document.getElementById('task-metrics').value || '0',
-                content: document.getElementById('task-content').value,
-                issues: document.getElementById('task-issues').value || 'Không có',
-                timestamp: new Date().toISOString()
+                staffName: currentUser.name,
+                reportType: reportType,
+                content: {
+                    tasks: currentUser.tasks,
+                    date: document.getElementById('report-date').value,
+                    content: document.getElementById('task-content').value,
+                    plan: document.getElementById('task-plan').value,
+                    issues: document.getElementById('task-issues').value || 'Không có',
+                    timestamp: new Date().toISOString()
+                }
             };
 
             try {
@@ -283,12 +314,13 @@
                 // Nếu fetch không throw error (network error), ta coi như thành công
                 
                 // Hiển thị thông báo thành công
-                showMessage('✅ Gửi báo cáo thành công!', 'text-green-700', 'bg-green-100', 'border-green-400');
+                showMessage(`✅ Đã gửi thành công báo cáo ${reportType} của ${currentUser.name}! Dữ liệu sẽ được ưu tiên nằm ở đầu trang file Doc.`, 'text-green-700', 'bg-green-100', 'border-green-400');
                 
-                // Reset form tự động nhưng giữ lại tháng hiện tại
-                const currentMonth = document.getElementById('report-month').value;
+                // Reset form tự động nhưng giữ lại ngày hiện tại và label phương hướng
+                const currentDate = document.getElementById('report-date').value;
                 reportForm.reset();
-                document.getElementById('report-month').value = currentMonth;
+                document.getElementById('report-date').value = currentDate;
+                planLabel.textContent = 'Phương hướng tuần tới';
 
             } catch (error) {
                 console.error('Lỗi khi gửi báo cáo:', error);
