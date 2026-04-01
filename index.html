@@ -178,7 +178,7 @@
         ];
 
         const DEFAULT_PASSWORD = '123456';
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyIQPnqXN0Mt2F1HTvGzRE4zsAWEsFOS4_DfdVYHhDGjbLXvsPmKfT2rRmu2z2QNmh4LQ/exec';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyFNDBF8iRdski7Nyub1Qh5hIjrChEQ0zCmh2o-rFPkiT6egjyXHedsUr1uZileYNbiug/exec';
 
         // 2. DOM Elements
         const loginSection = document.getElementById('login-section');
@@ -334,6 +334,7 @@ ${issuesText}
                 // Dùng text/plain để tránh lỗi CORS preflight trên Google Apps Script
                 const response = await fetch(SCRIPT_URL, {
                     method: 'POST',
+                    mode: 'no-cors',
                     headers: {
                         'Content-Type': 'text/plain;charset=utf-8',
                     },
