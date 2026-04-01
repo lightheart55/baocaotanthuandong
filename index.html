@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Báo Cáo Tháng - Trạm Y Tế</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        medical: '#007bff',
+                        'medical-dark': '#0056b3',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Ẩn thanh cuộn cho mượt mà trên mobile */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c1c1c1; 
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8; 
+        }
+    </style>
+</head>
+<body class="bg-blue-50 min-h-screen font-sans text-gray-800">
+    <!-- App Container -->
+    <div id="app" class="max-w-md mx-auto mt-4 md:mt-10 bg-white rounded-xl shadow-lg overflow-hidden md:max-w-2xl border border-gray-100">
+        <!-- Header -->
+        <div class="bg-medical text-white text-center py-5 shadow-sm">
+            <div class="flex justify-center mb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                </svg>
+            </div>
+            <h1 class="text-2xl font-bold uppercase tracking-wide">Trạm Y Tế</h1>
+            <p class="text-sm opacity-90 mt-1">Hệ thống báo cáo công tác tháng</p>
+        </div>
+
+        <!-- Login Section -->
+        <div id="login-section" class="p-6 md:p-8">
+            <h2 class="text-xl font-semibold mb-6 text-center text-gray-700 border-b pb-2">Đăng nhập hệ thống</h2>
+            <form id="login-form">
+                <div class="mb-5">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="employee-select">
+                        Họ và tên nhân viên
+                    </label>
+                    <select id="employee-select" class="shadow-sm border border-gray-300 rounded-lg w-full py-2.5 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-medical focus:border-transparent bg-white" required>
+                        <option value="">-- Chọn tên của bạn --</option>
+                    </select>
+                </div>
+                <div class="mb-6">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
+                        Mật khẩu
+                    </label>
+                    <input id="password" type="password" placeholder="Nhập mật khẩu (mặc định: 123456)" class="shadow-sm appearance-none border border-gray-300 rounded-lg w-full py-2.5 px-3 text-gray-700 mb-2 leading-tight focus:outline-none focus:ring-2 focus:ring-medical focus:border-transparent" required>
+                    <p id="login-error" class="text-red-500 text-sm italic hidden flex items-center mt-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Mật khẩu không đúng. Vui lòng thử lại.
+                    </p>
+                </div>
+                <div>
+                    <button type="submit" class="bg-medical hover:bg-medical-dark text-white font-bold py-3 px-4 rounded-lg focus:outline-none focus:shadow-outline w-full transition duration-300 shadow-md">
+                        Đăng nhập
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Report Section -->
+        <div id="report-section" class="p-6 md:p-8 hidden">
+            <div class="flex justify-between items-center mb-5 border-b pb-3">
+                <h2 class="text-xl font-bold text-gray-800">Phiếu Báo Cáo</h2>
+                <button type="button" id="logout-btn" class="text-sm text-red-500 hover:text-red-700 font-medium flex items-center transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                    </svg>
+                    Đăng xuất
+                </button>
+            </div>
+            
+            <div class="bg-blue-50 border-l-4 border-medical p-4 mb-6 rounded-r-lg shadow-sm">
+                <p class="text-gray-800">Xin chào, <span id="current-user-name" class="font-bold text-medical"></span></p>
+                <div class="mt-2 pt-2 border-t border-blue-100">
+                    <p class="text-sm text-gray-600 font-semibold mb-1">Nhiệm vụ phụ trách:</p>
+                    <p id="current-user-tasks" class="text-sm text-gray-800 font-medium leading-relaxed"></p>
+                </div>
+            </div>
+
+            <form id="report-form">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="report-month">
+                            Tháng báo cáo <span class="text-red-500">*</span>
+                        </label>
+                        <input type="month" id="report-month" class="shadow-sm border border-gray-300 rounded-lg w-full py-2.5 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-medical focus:border-transparent bg-white" required>
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="task-metrics">
+                            Số liệu thực hiện (nếu có)
+                        </label>
+                        <input type="number" id="task-metrics" placeholder="VD: 150 (lượt/người/ca...)" class="shadow-sm border border-gray-300 rounded-lg w-full py-2.5 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-medical focus:border-transparent bg-white">
+                    </div>
+                </div>
+
+                <div class="mb-5">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="task-content">
+                        Nội dung đã làm <span class="text-red-500">*</span>
+                    </label>
+                    <textarea id="task-content" rows="4" placeholder="- Khám sàng lọc được...&#10;- Truyền thông GDSK...&#10;- Quản lý hồ sơ..." class="shadow-sm border border-gray-300 rounded-lg w-full py-3 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-medical focus:border-transparent bg-white" required></textarea>
+                </div>
+
+                <div class="mb-6">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="task-issues">
+                        Khó khăn / Kiến nghị
+                    </label>
+                    <textarea id="task-issues" rows="3" placeholder="Ghi nhận những khó khăn gặp phải hoặc đề xuất hỗ trợ..." class="shadow-sm border border-gray-300 rounded-lg w-full py-3 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-medical focus:border-transparent bg-white"></textarea>
+                </div>
+
+                <div id="submit-message" class="mb-5 text-center text-sm font-bold hidden transition-all duration-300"></div>
+
+                <button type="submit" id="submit-btn" class="bg-medical hover:bg-medical-dark text-white font-bold py-3 px-4 rounded-lg focus:outline-none focus:shadow-outline w-full transition duration-300 shadow-md flex justify-center items-center text-lg">
+                    <span id="submit-text">Gửi báo cáo</span>
+                    <svg id="submit-spinner" class="animate-spin ml-2 h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                </button>
+            </form>
+        </div>
+        
+        <!-- Footer -->
+        <div class="text-center py-4 text-xs text-gray-500 bg-gray-50 border-t border-gray-100">
+            &copy; <span id="current-year"></span> Hệ thống báo cáo nội bộ Trạm Y Tế
+        </div>
+    </div>
+
+    <script>
+        // 1. DỮ LIỆU NHÂN VIÊN & NHIỆM VỤ
+        const employees = [
+            { id: 'nv1', name: 'BS Lê Văn Đạm', tasks: 'Bệnh không lây nhiễm (HA, ĐTĐ), Truyền thông GDSK, Khám sàng lọc' },
+            { id: 'nv2', name: 'YS Trần Thái Vinh', tasks: 'Phòng chống dịch bệnh (SXH, TCM), Lao, Giám sát sự kiện, Thủ quỹ' },
+            { id: 'nv3', name: 'YS Cao Thị Bích Trâm', tasks: 'Vệ sinh môi trường, An toàn lao động - PCCC, An toàn thực phẩm' },
+            { id: 'nv4', name: 'HS Nguyễn Thị Hồng Phượng', tasks: 'HIV/AIDS, Phong, Sốt rét, Da liễu, Vitamin A, ARI, CDD' },
+            { id: 'nv5', name: 'ĐD Thái Thị Duyên', tasks: 'Suy dinh dưỡng, Kế toán BHYT, Kiểm soát nhiễm khuẩn, Tiêm ngừa' },
+            { id: 'nv6', name: 'DS Nguyễn Hoàng Tâm', tasks: 'Quản lý thuốc, Vắc xin, Vật tư, Thống kê báo cáo, Văn thư' },
+            { id: 'nv7', name: 'CN Nguyễn Thị Hồng Tươi', tasks: 'Người cao tuổi, Khuyết tật, Dân số & phát triển, Tai nạn thương tích' },
+            { id: 'nv8', name: 'ĐD Nguyễn Thị Linh', tasks: 'Y tế học đường, Tiêm chủng mở rộng, Chăm sóc bệnh nhân' },
+            { id: 'nv9', name: 'BS Minh Tâm', tasks: 'Quản lý chung và tổng hợp báo cáo' }
+        ];
+
+        const DEFAULT_PASSWORD = '123456';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyno2-e1HPH8SUWmNHMvjLO4d7-KtvesiHNZaFyPopBkay6KRGD9Chkew2F-ntz3cq_0A/exec';
+
+        // 2. DOM Elements
+        const loginSection = document.getElementById('login-section');
+        const reportSection = document.getElementById('report-section');
+        const loginForm = document.getElementById('login-form');
+        const reportForm = document.getElementById('report-form');
+        const employeeSelect = document.getElementById('employee-select');
+        const passwordInput = document.getElementById('password');
+        const loginError = document.getElementById('login-error');
+        const logoutBtn = document.getElementById('logout-btn');
+        
+        const currentUserName = document.getElementById('current-user-name');
+        const currentUserTasks = document.getElementById('current-user-tasks');
+        
+        const submitBtn = document.getElementById('submit-btn');
+        const submitText = document.getElementById('submit-text');
+        const submitSpinner = document.getElementById('submit-spinner');
+        const submitMessage = document.getElementById('submit-message');
+
+        let currentUser = null;
+
+        // 3. Khởi tạo ứng dụng
+        function init() {
+            // Set năm hiện tại cho footer
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+
+            // Đổ dữ liệu vào select box
+            employees.forEach(emp => {
+                const option = document.createElement('option');
+                option.value = emp.id;
+                option.textContent = emp.name;
+                employeeSelect.appendChild(option);
+            });
+
+            // Set mặc định tháng hiện tại cho input type="month"
+            const now = new Date();
+            // Format YYYY-MM
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            document.getElementById('report-month').value = `${year}-${month}`;
+        }
+
+        // 4. Xử lý Đăng nhập
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const selectedId = employeeSelect.value;
+            const password = passwordInput.value;
+
+            if (password === DEFAULT_PASSWORD && selectedId) {
+                currentUser = employees.find(emp => emp.id === selectedId);
+                showReportSection();
+            } else {
+                loginError.classList.remove('hidden');
+                // Lắc nhẹ form để báo lỗi
+                passwordInput.classList.add('border-red-500');
+                setTimeout(() => passwordInput.classList.remove('border-red-500'), 2000);
+            }
+        });
+
+        // 5. Xử lý Đăng xuất
+        logoutBtn.addEventListener('click', () => {
+            currentUser = null;
+            loginForm.reset();
+            loginError.classList.add('hidden');
+            loginSection.classList.remove('hidden');
+            reportSection.classList.add('hidden');
+            window.scrollTo(0, 0);
+        });
+
+        // Hiển thị trang báo cáo
+        function showReportSection() {
+            loginSection.classList.add('hidden');
+            reportSection.classList.remove('hidden');
+            
+            currentUserName.textContent = currentUser.name;
+            currentUserTasks.textContent = currentUser.tasks;
+            
+            submitMessage.classList.add('hidden');
+            window.scrollTo(0, 0);
+        }
+
+        // 6. Xử lý Gửi Báo cáo
+        reportForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Trạng thái Loading UI
+            submitBtn.disabled = true;
+            submitBtn.classList.add('opacity-75', 'cursor-not-allowed');
+            submitText.textContent = 'Đang gửi dữ liệu...';
+            submitSpinner.classList.remove('hidden');
+            submitMessage.classList.add('hidden');
+
+            // Thu thập dữ liệu
+            const reportData = {
+                name: currentUser.name,
+                tasks: currentUser.tasks,
+                month: document.getElementById('report-month').value,
+                metrics: document.getElementById('task-metrics').value || '0',
+                content: document.getElementById('task-content').value,
+                issues: document.getElementById('task-issues').value || 'Không có',
+                timestamp: new Date().toISOString()
+            };
+
+            try {
+                // Gửi POST request (JSON)
+                // Dùng text/plain để tránh lỗi CORS preflight trên Google Apps Script
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'text/plain;charset=utf-8',
+                    },
+                    body: JSON.stringify(reportData)
+                });
+
+                // Google Apps Script thường trả về opaque response khi dùng no-cors hoặc redirect
+                // Nếu fetch không throw error (network error), ta coi như thành công
+                
+                // Hiển thị thông báo thành công
+                showMessage('✅ Gửi báo cáo thành công!', 'text-green-700', 'bg-green-100', 'border-green-400');
+                
+                // Reset form tự động nhưng giữ lại tháng hiện tại
+                const currentMonth = document.getElementById('report-month').value;
+                reportForm.reset();
+                document.getElementById('report-month').value = currentMonth;
+
+            } catch (error) {
+                console.error('Lỗi khi gửi báo cáo:', error);
+                // Xử lý lỗi nếu gửi thất bại
+                showMessage('❌ Gửi thất bại. Vui lòng kiểm tra kết nối mạng và thử lại.', 'text-red-700', 'bg-red-100', 'border-red-400');
+            } finally {
+                // Khôi phục UI nút bấm
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('opacity-75', 'cursor-not-allowed');
+                submitText.textContent = 'Gửi báo cáo';
+                submitSpinner.classList.add('hidden');
+            }
+        });
+
+        // Hàm hiển thị thông báo
+        function showMessage(text, textColor, bgColor, borderColor) {
+            submitMessage.textContent = text;
+            submitMessage.className = `mb-5 text-center text-sm font-bold p-3 rounded-lg border ${textColor} ${bgColor} ${borderColor}`;
+            submitMessage.classList.remove('hidden');
+            
+            // Tự động ẩn thông báo sau 6 giây
+            setTimeout(() => {
+                submitMessage.classList.add('hidden');
+            }, 6000);
+        }
+
+        // Chạy khởi tạo khi load trang
+        init();
+    </script>
+</body>
+</html>
