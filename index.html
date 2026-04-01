@@ -93,9 +93,9 @@
             </div>
             
             <div class="bg-blue-50 border-l-4 border-medical p-4 mb-6 rounded-r-lg shadow-sm">
-                <p class="text-gray-800 uppercase text-sm font-bold mb-1">NHÂN VIÊN: <span id="current-user-name" class="text-medical"></span></p>
+                <p class="text-gray-800 text-lg font-bold mb-1">Chào <span id="current-user-name" class="text-medical"></span></p>
                 <div class="mt-2 pt-2 border-t border-blue-100">
-                    <p class="text-sm text-gray-600 font-semibold mb-1">Nhiệm vụ phụ trách:</p>
+                    <p class="text-sm text-gray-600 font-semibold mb-1">Nhiệm vụ của bạn:</p>
                     <p id="current-user-tasks" class="text-sm text-gray-800 font-medium leading-relaxed"></p>
                 </div>
             </div>
@@ -166,15 +166,15 @@
     <script>
         // 1. DỮ LIỆU NHÂN VIÊN & NHIỆM VỤ
         const employees = [
-            { id: 'nv1', name: 'BS Lê Văn Đạm', tasks: 'Bệnh không lây nhiễm (HA, ĐTĐ), Truyền thông GDSK, Khám sàng lọc' },
-            { id: 'nv2', name: 'YS Trần Thái Vinh', tasks: 'Phòng chống dịch bệnh (SXH, TCM), Lao, Giám sát sự kiện, Thủ quỹ' },
-            { id: 'nv3', name: 'YS Cao Thị Bích Trâm', tasks: 'Vệ sinh môi trường, An toàn lao động - PCCC, An toàn thực phẩm' },
-            { id: 'nv4', name: 'HS Nguyễn Thị Hồng Phượng', tasks: 'HIV/AIDS, Phong, Sốt rét, Da liễu, Vitamin A, ARI, CDD' },
-            { id: 'nv5', name: 'ĐD Thái Thị Duyên', tasks: 'Suy dinh dưỡng, Kế toán BHYT, Kiểm soát nhiễm khuẩn, Tiêm ngừa' },
-            { id: 'nv6', name: 'DS Nguyễn Thị Lệ', tasks: 'Dược, VTYT, Trạm Y tế xanh sạch đẹp' },
-            { id: 'nv7', name: 'NHS Đặng Thị Lệ Hằng', tasks: 'CSSKSS, KHHGĐ, Cải thiện tình trạng dinh dưỡng trẻ em' },
-            { id: 'nv8', name: 'ĐD Nguyễn Thị Tường Vy', tasks: 'Khám chữa bệnh BHYT, YHCT, PHCN, Dân số' },
-            { id: 'nv9', name: 'CT Nguyễn Thị Ngọc Trâm', tasks: 'Văn thư lưu trữ, Thống kê báo cáo, Quản lý phần mềm' }
+            { id: 'nv1', name: 'BS Lê Văn Đạm', tasks: 'Khám chữa bệnh, Bệnh không lây nhiễm (HA, ĐTĐ, Bướu cổ), Truyền thông GDSK, Tiêm ngừa.' },
+            { id: 'nv2', name: 'YS Trần Thái Vinh', tasks: 'Phòng chống dịch bệnh (SXH, TCM), Lao, Giám sát sự kiện, Thủ quỹ, Tiêm chủng.' },
+            { id: 'nv3', name: 'YS Cao Thị Bích Trâm', tasks: 'Vệ sinh môi trường, AT vệ sinh lao động - PCCC, An toàn thực phẩm, Trực tua.' },
+            { id: 'nv4', name: 'HS Nguyễn Thị Hồng Phượng', tasks: 'HIV/AIDS, Bệnh lây qua đường tình dục, Phong, Sốt rét, Da liễu, Vitamin A, ARI, CDD.' },
+            { id: 'nv5', name: 'ĐD Thái Thị Duyên', tasks: 'Suy dinh dưỡng, Dinh dưỡng bền vững, Kế toán BHYT, Kiểm soát nhiễm khuẩn.' },
+            { id: 'nv6', name: 'DS Nguyễn Hoàng Tâm', tasks: 'Dược, Vật tư y tế, Thống kê báo cáo trạm, Văn thư, Công đoàn, Kiểm kê tài sản.' },
+            { id: 'nv7', name: 'CN Nguyễn Thị Hồng Tươi', tasks: 'Người cao tuổi, Khuyết tật, Dân số và phát triển, Tai nạn thương tích.' },
+            { id: 'nv8', name: 'ĐD Nguyễn Thị Linh', tasks: 'Chăm sóc người bệnh, Tiêm chủng mở rộng (chiến dịch), Y tế học đường.' },
+            { id: 'nv9', name: 'BS Minh Tâm', tasks: 'Phó Trưởng trạm - Quản lý chung và chỉ đạo hoạt động.' }
         ];
 
         const DEFAULT_PASSWORD = '123456';
@@ -287,9 +287,9 @@
             // Thu thập dữ liệu
             const reportType = document.querySelector('input[name="report-type"]:checked').value;
             
-            // Format thời gian: DD/MM/YYYY HH:mm:ss
+            // Format thời gian: Giờ/Ngày
             const now = new Date();
-            const timeString = `${String(now.getDate()).padStart(2, '0')}/${String(now.getMonth() + 1).padStart(2, '0')}/${now.getFullYear()} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
+            const timeString = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')} ${String(now.getDate()).padStart(2, '0')}/${String(now.getMonth() + 1).padStart(2, '0')}/${now.getFullYear()}`;
             
             // Format danh sách nhiệm vụ (bullet points)
             const taskList = currentUser.tasks.split(',').map(task => `- ${task.trim()}`).join('\n');
@@ -313,19 +313,16 @@
 
             // Tạo nội dung report có cấu trúc rõ ràng (RAW STRING)
             const payload = `------------------------------------------
-THỜI GIAN: ${timeString}
-NHÂN VIÊN: ${currentUser.name} (${reportType})
-
-**NHIỆM VỤ PHỤ TRÁCH:**
+THỜI GIAN GỬI: ${timeString}
+BÁO CÁO: ${reportType}
+NHÂN VIÊN: ${currentUser.name}
+NHIỆM VỤ:
 ${taskList}
-
-**NỘI DUNG ĐÃ LÀM:**
+NỘI DUNG:
 ${contentText}
-
-**${planTitle}:**
+PHƯƠNG HƯỚNG:
 ${planText}
-
-**KHÓ KHĂN / KIẾN NGHỊ:**
+KHÓ KHĂN / KIẾN NGHỊ:
 ${issuesText}
 ------------------------------------------`;
 
