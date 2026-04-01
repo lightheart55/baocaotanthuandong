@@ -286,17 +286,43 @@
 
             // Thu thập dữ liệu
             const reportType = document.querySelector('input[name="report-type"]:checked').value;
+            
+            // Format thời gian: HH:mm:ss DD/MM/YYYY
+            const now = new Date();
+            const timeString = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')} ${String(now.getDate()).padStart(2, '0')}/${String(now.getMonth() + 1).padStart(2, '0')}/${now.getFullYear()}`;
+            
+            // Format danh sách nhiệm vụ (bullet points)
+            const taskList = currentUser.tasks.split(',').map(task => `- ${task.trim()}`).join('\n');
+            
+            // Tiêu đề phương hướng
+            const planTitle = reportType === 'Tuần' ? 'PHƯƠNG HƯỚNG TUẦN TỚI' : 'PHƯƠNG HƯỚNG THÁNG TỚI';
+            
+            const contentText = document.getElementById('task-content').value.trim();
+            const planText = document.getElementById('task-plan').value.trim() || 'Không có';
+            const issuesText = document.getElementById('task-issues').value.trim() || 'Không có';
+
+            // Tạo nội dung report có cấu trúc rõ ràng
+            const formattedContent = `------------------------------------------
+THỜI GIAN: ${timeString}
+NHÂN VIÊN: ${currentUser.name} (${reportType})
+
+NHIỆM VỤ PHỤ TRÁCH:
+${taskList}
+
+NỘI DUNG ĐÃ LÀM:
+${contentText}
+
+${planTitle}:
+${planText}
+
+KHÓ KHĂN / KIẾN NGHỊ:
+${issuesText}
+------------------------------------------`;
+
             const reportData = {
                 staffName: currentUser.name,
                 reportType: reportType,
-                content: {
-                    tasks: currentUser.tasks,
-                    date: document.getElementById('report-date').value,
-                    content: document.getElementById('task-content').value,
-                    plan: document.getElementById('task-plan').value,
-                    issues: document.getElementById('task-issues').value || 'Không có',
-                    timestamp: new Date().toISOString()
-                }
+                content: formattedContent
             };
 
             try {
