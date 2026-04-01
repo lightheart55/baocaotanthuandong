@@ -287,9 +287,9 @@
             // Thu thập dữ liệu
             const reportType = document.querySelector('input[name="report-type"]:checked').value;
             
-            // Format thời gian: HH:mm:ss DD/MM/YYYY
+            // Format thời gian: DD/MM/YYYY HH:mm:ss
             const now = new Date();
-            const timeString = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')} ${String(now.getDate()).padStart(2, '0')}/${String(now.getMonth() + 1).padStart(2, '0')}/${now.getFullYear()}`;
+            const timeString = `${String(now.getDate()).padStart(2, '0')}/${String(now.getMonth() + 1).padStart(2, '0')}/${now.getFullYear()} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
             
             // Format danh sách nhiệm vụ (bullet points)
             const taskList = currentUser.tasks.split(',').map(task => `- ${task.trim()}`).join('\n');
@@ -297,43 +297,47 @@
             // Tiêu đề phương hướng
             const planTitle = reportType === 'Tuần' ? 'PHƯƠNG HƯỚNG TUẦN TỚI' : 'PHƯƠNG HƯỚNG THÁNG TỚI';
             
-            const contentText = document.getElementById('task-content').value.trim();
-            const planText = document.getElementById('task-plan').value.trim() || 'Không có';
-            const issuesText = document.getElementById('task-issues').value.trim() || 'Không có';
+            // Hàm format text từ textarea để đảm bảo có bullet point và xuống dòng
+            const formatText = (text) => {
+                if (!text.trim()) return '- Không có';
+                return text.split('\n')
+                    .map(line => line.trim())
+                    .filter(line => line.length > 0)
+                    .map(line => (line.startsWith('-') || line.startsWith('+') || line.startsWith('*')) ? line : `- ${line}`)
+                    .join('\n');
+            };
 
-            // Tạo nội dung report có cấu trúc rõ ràng
-            const formattedContent = `------------------------------------------
+            const contentText = formatText(document.getElementById('task-content').value);
+            const planText = formatText(document.getElementById('task-plan').value);
+            const issuesText = formatText(document.getElementById('task-issues').value);
+
+            // Tạo nội dung report có cấu trúc rõ ràng (RAW STRING)
+            const payload = `------------------------------------------
 THỜI GIAN: ${timeString}
 NHÂN VIÊN: ${currentUser.name} (${reportType})
 
-NHIỆM VỤ PHỤ TRÁCH:
+**NHIỆM VỤ PHỤ TRÁCH:**
 ${taskList}
 
-NỘI DUNG ĐÃ LÀM:
+**NỘI DUNG ĐÃ LÀM:**
 ${contentText}
 
-${planTitle}:
+**${planTitle}:**
 ${planText}
 
-KHÓ KHĂN / KIẾN NGHỊ:
+**KHÓ KHĂN / KIẾN NGHỊ:**
 ${issuesText}
 ------------------------------------------`;
 
-            const reportData = {
-                staffName: currentUser.name,
-                reportType: reportType,
-                content: formattedContent
-            };
-
             try {
-                // Gửi POST request (JSON)
+                // Gửi POST request (RAW TEXT)
                 // Dùng text/plain để tránh lỗi CORS preflight trên Google Apps Script
                 const response = await fetch(SCRIPT_URL, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'text/plain;charset=utf-8',
                     },
-                    body: JSON.stringify(reportData)
+                    body: payload // Gửi trực tiếp chuỗi văn bản, KHÔNG dùng JSON.stringify
                 });
 
                 // Google Apps Script thường trả về opaque response khi dùng no-cors hoặc redirect
