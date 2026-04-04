@@ -178,7 +178,7 @@
         ];
 
         const DEFAULT_PASSWORD = '123456';
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzL8P67sUB29KdXK2IK8UyHPQfoQHuHIhd4a0Qk3yU1iXvqnBamzjv4sNAHXfUpna-D5Q/exec';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyWC_ICblb3Zk2ip-M4gikuoBKHA-9pd8qe1i5_f7_zQ5QX0IDXupCva66zHcZ3tQg2mQ/exec';
 
         // 2. DOM Elements
         const loginSection = document.getElementById('login-section');
@@ -312,7 +312,8 @@
             const issuesText = formatText(document.getElementById('task-issues').value);
 
             // Tạo nội dung report có cấu trúc rõ ràng (RAW STRING)
-            const payload = `LOẠI BÁO CÁO: (${reportType.toUpperCase()})
+            const typeLabel = reportType === 'Tuần' ? '[LOAI:TUAN]' : '[LOAI:THANG]';
+            const payload = `${typeLabel}
 THỜI GIAN: ${timeString}
 NHÂN VIÊN: ${currentUser.name}
 NHIỆM VỤ PHỤ TRÁCH: ${currentUser.tasks}
