@@ -370,6 +370,14 @@
             document.getElementById('current-user-name').textContent = currentUser.name;
             document.getElementById('current-user-tasks').textContent = currentUser.tasks;
 
+            // Cập nhật placeholder cho Nội dung đã làm dựa trên nhiệm vụ của nhân viên
+            const taskContent = document.getElementById('task-content');
+            const taskPlaceholder = currentUser.tasks.split(',')
+                .map(task => `- ${task.trim()}`)
+                .slice(0, 3) // Lấy tối đa 3 nhiệm vụ đầu tiên làm ví dụ
+                .join('\n');
+            taskContent.placeholder = `Ví dụ:\n${taskPlaceholder}\n...`;
+
             // Kiểm tra và hiển thị lời nhắn cá nhân
             if (systemData.loiNhan && systemData.loiNhan[currentUser.name]) {
                 document.getElementById('personal-message-text').textContent = systemData.loiNhan[currentUser.name];
