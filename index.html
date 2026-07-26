@@ -233,8 +233,7 @@
             { id: 'nv5', name: 'ĐD Thái Thị Duyên', tasks: 'Suy dinh dưỡng, Dinh dưỡng bền vững, Kế toán BHYT, Kiểm soát nhiễm khuẩn.' },
             { id: 'nv6', name: 'DS Nguyễn Hoàng Tâm', tasks: 'Dược, Vật tư y tế, Thống kê báo cáo trạm, Văn thư, Công đoàn, Kiểm kê tài sản.' },
             { id: 'nv7', name: 'CN Nguyễn Thị Hồng Tươi', tasks: 'Người cao tuổi, Khuyết tật, Dân số và phát triển, Tai nạn thương tích.' },
-            { id: 'nv8', name: 'ĐD Nguyễn Thị Linh', tasks: 'Chăm sóc người bệnh, Tiêm chủng mở rộng (chiến dịch), Y tế học đường.' },
-            { id: 'nv9', name: 'BS Minh Tâm', tasks: 'Phó Trưởng trạm - Quản lý chung và chỉ đạo hoạt động.' }
+            { id: 'nv8', name: 'ĐD Nguyễn Thị Linh', tasks: 'Chăm sóc người bệnh, Tiêm chủng mở rộng (chiến dịch), Y tế học đường.' }
         ];
 
         const DEFAULT_PASSWORD = '123456';
@@ -428,21 +427,83 @@
             const planText = formatText(document.getElementById('task-plan').value);
             const issuesText = formatText(document.getElementById('task-issues').value);
 
+            // Tính toán Trễ hạn / Đúng hạn và Thông tin Tuần/Tháng
+            let isLate = false;
+            let periodInfo = '';
+            let titlePrefix = '';
+
+            if (reportType === 'Tuần') {
+                // Hạn: Thứ Sáu (day = 5), 17h (17:00)
+                const dayOfWeek = now.getDay();
+                const hours = now.getHours();
+                const minutes = now.getMinutes();
+                
+                // Nếu là thứ 6 sau 17:00, hoặc Thứ 7 (6), Chủ Nhật (0)
+                if (dayOfWeek === 6 || dayOfWeek === 0 || (dayOfWeek === 5 && (hours > 17 || (hours === 17 && minutes > 0)))) {
+                    isLate = true;
+                }
+
+                // Tính thứ 2 và chủ nhật của tuần hiện tại
+                const d = new Date(now.getTime());
+                const day = d.getDay();
+                const diffToMonday = d.getDate() - day + (day === 0 ? -6 : 1);
+                const monday = new Date(new Date(d.getTime()).setDate(diffToMonday));
+                const sunday = new Date(new Date(d.getTime()).setDate(diffToMonday + 6));
+                
+                // Lấy số tuần trong năm (ISO Week)
+                const d2 = new Date(now.getTime());
+                d2.setHours(0, 0, 0, 0);
+                d2.setDate(d2.getDate() + 3 - (d2.getDay() + 6) % 7);
+                const week1 = new Date(d2.getFullYear(), 0, 4);
+                const weekNum = 1 + Math.round(((d2.getTime() - week1.getTime()) / 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);
+
+                const formatDate = (dateObj) => `${String(dateObj.getDate()).padStart(2, '0')}/${String(dateObj.getMonth() + 1).padStart(2, '0')}/${dateObj.getFullYear()}`;
+                
+                periodInfo = `Tuần ${weekNum}/${d2.getFullYear()} (Từ ${formatDate(monday)} đến ${formatDate(sunday)})`;
+                titlePrefix = `BÁO CÁO GIAO BAN TUẦN ${weekNum}`;
+            } else {
+                // Báo cáo tháng: Hạn: Ngày 25, 17h
+                const dateOfMonth = now.getDate();
+                const hours = now.getHours();
+                const minutes = now.getMinutes();
+                
+                if (dateOfMonth > 25 || (dateOfMonth === 25 && (hours > 17 || (hours === 17 && minutes > 0)))) {
+                    isLate = true;
+                }
+
+                const month = String(now.getMonth() + 1).padStart(2, '0');
+                const year = now.getFullYear();
+                periodInfo = `Tháng ${month}/${year}`;
+                titlePrefix = `BÁO CÁO THÁNG ${month}`;
+            }
+
+            const statusText = isLate ? '[TRỄ HẠN]' : '[ĐÚNG HẠN]';
+            const statusIcon = isLate ? '🔴' : '🟢';
+
             // Tạo nội dung report có cấu trúc rõ ràng (RAW STRING)
-            const typeLabel = reportType === 'Tuần' ? '[LOAI:TUAN]' : '[LOAI:THANG]';
-            const payload = `${typeLabel}
-THỜI GIAN: ${timeString}
-NHÂN VIÊN: ${currentUser.name}
-NHIỆM VỤ PHỤ TRÁCH: ${currentUser.tasks}
-------------------------------------------
-NỘI DUNG ĐÃ LÀM:
+            const routingLabel = reportType === 'Tuần' ? '[LOAI:TUAN]' : '[LOAI:THANG]';
+            const divider = "=====================================================================";
+            const subDivider = "---------------------------------------------------------------------";
+            
+            const payload = `${routingLabel}
+${divider}
+[${titlePrefix}] - ${statusIcon} ${statusText}
+${divider}
+* KỲ BÁO CÁO: ${periodInfo}
+* THỜI GIAN NỘP: ${timeString}
+* NHÂN VIÊN: ${currentUser.name}
+* NHIỆM VỤ: ${currentUser.tasks}
+${subDivider}
+1. NỘI DUNG ĐÃ LÀM:
 ${contentText}
 
-PHƯƠNG HƯỚNG TỚI:
+2. PHƯƠNG HƯỚNG TỚI:
 ${planText}
 
-KHÓ KHĂN / KIẾN NGHỊ:
-${issuesText}`;
+3. KHÓ KHĂN / KIẾN NGHỊ:
+${issuesText}
+${divider}
+`;
 
             try {
                 // Gửi POST request (RAW TEXT)
@@ -459,8 +520,13 @@ ${issuesText}`;
                 // Google Apps Script thường trả về opaque response khi dùng no-cors hoặc redirect
                 // Nếu fetch không throw error (network error), ta coi như thành công
                 
-                // Hiển thị thông báo thành công
-                showMessage(`✅ Đã gửi thành công báo cáo ${reportType} của ${currentUser.name}! Dữ liệu sẽ được ưu tiên nằm ở đầu trang file Doc.`, 'text-green-700', 'bg-green-100', 'border-green-400');
+                // Tùy chọn link báo cáo dựa theo loại báo cáo
+                const docLink = reportType === 'Tuần' 
+                    ? "https://docs.google.com/document/d/1jHeC7qyUeQqWae1pX6Y2r5vcq-bSx1LXXCAVNFV6vRI/edit?tab=t.0" 
+                    : "https://docs.google.com/document/d/1KyRElS8TmLbv0Q-Hm7gXl0F3GOIf3dvuNjfS_f167Zo/edit?tab=t.0";
+                
+                // Hiển thị thông báo thành công và link xem lại
+                showMessage(`✅ Đã gửi thành công báo cáo ${reportType} của ${currentUser.name}!<br><br><a href="${docLink}" target="_blank" class="underline text-blue-700 hover:text-blue-900 font-black">👉 Bấm vào đây để xem lại báo cáo trên Google Doc</a>`, 'text-green-800', 'bg-green-100', 'border-green-400');
                 
                 // Reset form tự động nhưng giữ lại ngày hiện tại và label phương hướng
                 const currentDate = document.getElementById('report-date').value;
@@ -482,8 +548,8 @@ ${issuesText}`;
         });
 
         // Hàm hiển thị thông báo
-        function showMessage(text, textColor, bgColor, borderColor) {
-            submitMessage.textContent = text;
+        function showMessage(htmlContent, textColor, bgColor, borderColor) {
+            submitMessage.innerHTML = htmlContent;
             submitMessage.className = `mb-5 text-center text-sm font-bold p-3 rounded-lg border ${textColor} ${bgColor} ${borderColor}`;
             submitMessage.classList.remove('hidden');
             
