@@ -141,12 +141,18 @@
         <div id="report-section" class="p-6 md:p-8 hidden">
             <div class="flex justify-between items-center mb-5 border-b pb-3">
                 <h2 class="text-xl font-bold text-gray-800">Phiếu Báo Cáo</h2>
-                <button type="button" id="logout-btn" class="text-sm text-red-500 hover:text-red-700 font-medium flex items-center transition">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                    </svg>
-                    Đăng xuất
-                </button>
+                <div class="flex items-center space-x-4">
+                    <button type="button" onclick="openPasswordModal()" class="text-sm text-indigo-600 hover:text-indigo-800 font-medium flex items-center transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" /></svg>
+                        Đổi mật khẩu
+                    </button>
+                    <button type="button" id="logout-btn" class="text-sm text-red-500 hover:text-red-700 font-medium flex items-center transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                        </svg>
+                        Đăng xuất
+                    </button>
+                </div>
             </div>
             
             <div class="bg-blue-50 border-l-4 border-medical p-4 mb-6 rounded-r-lg shadow-sm">
@@ -166,6 +172,44 @@
                     <div>
                         <p class="text-sm font-bold text-green-800 mb-1">Thông báo dành cho bạn:</p>
                         <p id="personal-message-text" class="text-sm text-green-700 italic"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Employee Dashboard (Tiến độ của tôi) -->
+            <div id="employee-dashboard" class="bg-white border border-slate-200 rounded-2xl p-5 mb-6 shadow-sm">
+                <h3 class="font-bold text-slate-800 text-base md:text-lg mb-4 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-medical" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012-2h-2a2 2 0 01-2-2z" />
+                    </svg>
+                    Tiến độ nộp báo cáo của bạn
+                </h3>
+                
+                <div class="flex flex-col sm:flex-row sm:items-center gap-3 mb-4">
+                    <span class="text-sm font-semibold text-slate-600 whitespace-nowrap">Chọn kỳ báo cáo:</span>
+                    <div class="relative w-full sm:w-56">
+                        <select id="employee-report-type" class="w-full appearance-none border border-slate-200 rounded-xl py-2 px-4 pr-10 focus:outline-none focus:ring-2 focus:ring-medical focus:border-transparent bg-slate-50 text-slate-700 font-semibold shadow-sm transition">
+                            <!-- Các option sẽ được JS tạo tự động -->
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </div>
+                    </div>
+                    <button type="button" onclick="loadEmployeeData()" class="ml-auto bg-slate-100 hover:bg-slate-200 text-slate-700 py-2 px-3 rounded-xl text-sm font-semibold transition flex items-center active:scale-95 duration-200 shadow-sm border border-slate-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                        </svg>
+                        Làm mới
+                    </button>
+                </div>
+
+                <div id="employee-report-status" class="rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between border bg-slate-50 border-slate-100 gap-3">
+                    <!-- Trạng thái sẽ được JS render vào đây -->
+                    <div class="flex items-center text-slate-500">
+                        <svg class="animate-spin mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                        <span class="text-sm font-medium">Đang tải dữ liệu...</span>
                     </div>
                 </div>
             </div>
@@ -193,8 +237,7 @@
                         <p class="text-sm text-yellow-800 font-medium">
                             <span class="font-bold">LƯU Ý THỜI HẠN:</span><br>
                             - Báo cáo giao ban <b>TUẦN</b>: Nộp trước <b>17 giờ chiều CHỦ NHẬT</b>.<br>
-                            - Báo cáo <b>THÁNG</b>: Nộp trước <b>17 giờ chiều NGÀY 25</b> hàng tháng.<br>
-                            <br><i>Sau khi gửi, hãy bấm vào link ở thông báo thành công để xem lại file trên Google Doc nhé.</i>
+                            - Báo cáo <b>THÁNG</b>: Nộp trước <b>17 giờ chiều NGÀY 25</b> hàng tháng.
                         </p>
                     </div>
                 </div>
@@ -221,7 +264,7 @@
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="report-date">
                         Thời gian báo cáo <span class="text-red-500">*</span>
                     </label>
-                    <input type="date" id="report-date" class="shadow-sm border border-gray-300 rounded-lg w-full py-2.5 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-medical focus:border-transparent bg-white" required>
+                    <input type="date" id="report-date" class="shadow-sm border border-gray-300 rounded-lg w-full py-2.5 px-3 text-gray-500 bg-gray-100 cursor-not-allowed focus:outline-none" required readonly>
                 </div>
 
                 <div class="mb-5">
@@ -257,6 +300,164 @@
             </form>
         </div>
         
+        <!-- Admin Section -->
+        <div id="admin-section" class="p-6 md:p-8 hidden">
+            <div class="flex justify-between items-center mb-6 border-b border-slate-100 pb-4">
+                <div class="flex items-center space-x-3">
+                    <div class="bg-indigo-500/10 p-2 rounded-xl text-indigo-600">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                        </svg>
+                    </div>
+                    <h2 class="text-xl md:text-2xl font-black text-indigo-900 tracking-tight">Dashboard Quản Lý</h2>
+                </div>
+                <button type="button" id="admin-logout-btn" class="bg-rose-50 hover:bg-rose-100 text-rose-600 font-semibold text-sm px-4 py-2 rounded-xl flex items-center transition shadow-sm border border-rose-100 active:scale-95 duration-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                    </svg>
+                    Đăng xuất
+                </button>
+            </div>
+            
+            <div class="bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 text-white p-6 rounded-2xl shadow-premium mb-6 relative overflow-hidden">
+                <!-- Gradient decoration -->
+                <div class="absolute -right-6 -bottom-6 w-36 h-36 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
+                <div class="absolute -left-10 -top-10 w-28 h-28 bg-indigo-400/20 rounded-full blur-2xl pointer-events-none"></div>
+                
+                <div class="relative z-10">
+                    <span class="bg-white/20 text-white text-[10px] font-bold tracking-widest uppercase px-2.5 py-1 rounded-full border border-white/10">Trưởng Trạm</span>
+                    <h3 class="text-2xl font-bold mt-2">Xin chào, <span id="admin-user-name" class="font-extrabold text-yellow-300"></span></h3>
+                    <p class="text-sm text-indigo-100 mt-2 font-medium leading-relaxed">Chào mừng bạn đến với bảng điều khiển giám sát tiến độ nộp báo cáo. Hãy theo dõi và thúc giục nhân viên nộp báo cáo đúng hạn.</p>
+                </div>
+            </div>
+
+            <!-- Dashboard Controls -->
+            <div class="mb-6 bg-slate-50 border border-slate-100 p-4 rounded-2xl shadow-inner flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div class="flex items-center space-x-3 w-full sm:w-auto">
+                    <span class="text-sm font-bold text-slate-600 whitespace-nowrap">Xem Kỳ Báo Cáo:</span>
+                    <div class="relative w-full sm:w-48">
+                        <select id="admin-report-type" class="w-full appearance-none border border-slate-200 rounded-xl py-2 px-4 pr-10 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white text-slate-700 font-semibold shadow-sm transition">
+                            <!-- Các option sẽ được JS tạo tự động với số Tuần/Tháng cụ thể -->
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <button onclick="mockLoadAdminData()" class="bg-indigo-600 hover:bg-indigo-700 text-white hover:text-white py-2 px-5 rounded-xl font-bold transition shadow-md hover:shadow-lg flex items-center justify-center active:scale-95 duration-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                    Làm mới dữ liệu
+                </button>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-2 gap-4 mb-6">
+                <!-- Submitted Stat -->
+                <div class="bg-gradient-to-br from-emerald-50 to-emerald-100/50 border border-emerald-100 p-5 rounded-2xl text-center relative overflow-hidden transition-all duration-300 hover:shadow-md group">
+                    <div class="absolute -right-3 -bottom-3 text-emerald-200/40 pointer-events-none group-hover:scale-110 transition duration-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <div class="text-4xl font-black text-emerald-600 drop-shadow-sm" id="stat-submitted">0</div>
+                    <div class="text-[11px] font-extrabold text-emerald-800 uppercase tracking-widest mt-1.5">Đã nộp báo cáo</div>
+                </div>
+                
+                <!-- Missing Stat -->
+                <div class="bg-gradient-to-br from-rose-50 to-rose-100/50 border border-rose-100 p-5 rounded-2xl text-center relative overflow-hidden transition-all duration-300 hover:shadow-md group">
+                    <div class="absolute -right-3 -bottom-3 text-rose-200/40 pointer-events-none group-hover:scale-110 transition duration-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                    </div>
+                    <div class="text-4xl font-black text-rose-500 drop-shadow-sm" id="stat-missing">0</div>
+                    <div class="text-[11px] font-extrabold text-rose-800 uppercase tracking-widest mt-1.5">Chưa nộp báo cáo</div>
+                </div>
+            </div>
+            
+            <div class="flex justify-end mb-4 space-x-3">
+                <button type="button" onclick="openPasswordModal()" class="text-sm bg-purple-50 hover:bg-purple-100 text-purple-700 font-bold px-4 py-2 rounded-xl transition border border-purple-200 flex items-center shadow-sm active:scale-95 duration-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" /></svg>
+                    Đổi mật khẩu cá nhân
+                </button>
+                <button onclick="showPasswords()" class="text-sm bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold px-4 py-2 rounded-xl transition border border-indigo-200 flex items-center shadow-sm active:scale-95 duration-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" /></svg>
+                    Quản lý mật khẩu
+                </button>
+            </div>
+
+            <!-- List of Employees -->
+            <div class="bg-white rounded-2xl border border-slate-100 shadow-premium overflow-hidden mb-6">
+                <div class="bg-slate-50/70 border-b border-slate-100 px-5 py-4 flex justify-between items-center">
+                    <h3 class="font-bold text-slate-800 flex items-center text-sm md:text-base">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                        Chi Tiết Tình Trạng Nhân Viên
+                    </h3>
+                </div>
+                <ul id="admin-employee-list" class="divide-y divide-slate-100">
+                    <!-- Danh sách nhân viên sẽ được load bằng JS -->
+                </ul>
+            </div>
+            
+        </div>
+
+        <!-- Modal Xem Báo Cáo -->
+        <div id="report-modal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm">
+            <div class="bg-white rounded-2xl shadow-xl w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col">
+                <div class="bg-medical text-white px-5 py-4 flex justify-between items-center">
+                    <h3 class="font-bold text-lg" id="modal-title">Chi tiết báo cáo</h3>
+                    <button onclick="closeReportModal()" class="text-white hover:text-gray-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="p-5 overflow-y-auto" id="modal-content">
+                    <!-- Nội dung báo cáo -->
+                </div>
+                <div class="bg-gray-50 px-5 py-3 border-t flex justify-end">
+                    <button onclick="closeReportModal()" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-lg transition">Đóng</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Đổi Mật Khẩu -->
+        <div id="password-modal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm">
+            <div class="bg-white rounded-2xl shadow-xl w-full max-w-sm overflow-hidden flex flex-col">
+                <div class="bg-indigo-600 text-white px-5 py-4 flex justify-between items-center">
+                    <h3 class="font-bold text-lg">Đổi mật khẩu</h3>
+                    <button onclick="closePasswordModal()" class="text-white hover:text-indigo-200 transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>
+                </div>
+                <form id="password-form" class="p-5">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Mật khẩu cũ</label>
+                        <input type="password" id="old-password" class="shadow-sm border border-gray-300 rounded-lg w-full py-2.5 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white" required minlength="4">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Mật khẩu mới</label>
+                        <input type="password" id="new-password" class="shadow-sm border border-gray-300 rounded-lg w-full py-2.5 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white" required minlength="4">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Xác nhận mật khẩu mới</label>
+                        <input type="password" id="confirm-password" class="shadow-sm border border-gray-300 rounded-lg w-full py-2.5 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white" required minlength="4">
+                    </div>
+                    <div id="password-message" class="text-sm font-bold mb-4 hidden text-center p-2 rounded-lg border"></div>
+                    <button type="submit" id="password-submit-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 px-4 rounded-lg transition shadow-md flex items-center justify-center">
+                        <span id="password-submit-text">Lưu mật khẩu mới</span>
+                        <svg id="password-submit-spinner" class="animate-spin ml-2 h-4 w-4 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                    </button>
+                </form>
+            </div>
+        </div>
+
         <!-- Footer -->
         <div class="text-center py-4 text-xs text-gray-500 bg-gray-50 border-t border-gray-100 rounded-b-2xl">
             &copy; <span id="current-year"></span> Hệ thống báo cáo nội bộ Điểm Y Tế Tân Thuận Đông
@@ -266,6 +467,7 @@
     <script>
         // 1. DỮ LIỆU NHÂN VIÊN & NHIỆM VỤ
         const employees = [
+            { id: 'admin', name: 'BS Tâm (Quản lý)', isAdmin: true, tasks: 'Quản lý, điều hành chung' },
             { id: 'nv1', name: 'BS Lê Văn Đạm', tasks: 'Khám chữa bệnh, Bệnh không lây nhiễm (HA, ĐTĐ, Bướu cổ), Truyền thông GDSK, Tiêm ngừa.' },
             { id: 'nv2', name: 'YS Trần Thái Vinh', tasks: 'Phòng chống dịch bệnh (SXH, TCM), Lao, Giám sát sự kiện, Thủ quỹ, Tiêm chủng.' },
             { id: 'nv3', name: 'YS Cao Thị Bích Trâm', tasks: 'Vệ sinh môi trường, AT vệ sinh lao động - PCCC, An toàn thực phẩm, Trực tua.' },
@@ -282,6 +484,8 @@
         // 2. DOM Elements
         const loginSection = document.getElementById('login-section');
         const reportSection = document.getElementById('report-section');
+        const adminSection = document.getElementById('admin-section');
+        const reportModal = document.getElementById('report-modal');
         const loginForm = document.getElementById('login-form');
         const reportForm = document.getElementById('report-form');
         const employeeSelect = document.getElementById('employee-select');
@@ -339,8 +543,68 @@
             }
         }
 
+        // Lấy số tuần trong năm (ISO Week)
+        function getISOWeekNumber(date) {
+            const d = new Date(date.getTime());
+            d.setHours(0, 0, 0, 0);
+            d.setDate(d.getDate() + 3 - (d.getDay() + 6) % 7);
+            const week1 = new Date(d.getFullYear(), 0, 4);
+            return 1 + Math.round(((d.getTime() - week1.getTime()) / 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);
+        }
+
+        // Tạo tự động danh sách các Tuần và Tháng hiển thị
+        function populateDropdown(selectId) {
+            const select = document.getElementById(selectId);
+            if (!select) return;
+            select.innerHTML = ''; // Xóa hết option cũ
+            
+            const now = new Date();
+            
+            // Group Tuần (Tối đa 26 tuần trước = nửa năm)
+            const optgroupTuan = document.createElement('optgroup');
+            optgroupTuan.label = 'Báo cáo Tuần';
+            
+            for (let i = 0; i <= 26; i++) {
+                const d = new Date(now);
+                const day = d.getDay();
+                const diff = d.getDate() - day + (day === 0 ? -6 : 1) - (i * 7);
+                d.setDate(diff);
+                const weekNum = getISOWeekNumber(d);
+                
+                const option = document.createElement('option');
+                option.value = `Tuan_${i}`;
+                option.textContent = i === 0 ? `Tuần ${weekNum} (Hiện tại)` : `Tuần ${weekNum} (${i} tuần trước)`;
+                optgroupTuan.appendChild(option);
+            }
+            
+            // Group Tháng (Tối đa 11 tháng trước = 1 năm)
+            const optgroupThang = document.createElement('optgroup');
+            optgroupThang.label = 'Báo cáo Tháng';
+            
+            for (let i = 0; i <= 11; i++) {
+                const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+                const monthNum = d.getMonth() + 1;
+                const yearNum = d.getFullYear();
+                
+                const option = document.createElement('option');
+                option.value = `Thang_${i}`;
+                option.textContent = i === 0 ? `Tháng ${monthNum}/${yearNum} (Hiện tại)` : `Tháng ${monthNum}/${yearNum} (${i} tháng trước)`;
+                optgroupThang.appendChild(option);
+            }
+            
+            select.appendChild(optgroupTuan);
+            select.appendChild(optgroupThang);
+        }
+
         // 3. Khởi tạo ứng dụng
         function init() {
+            // Khởi tạo các tùy chọn tuần/tháng trên admin dashboard và employee dashboard
+            populateDropdown('admin-report-type');
+            populateDropdown('employee-report-type');
+
+            // Lắng nghe sự kiện thay đổi dropdown cho employee
+            document.getElementById('employee-report-type')?.addEventListener('change', loadEmployeeData);
+
             // Tải dữ liệu hệ thống (Thông báo, Lời nhắn)
             fetchSystemData();
 
@@ -362,7 +626,8 @@
             const day = String(now.getDate()).padStart(2, '0');
             document.getElementById('report-date').value = `${year}-${month}-${day}`;
 
-            // Lắng nghe sự kiện thay đổi loại báo cáo
+            // Lắng nghe sự kiện thay đổi loại báo cáo và ngày báo cáo
+            document.getElementById('report-date').addEventListener('change', validateDeadline);
             reportTypeRadios.forEach(radio => {
                 radio.addEventListener('change', (e) => {
                     if (e.target.value === 'Tuần') {
@@ -370,8 +635,12 @@
                     } else {
                         planLabel.textContent = 'Phương hướng tháng tới';
                     }
+                    validateDeadline();
                 });
             });
+            
+            // Validate form ngay lúc đầu
+            validateDeadline();
         }
 
         // 4. Xử lý Đăng nhập
@@ -380,15 +649,44 @@
             const selectedId = employeeSelect.value;
             const password = passwordInput.value;
 
-            if (password === DEFAULT_PASSWORD && selectedId) {
-                currentUser = employees.find(emp => emp.id === selectedId);
-                showReportSection();
-            } else {
-                loginError.classList.remove('hidden');
-                // Lắc nhẹ form để báo lỗi
-                passwordInput.classList.add('border-red-500');
-                setTimeout(() => passwordInput.classList.remove('border-red-500'), 2000);
+            const selectedUser = employees.find(emp => emp.id === selectedId);
+
+            if (selectedUser) {
+                if (selectedUser.isAdmin) {
+                    let currentAdminPassword = '0939942781';
+                    if (systemData && systemData.baoCao) {
+                        const pwdReports = systemData.baoCao.filter(r => r.nhanVien === selectedUser.name && r.loai === 'Đổi Mật Khẩu');
+                        if (pwdReports.length > 0) {
+                            currentAdminPassword = pwdReports[pwdReports.length - 1].noiDung;
+                        }
+                    }
+                    if (password === currentAdminPassword) {
+                        currentUser = selectedUser;
+                        showAdminSection();
+                        return;
+                    }
+                } else {
+                    let currentPassword = DEFAULT_PASSWORD;
+                    if (systemData && systemData.baoCao) {
+                        const pwdReports = systemData.baoCao.filter(r => r.nhanVien === selectedUser.name && r.loai === 'Đổi Mật Khẩu');
+                        if (pwdReports.length > 0) {
+                            currentPassword = pwdReports[pwdReports.length - 1].noiDung;
+                        }
+                    }
+
+                    if (password === currentPassword) {
+                        currentUser = selectedUser;
+                        showReportSection();
+                        return;
+                    }
+                }
             }
+            
+            // Login failed
+            loginError.classList.remove('hidden');
+            // Lắc nhẹ form để báo lỗi
+            passwordInput.classList.add('border-red-500');
+            setTimeout(() => passwordInput.classList.remove('border-red-500'), 2000);
         });
 
         // 5. Xử lý Đăng xuất
@@ -426,6 +724,11 @@
             }
             
             submitMessage.classList.add('hidden');
+            
+            // Load dữ liệu bảng điều khiển nhân viên
+            loadEmployeeData();
+            validateDeadline();
+            
             window.scrollTo(0, 0);
         }
 
@@ -467,31 +770,33 @@
             const planText = formatText(document.getElementById('task-plan').value);
             const issuesText = formatText(document.getElementById('task-issues').value);
 
-            // Tính toán Trễ hạn / Đúng hạn và Thông tin Tuần/Tháng
+            // Tính toán Trễ hạn / Đúng hạn và Thông tin Tuần/Tháng dựa trên ngày báo cáo được chọn
             let isLate = false;
             let periodInfo = '';
             let titlePrefix = '';
+            let statusText = '';
+            let statusIcon = '';
+
+            // Lấy ngày báo cáo do người dùng chọn (chứ không phải ngày nộp hiện tại)
+            const reportDateInput = document.getElementById('report-date').value;
+            const [yStr, mStr, dStr] = reportDateInput.split('-');
+            const reportDateObj = new Date(yStr, parseInt(mStr) - 1, dStr);
+            let deadline;
 
             if (reportType === 'Tuần') {
-                // Hạn: Chủ nhật (day = 0), 17h (17:00)
-                const dayOfWeek = now.getDay();
-                const hours = now.getHours();
-                const minutes = now.getMinutes();
-                
-                // Nếu là Chủ nhật sau 17:00
-                if (dayOfWeek === 0 && (hours > 17 || (hours === 17 && minutes > 0))) {
-                    isLate = true;
-                }
-
-                // Tính thứ 2 và chủ nhật của tuần hiện tại
-                const d = new Date(now.getTime());
+                // Tính thứ 2 và chủ nhật của tuần được chọn
+                const d = new Date(reportDateObj.getTime());
                 const day = d.getDay();
                 const diffToMonday = d.getDate() - day + (day === 0 ? -6 : 1);
                 const monday = new Date(new Date(d.getTime()).setDate(diffToMonday));
                 const sunday = new Date(new Date(d.getTime()).setDate(diffToMonday + 6));
                 
+                // Hạn chót nộp báo cáo tuần: Chủ nhật của tuần đó, 17:00
+                deadline = new Date(sunday.getTime());
+                deadline.setHours(17, 0, 0, 0);
+                
                 // Lấy số tuần trong năm (ISO Week)
-                const d2 = new Date(now.getTime());
+                const d2 = new Date(reportDateObj.getTime());
                 d2.setHours(0, 0, 0, 0);
                 d2.setDate(d2.getDate() + 3 - (d2.getDay() + 6) % 7);
                 const week1 = new Date(d2.getFullYear(), 0, 4);
@@ -502,30 +807,45 @@
                 periodInfo = `Tuần ${weekNum}/${d2.getFullYear()} (Từ ${formatDate(monday)} đến ${formatDate(sunday)})`;
                 titlePrefix = `BÁO CÁO GIAO BAN TUẦN ${weekNum}`;
             } else {
-                // Báo cáo tháng: Hạn: Ngày 25, 17h
-                const dateOfMonth = now.getDate();
-                const hours = now.getHours();
-                const minutes = now.getMinutes();
+                // Báo cáo tháng
+                const month = String(reportDateObj.getMonth() + 1).padStart(2, '0');
+                const year = reportDateObj.getFullYear();
                 
-                if (dateOfMonth > 25 || (dateOfMonth === 25 && (hours > 17 || (hours === 17 && minutes > 0)))) {
-                    isLate = true;
-                }
-
-                const month = String(now.getMonth() + 1).padStart(2, '0');
-                const year = now.getFullYear();
+                // Hạn chót nộp báo cáo tháng: Ngày 25 của tháng đó, 17:00
+                deadline = new Date(year, reportDateObj.getMonth(), 25, 17, 0, 0, 0);
+                
                 periodInfo = `Tháng ${month}/${year}`;
                 titlePrefix = `BÁO CÁO THÁNG ${month}`;
             }
 
-            const statusText = isLate ? '[TRỄ HẠN]' : '[ĐÚNG HẠN]';
-            const statusIcon = isLate ? '🔴' : '🟢';
+            // So sánh thời gian nộp thực tế (now) với hạn chót (deadline)
+            const diffMs = now.getTime() - deadline.getTime();
+            
+            if (diffMs <= 0) {
+                isLate = false;
+                statusText = '[ĐÚNG HẠN]';
+                statusIcon = '🟢';
+            } else {
+                isLate = true;
+                const diffDays = diffMs / (1000 * 60 * 60 * 24);
+                
+                if (diffDays <= 2) {
+                    // Nằm trong thời gian được nộp bổ sung (trong vòng 2 ngày)
+                    statusText = '[TRỄ HẠN - BỔ SUNG]';
+                    statusIcon = '🟡';
+                } else {
+                    // Quá 2 ngày vẫn cho nộp, nhưng đánh dấu là quá 2 ngày
+                    statusText = '[TRỄ HẠN - QUÁ 2 NGÀY]';
+                    statusIcon = '🔴';
+                }
+            }
 
             // Tạo nội dung report có cấu trúc rõ ràng (RAW STRING)
             const routingLabel = reportType === 'Tuần' ? '[LOAI:TUAN]' : '[LOAI:THANG]';
             const divider = "=====================================================================";
             const subDivider = "---------------------------------------------------------------------";
             
-            const payload = `${routingLabel}
+            const rawText = `${routingLabel}
 ${divider}
 [${titlePrefix}] - ${statusIcon} ${statusText}
 ${divider}
@@ -545,16 +865,25 @@ ${issuesText}
 ${divider}
 `;
 
+            const payloadObj = {
+                thoiGian: timeString,
+                loai: reportType,
+                nhanVien: currentUser.name,
+                noiDung: contentText,
+                phuongHuong: planText,
+                khoKhan: issuesText,
+                rawText: rawText
+            };
+
             try {
-                // Gửi POST request (RAW TEXT)
-                // Dùng text/plain để tránh lỗi CORS preflight trên Google Apps Script
+                // Gửi POST request (JSON dưới dạng text/plain để tránh CORS)
                 const response = await fetch(SCRIPT_URL, {
                     method: 'POST',
                     mode: 'no-cors',
                     headers: {
                         'Content-Type': 'text/plain;charset=utf-8',
                     },
-                    body: payload // Gửi trực tiếp chuỗi văn bản, KHÔNG dùng JSON.stringify
+                    body: JSON.stringify(payloadObj)
                 });
 
                 // Google Apps Script thường trả về opaque response khi dùng no-cors hoặc redirect
@@ -573,6 +902,13 @@ ${divider}
                 reportForm.reset();
                 document.getElementById('report-date').value = currentDate;
                 planLabel.textContent = 'Phương hướng tuần tới';
+                
+                // Tự động cập nhật Dashboard sang trạng thái Đã Nộp mà không cần F5
+                if (systemData && systemData.baoCao) {
+                    systemData.baoCao.push(payloadObj);
+                    allReports = systemData.baoCao;
+                    loadEmployeeData(); // Load lại bảng điều khiển để mất chữ Chưa Nộp
+                }
 
             } catch (error) {
                 console.error('Lỗi khi gửi báo cáo:', error);
@@ -587,16 +923,562 @@ ${divider}
             }
         });
 
+        // --- Admin Dashboard Logic ---
+        function showAdminSection() {
+            loginSection.classList.add('hidden');
+            adminSection.classList.remove('hidden');
+            document.getElementById('admin-user-name').textContent = currentUser.name;
+            loadAdminData();
+            window.scrollTo(0, 0);
+        }
+
+        document.getElementById('admin-logout-btn')?.addEventListener('click', () => {
+            currentUser = null;
+            loginForm.reset();
+            adminSection.classList.add('hidden');
+            loginSection.classList.remove('hidden');
+            window.scrollTo(0, 0);
+        });
+
+        document.getElementById('admin-report-type')?.addEventListener('change', loadAdminData);
+
+        // Load dữ liệu bảng điều khiển cho Nhân Viên
+        function loadEmployeeData() {
+            if (!currentUser || currentUser.isAdmin) return;
+            const statusContainer = document.getElementById('employee-report-status');
+            if (!statusContainer) return;
+            
+            const selectedPeriod = document.getElementById('employee-report-type').value || 'Tuan_0';
+            const [periodType, offsetStr] = selectedPeriod.split('_');
+            const offset = parseInt(offsetStr, 10) || 0;
+            
+            const reportTypeStr = periodType === 'Tuan' ? 'Tuần' : 'Tháng';
+            const allReports = systemData.baoCao || [];
+            
+            const now = new Date();
+            let startOfPeriod, endOfPeriod, deadline;
+
+            if (periodType === 'Tuan') {
+                const day = now.getDay();
+                const diff = now.getDate() - day + (day === 0 ? -6 : 1) - (offset * 7);
+                startOfPeriod = new Date(now);
+                startOfPeriod.setDate(diff);
+                startOfPeriod.setHours(0, 0, 0, 0);
+
+                endOfPeriod = new Date(startOfPeriod);
+                endOfPeriod.setDate(startOfPeriod.getDate() + 6);
+                endOfPeriod.setHours(23, 59, 59, 999);
+                
+                deadline = new Date(startOfPeriod);
+                deadline.setDate(startOfPeriod.getDate() + 6);
+                deadline.setHours(17, 0, 0, 0);
+            } else {
+                startOfPeriod = new Date(now.getFullYear(), now.getMonth() - offset, 1, 0, 0, 0, 0);
+                endOfPeriod = new Date(now.getFullYear(), now.getMonth() - offset + 1, 0, 23, 59, 59, 999);
+                
+                deadline = new Date(startOfPeriod.getFullYear(), startOfPeriod.getMonth(), 25, 17, 0, 0, 0);
+            }
+
+            const empReports = allReports.filter(r => {
+                if (!r || r.nhanVien !== currentUser.name) return false;
+                if (!r.loai || !r.loai.toLowerCase().includes(reportTypeStr.toLowerCase())) return false;
+                const reportDate = parseReportDate(r.thoiGian);
+                if (!reportDate) return false;
+                return reportDate >= startOfPeriod && reportDate <= endOfPeriod;
+            });
+
+            if (empReports.length > 0) {
+                const latestReport = empReports[empReports.length - 1];
+                const reportDate = parseReportDate(latestReport.thoiGian);
+                
+                let isLate = false;
+                if (latestReport.rawText && latestReport.rawText.includes('[TRỄ HẠN]')) {
+                    isLate = true;
+                } else if (reportDate > deadline) {
+                    isLate = true;
+                }
+
+                const reportDataStr = encodeURIComponent(JSON.stringify(latestReport));
+                
+                if (isLate) {
+                    statusContainer.className = "rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between border bg-amber-50 border-amber-200 gap-3";
+                    statusContainer.innerHTML = `
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center text-amber-600 border border-amber-200 flex-shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold text-amber-800">Đã nộp báo cáo ${reportTypeStr.toLowerCase()} (Trễ hạn)</p>
+                                <p class="text-xs text-amber-700 mt-0.5">Thời gian nộp: <span class="font-semibold">${formatDateTimeVN(latestReport.thoiGian)}</span></p>
+                            </div>
+                        </div>
+                        <button onclick="viewRealReport('${currentUser.name}', '${reportDataStr}')" class="w-full sm:w-auto bg-white hover:bg-amber-100 text-amber-700 border border-amber-300 font-bold px-4 py-2 rounded-xl text-sm transition shadow-sm active:scale-95 duration-200">
+                            Xem lại báo cáo
+                        </button>
+                    `;
+                } else {
+                    statusContainer.className = "rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between border bg-emerald-50 border-emerald-200 gap-3";
+                    statusContainer.innerHTML = `
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 border border-emerald-200 flex-shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold text-emerald-800">Đã nộp báo cáo ${reportTypeStr.toLowerCase()} (Đúng hạn)</p>
+                                <p class="text-xs text-emerald-700 mt-0.5">Thời gian nộp: <span class="font-semibold">${formatDateTimeVN(latestReport.thoiGian)}</span></p>
+                            </div>
+                        </div>
+                        <button onclick="viewRealReport('${currentUser.name}', '${reportDataStr}')" class="w-full sm:w-auto bg-white hover:bg-emerald-100 text-emerald-700 border border-emerald-300 font-bold px-4 py-2 rounded-xl text-sm transition shadow-sm active:scale-95 duration-200">
+                            Xem lại báo cáo
+                        </button>
+                    `;
+                }
+            } else {
+                const diffMs = now.getTime() - deadline.getTime();
+                const diffDays = diffMs / (1000 * 60 * 60 * 24);
+                const isTooLate = diffDays > 2;
+
+                let warningTime = new Date(startOfPeriod);
+                if (periodType === 'Tuan') {
+                    warningTime.setDate(startOfPeriod.getDate() + 4); // Thứ 6
+                    warningTime.setHours(17, 0, 0, 0);
+                } else {
+                    warningTime.setDate(23); // Ngày 23
+                    warningTime.setHours(17, 0, 0, 0);
+                }
+
+                let notSubmittingTitle = `Chưa đến hạn nộp báo cáo ${reportTypeStr.toLowerCase()}`;
+                if (now >= warningTime) {
+                    notSubmittingTitle = `Đến hạn nộp báo cáo ${reportTypeStr.toLowerCase()}`;
+                }
+
+                if (isTooLate) {
+                    statusContainer.className = "rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between border bg-rose-50 border-rose-200 gap-3";
+                    statusContainer.innerHTML = `
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-rose-100 flex items-center justify-center text-rose-600 border border-rose-200 flex-shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M13.477 14.89A6 6 0 015.11 6.524l8.367 8.368zm1.414-1.414L6.524 5.11a6 6 0 018.367 8.367zM18 10a8 8 0 11-16 0 8 8 0 0116 0z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold text-rose-800">KHÔNG NỘP BÁO CÁO</p>
+                                <p class="text-xs text-rose-700 mt-0.5">Tiếc quá, bạn đã bỏ lỡ mất nhiệm vụ này rồi.</p>
+                            </div>
+                        </div>
+                        <button disabled class="w-full sm:w-auto bg-white text-rose-700 font-bold px-4 py-2 rounded-xl text-sm cursor-not-allowed border border-rose-300 transition shadow-sm whitespace-nowrap">
+                            Đừng nản lòng, hãy cố gắng hoàn thành ở kỳ tới!
+                        </button>
+                    `;
+                } else {
+                    statusContainer.className = "rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between border bg-rose-50 border-rose-200 gap-3";
+                    statusContainer.innerHTML = `
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-rose-100 flex items-center justify-center text-rose-600 border border-rose-200 flex-shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold text-rose-800">${notSubmittingTitle}</p>
+                                <p class="text-xs text-rose-700 mt-0.5">Vui lòng hoàn thành và nộp đúng hạn.</p>
+                            </div>
+                        </div>
+                        <button onclick="document.getElementById('report-form').scrollIntoView({behavior: 'smooth'})" class="w-full sm:w-auto bg-rose-600 hover:bg-rose-700 text-white font-bold px-4 py-2 rounded-xl text-sm transition shadow-md active:scale-95 duration-200">
+                            Nộp ngay
+                        </button>
+                    `;
+                }
+            }
+        }
+
+        // Hàm chuyển đổi chuỗi ngày DD/MM/YYYY HH:mm hoặc Javascript Date string thành đối tượng Date
+        function parseReportDate(dateStr) {
+            if (!dateStr) return null;
+            const trimmed = dateStr.trim();
+            
+            // Kiểm tra xem có phải định dạng cũ DD/MM/YYYY HH:mm
+            if (trimmed.indexOf('/') !== -1 && !/[a-zA-Z]/.test(trimmed)) {
+                const parts = trimmed.split(' ');
+                if (parts.length === 0) return null;
+                const dateParts = parts[0].split('/');
+                if (dateParts.length < 3) return null;
+                
+                const day = parseInt(dateParts[0], 10);
+                const month = parseInt(dateParts[1], 10) - 1; // Tháng trong JS bắt đầu từ 0
+                const year = parseInt(dateParts[2], 10);
+                
+                let hours = 0;
+                let minutes = 0;
+                if (parts.length > 1) {
+                    const timeParts = parts[1].split(':');
+                    if (timeParts.length >= 2) {
+                        hours = parseInt(timeParts[0], 10);
+                        minutes = parseInt(timeParts[1], 10);
+                    }
+                }
+                return new Date(year, month, day, hours, minutes);
+            }
+            
+            // Ngược lại, parse theo chuẩn Javascript Date
+            const parsed = new Date(trimmed);
+            return isNaN(parsed.getTime()) ? null : parsed;
+        }
+
+        // Hàm format ngày giờ sang tiếng Việt
+        function formatDateTimeVN(dateStr) {
+            const d = parseReportDate(dateStr);
+            if (!d) return dateStr;
+            const days = ['Chủ nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'];
+            const dayName = days[d.getDay()];
+            const day = String(d.getDate()).padStart(2, '0');
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const year = d.getFullYear();
+            const hours = String(d.getHours()).padStart(2, '0');
+            const minutes = String(d.getMinutes()).padStart(2, '0');
+            const seconds = String(d.getSeconds()).padStart(2, '0');
+            return `${dayName}, ngày ${day}/${month}/${year} lúc ${hours}:${minutes}:${seconds}`;
+        }
+
+        // Nạp dữ liệu vào Dashboard
+        function loadAdminData() {
+            try {
+                const listEl = document.getElementById('admin-employee-list');
+                if (!listEl) return;
+                listEl.innerHTML = '';
+                
+                const normalEmployees = employees.filter(e => !e.isAdmin);
+                
+                let submittedCount = 0;
+                let missingCount = 0;
+
+                const selectedPeriod = document.getElementById('admin-report-type').value || 'Tuan_0'; // 'Tuan_0', 'Thang_1', v.v.
+                const [periodType, offsetStr] = selectedPeriod.split('_');
+                const offset = parseInt(offsetStr, 10) || 0;
+                
+                const reportTypeStr = periodType === 'Tuan' ? 'Tuần' : 'Tháng';
+
+                // Dữ liệu báo cáo thật từ Google Sheets (được fetch lúc khởi động app)
+                const allReports = systemData.baoCao || [];
+
+                // Tính toán khoảng thời gian hiện tại để lọc
+                const now = new Date();
+                let startOfPeriod, endOfPeriod;
+
+                if (periodType === 'Tuan') {
+                    // Thứ 2 tuần được chọn (hiện tại hoặc quá khứ)
+                    const day = now.getDay();
+                    const diff = now.getDate() - day + (day === 0 ? -6 : 1) - (offset * 7);
+                    startOfPeriod = new Date(now);
+                    startOfPeriod.setDate(diff);
+                    startOfPeriod.setHours(0, 0, 0, 0);
+
+                    // Chủ nhật tuần được chọn
+                    endOfPeriod = new Date(startOfPeriod);
+                    endOfPeriod.setDate(startOfPeriod.getDate() + 6);
+                    endOfPeriod.setHours(23, 59, 59, 999);
+                } else {
+                    // Ngày đầu tháng được chọn
+                    startOfPeriod = new Date(now.getFullYear(), now.getMonth() - offset, 1, 0, 0, 0, 0);
+                    
+                    // Ngày cuối tháng được chọn
+                    endOfPeriod = new Date(now.getFullYear(), now.getMonth() - offset + 1, 0, 23, 59, 59, 999);
+                }
+
+                normalEmployees.forEach((emp) => {
+                    // Lọc báo cáo của nhân viên này, chứa chữ Tuần hoặc Tháng, và thuộc khoảng thời gian
+                    const empReports = allReports.filter(r => {
+                        if (!r) return false;
+                        if (r.nhanVien !== emp.name) return false;
+                        // Hỗ trợ trường hợp ghi "Tuần 30" bằng cách dùng includes thay vì so sánh bằng tuyệt đối
+                        if (!r.loai || !r.loai.toLowerCase().includes(reportTypeStr.toLowerCase())) return false;
+                        
+                        const reportDate = parseReportDate(r.thoiGian);
+                        if (!reportDate) return false;
+                        return reportDate >= startOfPeriod && reportDate <= endOfPeriod;
+                    });
+                    const isSubmitted = empReports.length > 0;
+                    
+                    if (isSubmitted) submittedCount++;
+                    else missingCount++;
+
+                    // Premium styling cho badge trạng thái
+                    const statusBadge = isSubmitted 
+                        ? `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                             <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Đã nộp
+                           </span>` 
+                        : `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-rose-50 text-rose-700 border border-rose-200">
+                             <span class="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse"></span> Chưa nộp
+                           </span>`;
+                    
+                    let actionBtn = `<span class="text-slate-400 text-xs font-medium bg-slate-50 px-2.5 py-1.5 rounded-lg border border-slate-100 select-none">Chờ nộp...</span>`;
+                    if (isSubmitted) {
+                        // Lấy báo cáo mới nhất của người này
+                        const latestReport = empReports[empReports.length - 1];
+                        const reportDataStr = encodeURIComponent(JSON.stringify(latestReport));
+                        actionBtn = `<button onclick="viewRealReport('${emp.name}', '${reportDataStr}')" class="bg-indigo-50 hover:bg-indigo-600 text-indigo-700 hover:text-white border border-indigo-100 hover:border-indigo-600 text-xs font-bold px-3 py-1.5 rounded-xl transition duration-150 active:scale-95 shadow-sm">Xem BC</button>`;
+                    }
+
+                    // Tính toán tên viết tắt cho avatar tròn
+                    const nameParts = emp.name.split(' ').filter(n => n !== 'BS' && n !== 'YS' && n !== 'HS' && n !== 'ĐD' && n !== 'DS' && n !== 'CN');
+                    const initials = nameParts.length > 0
+                        ? nameParts.slice(-2).map(n => n[0]).join('')
+                        : emp.name.substring(0, 2);
+
+                    const li = document.createElement('li');
+                    li.className = 'px-5 py-4 flex items-center justify-between hover:bg-slate-50/50 transition-colors duration-150';
+                    li.innerHTML = `
+                        <div class="flex items-center space-x-3">
+                            <div class="flex-shrink-0">
+                                <div class="w-9 h-9 rounded-xl ${isSubmitted ? 'bg-emerald-500/10 text-emerald-700' : 'bg-slate-100 text-slate-600'} flex items-center justify-center font-bold text-xs border ${isSubmitted ? 'border-emerald-100' : 'border-slate-200/60'}">
+                                    ${initials}
+                                </div>
+                            </div>
+                            <div>
+                                <p class="text-sm font-semibold text-slate-800">${emp.name}</p>
+                                <div class="mt-1 flex items-center gap-2">
+                                    ${statusBadge}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            ${actionBtn}
+                        </div>
+                    `;
+                    listEl.appendChild(li);
+                });
+
+                document.getElementById('stat-submitted').textContent = submittedCount;
+                document.getElementById('stat-missing').textContent = missingCount;
+            } catch (err) {
+                console.error("Lỗi trong loadAdminData:", err);
+            }
+        }
+
+        // Đổi tên từ mockLoadAdminData trong file HTML sang loadAdminData
+        window.mockLoadAdminData = function() {
+            // Nút "Làm mới" sẽ gọi hàm này. Cần fetch lại dữ liệu mới nhất
+            const btn = document.querySelector('button[onclick="mockLoadAdminData()"]');
+            
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = `<svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Đang tải...`;
+            }
+            
+            fetchSystemData()
+                .then(() => {
+                    loadAdminData();
+                    if (currentUser && !currentUser.isAdmin) {
+                        loadEmployeeData();
+                    }
+                })
+                .catch((err) => {
+                    console.error("Lỗi khi fetchSystemData:", err);
+                })
+                .finally(() => {
+                    if (btn) {
+                        btn.disabled = false;
+                        btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>Làm mới dữ liệu`;
+                    }
+                });
+        };
+
+        function escapeHtml(unsafe) {
+            return (unsafe || '').toString()
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        function viewRealReport(empName, reportJsonData) {
+            const report = JSON.parse(decodeURIComponent(reportJsonData));
+            document.getElementById('modal-title').textContent = `Báo cáo của ${empName} (${formatDateTimeVN(report.thoiGian)})`;
+            document.getElementById('modal-content').innerHTML = `
+                <div class="space-y-4 text-sm md:text-base">
+                    <div>
+                        <h4 class="font-bold text-gray-700 border-b pb-1">1. Nội dung đã làm</h4>
+                        <p class="text-gray-600 mt-2 whitespace-pre-line">${escapeHtml(report.noiDung)}</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-gray-700 border-b pb-1">2. Phương hướng tới</h4>
+                        <p class="text-gray-600 mt-2 whitespace-pre-line">${escapeHtml(report.phuongHuong)}</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-gray-700 border-b pb-1">3. Khó khăn / Kiến nghị</h4>
+                        <p class="text-gray-600 mt-2 whitespace-pre-line">${escapeHtml(report.khoKhan)}</p>
+                    </div>
+                </div>
+            `;
+            reportModal.classList.remove('hidden');
+        }
+
+        function closeReportModal() {
+            reportModal.classList.add('hidden');
+        }
+
         // Hàm hiển thị thông báo
-        function showMessage(htmlContent, textColor, bgColor, borderColor) {
+        function showMessage(htmlContent, textColor, bgColor, borderColor, persist = false) {
             submitMessage.innerHTML = htmlContent;
             submitMessage.className = `mb-5 text-center text-sm font-bold p-3 rounded-lg border ${textColor} ${bgColor} ${borderColor}`;
             submitMessage.classList.remove('hidden');
             
-            // Tự động ẩn thông báo sau 6 giây
-            setTimeout(() => {
+            if (!persist) {
+                // Tự động ẩn thông báo sau 6 giây
+                setTimeout(() => {
+                    submitMessage.classList.add('hidden');
+                }, 6000);
+            }
+        }
+
+        // Validate hạn chót trực tiếp trên form
+        function validateDeadline() {
+            if (!currentUser || currentUser.isAdmin) return;
+            const reportDateInput = document.getElementById('report-date').value;
+            const reportTypeRadio = document.querySelector('input[name="report-type"]:checked');
+            if (!reportDateInput || !reportTypeRadio) return;
+            const reportType = reportTypeRadio.value;
+
+            const [yStr, mStr, dStr] = reportDateInput.split('-');
+            const reportDateObj = new Date(yStr, parseInt(mStr) - 1, dStr);
+            let deadline;
+            const now = new Date();
+
+            if (reportType === 'Tuần') {
+                const d = new Date(reportDateObj.getTime());
+                const day = d.getDay();
+                const diffToMonday = d.getDate() - day + (day === 0 ? -6 : 1);
+                const sunday = new Date(new Date(d.getTime()).setDate(diffToMonday + 6));
+                deadline = new Date(sunday.getTime());
+                deadline.setHours(17, 0, 0, 0);
+            } else {
+                const year = reportDateObj.getFullYear();
+                deadline = new Date(year, reportDateObj.getMonth(), 25, 17, 0, 0, 0);
+            }
+
+            const diffMs = now.getTime() - deadline.getTime();
+            const diffDays = diffMs / (1000 * 60 * 60 * 24);
+            
+            submitBtn.disabled = false;
+            submitBtn.classList.remove('opacity-50', 'cursor-not-allowed', 'bg-gray-400');
+            submitBtn.classList.add('bg-medical', 'hover:bg-medical-dark');
+            if (submitMessage.innerHTML.includes('quá thời hạn') || submitMessage.innerHTML.includes('Kỳ báo cáo này')) {
                 submitMessage.classList.add('hidden');
-            }, 6000);
+            }
+        }
+
+        const passwordModal = document.getElementById('password-modal');
+        function openPasswordModal() {
+            passwordModal.classList.remove('hidden');
+        }
+        function closePasswordModal() {
+            passwordModal.classList.add('hidden');
+            document.getElementById('password-message').classList.add('hidden');
+            document.getElementById('password-form').reset();
+        }
+
+        document.getElementById('password-form')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const oldPassword = document.getElementById('old-password').value;
+            const newPassword = document.getElementById('new-password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            const btn = document.getElementById('password-submit-btn');
+            const text = document.getElementById('password-submit-text');
+            const spinner = document.getElementById('password-submit-spinner');
+            const msg = document.getElementById('password-message');
+
+            // Kiểm tra mật khẩu cũ
+            let currentPassword = currentUser.isAdmin ? '0939942781' : DEFAULT_PASSWORD;
+            if (systemData && systemData.baoCao) {
+                const pwdReports = systemData.baoCao.filter(r => r.nhanVien === currentUser.name && r.loai === 'Đổi Mật Khẩu');
+                if (pwdReports.length > 0) {
+                    currentPassword = pwdReports[pwdReports.length - 1].noiDung;
+                }
+            }
+
+            if (oldPassword !== currentPassword) {
+                msg.textContent = 'Mật khẩu cũ không chính xác!';
+                msg.className = 'text-sm font-bold mb-4 text-center p-2 rounded-lg border text-red-800 bg-red-100 border-red-400';
+                msg.classList.remove('hidden');
+                return;
+            }
+
+            if (newPassword !== confirmPassword) {
+                msg.textContent = 'Mật khẩu xác nhận không khớp!';
+                msg.className = 'text-sm font-bold mb-4 text-center p-2 rounded-lg border text-red-800 bg-red-100 border-red-400';
+                msg.classList.remove('hidden');
+                return;
+            }
+
+            btn.disabled = true;
+            text.textContent = 'Đang lưu...';
+            spinner.classList.remove('hidden');
+            msg.classList.add('hidden');
+
+            const now = new Date();
+            const timeString = `${String(now.getDate()).padStart(2, '0')}/${String(now.getMonth() + 1).padStart(2, '0')}/${now.getFullYear()} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+            
+            const payloadObj = {
+                thoiGian: timeString,
+                loai: 'Đổi Mật Khẩu',
+                nhanVien: currentUser.name,
+                noiDung: newPassword,
+                phuongHuong: '',
+                khoKhan: '',
+                rawText: `[DOIMATKHAU] Nhân viên ${currentUser.name} đổi mật khẩu thành: ${newPassword}`
+            };
+
+            try {
+                await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify(payloadObj)
+                });
+                
+                // Update local current systemData so it takes effect immediately without reload
+                if (!systemData.baoCao) systemData.baoCao = [];
+                systemData.baoCao.push(payloadObj);
+
+                msg.textContent = 'Đổi mật khẩu thành công!';
+                msg.className = 'text-sm font-bold mb-4 text-center p-2 rounded-lg border text-green-800 bg-green-100 border-green-400';
+                msg.classList.remove('hidden');
+                
+                setTimeout(() => {
+                    closePasswordModal();
+                }, 2000);
+            } catch (err) {
+                msg.textContent = 'Lỗi kết nối. Vui lòng thử lại sau.';
+                msg.className = 'text-sm font-bold mb-4 text-center p-2 rounded-lg border text-red-800 bg-red-100 border-red-400';
+                msg.classList.remove('hidden');
+            } finally {
+                btn.disabled = false;
+                text.textContent = 'Lưu mật khẩu mới';
+                spinner.classList.add('hidden');
+            }
+        });
+
+        function showPasswords() {
+            let html = '<ul class="divide-y divide-gray-100">';
+            employees.filter(e => !e.isAdmin).forEach(emp => {
+                let pwd = DEFAULT_PASSWORD;
+                if (systemData && systemData.baoCao) {
+                    const pwdReports = systemData.baoCao.filter(r => r.nhanVien === emp.name && r.loai === 'Đổi Mật Khẩu');
+                    if (pwdReports.length > 0) {
+                        pwd = pwdReports[pwdReports.length - 1].noiDung;
+                    }
+                }
+                html += `<li class="py-3 flex justify-between items-center text-sm"><span class="font-bold text-gray-700">${emp.name}</span><span class="font-mono bg-indigo-50 text-indigo-700 px-3 py-1 rounded-lg border border-indigo-100">${pwd}</span></li>`;
+            });
+            html += '</ul>';
+            document.getElementById('modal-title').textContent = 'Danh sách mật khẩu nhân viên';
+            document.getElementById('modal-content').innerHTML = html;
+            reportModal.classList.remove('hidden');
         }
 
         // Chạy khởi tạo khi load trang
