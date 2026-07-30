@@ -176,74 +176,93 @@
                 </div>
             </div>
 
-            <!-- Employee Dashboard (Tiến độ của tôi) -->
-            <div id="employee-dashboard" class="bg-white border border-slate-200 rounded-2xl p-5 mb-6 shadow-sm">
-                <h3 class="font-bold text-slate-800 text-base md:text-lg mb-4 flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-medical" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012-2h-2a2 2 0 01-2-2z" />
+            <!-- Tabs Navigation -->
+            <div class="flex space-x-2 mb-6 border-b border-gray-200">
+                <button type="button" id="tab-dashboard" onclick="switchTab('dashboard')" class="py-3 px-4 border-b-2 border-medical text-medical font-bold flex items-center transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
                     </svg>
-                    Tiến độ nộp báo cáo của bạn
-                </h3>
-                
-                <div class="flex flex-col sm:flex-row sm:items-center gap-3 mb-4">
-                    <span class="text-sm font-semibold text-slate-600 whitespace-nowrap">Chọn kỳ báo cáo:</span>
-                    <div class="relative w-full sm:w-56">
-                        <select id="employee-report-type" class="w-full appearance-none border border-slate-200 rounded-xl py-2 px-4 pr-10 focus:outline-none focus:ring-2 focus:ring-medical focus:border-transparent bg-slate-50 text-slate-700 font-semibold shadow-sm transition">
-                            <!-- Các option sẽ được JS tạo tự động -->
-                        </select>
-                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-500">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    Dashboard Cá Nhân
+                </button>
+                <button type="button" id="tab-form" onclick="switchTab('form')" class="py-3 px-4 border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium flex items-center transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                    Nộp Báo Cáo
+                </button>
+            </div>
+
+            <div id="dashboard-content">
+                <!-- Employee Dashboard (Tiến độ của tôi) -->
+                <div id="employee-dashboard" class="bg-white border border-slate-200 rounded-2xl p-5 mb-6 shadow-sm">
+                    <h3 class="font-bold text-slate-800 text-base md:text-lg mb-4 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-medical" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012-2h-2a2 2 0 01-2-2z" />
+                        </svg>
+                        Tiến độ nộp báo cáo của bạn
+                    </h3>
+                    
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-3 mb-4">
+                        <span class="text-sm font-semibold text-slate-600 whitespace-nowrap">Chọn kỳ báo cáo:</span>
+                        <div class="relative w-full sm:w-56">
+                            <select id="employee-report-type" class="w-full appearance-none border border-slate-200 rounded-xl py-2 px-4 pr-10 focus:outline-none focus:ring-2 focus:ring-medical focus:border-transparent bg-slate-50 text-slate-700 font-semibold shadow-sm transition">
+                                <!-- Các option sẽ được JS tạo tự động -->
+                            </select>
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-500">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </div>
+                        </div>
+                        <button type="button" onclick="loadEmployeeData()" class="ml-auto bg-slate-100 hover:bg-slate-200 text-slate-700 py-2 px-3 rounded-xl text-sm font-semibold transition flex items-center active:scale-95 duration-200 shadow-sm border border-slate-200">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                             </svg>
+                            Làm mới
+                        </button>
+                    </div>
+
+                    <div id="employee-report-status" class="rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between border bg-slate-50 border-slate-100 gap-3">
+                        <!-- Trạng thái sẽ được JS render vào đây -->
+                        <div class="flex items-center text-slate-500">
+                            <svg class="animate-spin mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                            <span class="text-sm font-medium">Đang tải dữ liệu...</span>
                         </div>
                     </div>
-                    <button type="button" onclick="loadEmployeeData()" class="ml-auto bg-slate-100 hover:bg-slate-200 text-slate-700 py-2 px-3 rounded-xl text-sm font-semibold transition flex items-center active:scale-95 duration-200 shadow-sm border border-slate-200">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+
+                    <!-- Hướng dẫn nộp báo cáo (Được mang vào trong Dashboard) -->
+                    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-5 rounded-r-lg shadow-sm">
+                        <div class="flex items-start">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-500 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <div>
+                                <p class="text-sm text-yellow-800 font-medium">
+                                    <span class="font-bold">LƯU Ý THỜI HẠN:</span><br>
+                                    - Báo cáo giao ban <b>TUẦN</b>: Nộp trước <b>17 giờ chiều CHỦ NHẬT</b>.<br>
+                                    - Báo cáo <b>THÁNG</b>: Nộp trước <b>17 giờ chiều NGÀY 25</b> hàng tháng.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Công văn / Tài liệu -->
+                <div id="document-list" class="bg-white border border-gray-200 rounded-lg p-4 mb-6 hidden shadow-sm">
+                    <h3 class="text-sm font-bold text-gray-800 mb-2 flex items-center border-b pb-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1 text-medical" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                         </svg>
-                        Làm mới
-                    </button>
-                </div>
-
-                <div id="employee-report-status" class="rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between border bg-slate-50 border-slate-100 gap-3">
-                    <!-- Trạng thái sẽ được JS render vào đây -->
-                    <div class="flex items-center text-slate-500">
-                        <svg class="animate-spin mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                        <span class="text-sm font-medium">Đang tải dữ liệu...</span>
+                        Công văn & Tài liệu triển khai
+                    </h3>
+                    <div id="document-items" class="space-y-2 mt-2">
+                        <!-- Danh sách link sẽ được chèn vào đây -->
                     </div>
                 </div>
             </div>
 
-            <!-- Công văn / Tài liệu -->
-            <div id="document-list" class="bg-white border border-gray-200 rounded-lg p-4 mb-6 hidden shadow-sm">
-                <h3 class="text-sm font-bold text-gray-800 mb-2 flex items-center border-b pb-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1 text-medical" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
-                    Công văn & Tài liệu triển khai
-                </h3>
-                <div id="document-items" class="space-y-2 mt-2">
-                    <!-- Danh sách link sẽ được chèn vào đây -->
-                </div>
-            </div>
-
-            <!-- Hướng dẫn nộp báo cáo -->
-            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6 rounded-r-lg shadow-sm">
-                <div class="flex items-start">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-500 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <div>
-                        <p class="text-sm text-yellow-800 font-medium">
-                            <span class="font-bold">LƯU Ý THỜI HẠN:</span><br>
-                            - Báo cáo giao ban <b>TUẦN</b>: Nộp trước <b>17 giờ chiều CHỦ NHẬT</b>.<br>
-                            - Báo cáo <b>THÁNG</b>: Nộp trước <b>17 giờ chiều NGÀY 25</b> hàng tháng.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <form id="report-form">
+            <div id="form-content" class="hidden">
+                <form id="report-form">
                 <div class="mb-5">
                     <label class="block text-gray-700 text-sm font-bold mb-2">
                         Loại báo cáo <span class="text-red-500">*</span>
@@ -290,14 +309,23 @@
 
                 <div id="submit-message" class="mb-5 text-center text-sm font-bold hidden transition-all duration-300"></div>
 
-                <button type="submit" id="submit-btn" class="bg-medical hover:bg-medical-dark text-white font-bold py-3 px-4 rounded-lg focus:outline-none focus:shadow-outline w-full transition duration-300 shadow-md flex justify-center items-center text-lg">
-                    <span id="submit-text">Gửi báo cáo</span>
-                    <svg id="submit-spinner" class="animate-spin ml-2 h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                </button>
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <button type="button" id="save-draft-btn" class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-4 rounded-lg focus:outline-none focus:shadow-outline w-full sm:w-1/3 transition duration-300 shadow-md flex justify-center items-center text-sm md:text-base">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+                        </svg>
+                        Lưu nháp
+                    </button>
+                    <button type="submit" id="submit-btn" class="bg-medical hover:bg-medical-dark text-white font-bold py-3 px-4 rounded-lg focus:outline-none focus:shadow-outline w-full sm:w-2/3 transition duration-300 shadow-md flex justify-center items-center text-lg">
+                        <span id="submit-text">Gửi báo cáo</span>
+                        <svg id="submit-spinner" class="animate-spin ml-2 h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                    </button>
+                </div>
             </form>
+            </div>
         </div>
         
         <!-- Admin Section -->
@@ -596,6 +624,55 @@
             select.appendChild(optgroupThang);
         }
 
+        function switchTab(tabName) {
+            const dashboardContent = document.getElementById('dashboard-content');
+            const formContent = document.getElementById('form-content');
+            const tabDashboard = document.getElementById('tab-dashboard');
+            const tabForm = document.getElementById('tab-form');
+
+            if (tabName === 'dashboard') {
+                dashboardContent.classList.remove('hidden');
+                formContent.classList.add('hidden');
+                tabDashboard.classList.add('border-medical', 'text-medical');
+                tabDashboard.classList.remove('border-transparent', 'text-gray-500');
+                tabForm.classList.remove('border-medical', 'text-medical');
+                tabForm.classList.add('border-transparent', 'text-gray-500');
+            } else {
+                dashboardContent.classList.add('hidden');
+                formContent.classList.remove('hidden');
+                tabForm.classList.add('border-medical', 'text-medical');
+                tabForm.classList.remove('border-transparent', 'text-gray-500');
+                tabDashboard.classList.remove('border-medical', 'text-medical');
+                tabDashboard.classList.add('border-transparent', 'text-gray-500');
+            }
+        }
+
+        // Hàm tải dữ liệu lưu nháp
+        function loadDraft() {
+            if (!currentUser) return;
+            const reportTypeRadio = document.querySelector('input[name="report-type"]:checked');
+            if (!reportTypeRadio) return;
+            const reportType = reportTypeRadio.value;
+            
+            const draftKey = `draft_${currentUser.name}_${reportType}`;
+            const draftStr = localStorage.getItem(draftKey);
+            
+            if (draftStr) {
+                try {
+                    const draftData = JSON.parse(draftStr);
+                    document.getElementById('task-content').value = draftData.content || '';
+                    document.getElementById('task-plan').value = draftData.plan || '';
+                    document.getElementById('task-issues').value = draftData.issues || '';
+                } catch (e) {
+                    console.error("Lỗi khi tải nháp:", e);
+                }
+            } else {
+                document.getElementById('task-content').value = '';
+                document.getElementById('task-plan').value = '';
+                document.getElementById('task-issues').value = '';
+            }
+        }
+
         // 3. Khởi tạo ứng dụng
         function init() {
             // Khởi tạo các tùy chọn tuần/tháng trên admin dashboard và employee dashboard
@@ -636,7 +713,27 @@
                         planLabel.textContent = 'Phương hướng tháng tới';
                     }
                     validateDeadline();
+                    loadDraft();
                 });
+            });
+
+            // Xử lý lưu nháp
+            document.getElementById('save-draft-btn')?.addEventListener('click', () => {
+                if (!currentUser) return;
+                const reportTypeRadio = document.querySelector('input[name="report-type"]:checked');
+                if (!reportTypeRadio) return;
+                const reportType = reportTypeRadio.value;
+                
+                const content = document.getElementById('task-content').value;
+                const plan = document.getElementById('task-plan').value;
+                const issues = document.getElementById('task-issues').value;
+                
+                const draftData = { content, plan, issues };
+                const draftKey = `draft_${currentUser.name}_${reportType}`;
+                
+                localStorage.setItem(draftKey, JSON.stringify(draftData));
+                
+                showMessage(`💾 Đã lưu nháp báo cáo ${reportType}! Bạn có thể quay lại sau để gửi.`, 'text-amber-800', 'bg-amber-100', 'border-amber-400');
             });
             
             // Validate form ngay lúc đầu
@@ -725,9 +822,12 @@
             
             submitMessage.classList.add('hidden');
             
+            switchTab('dashboard');
+            
             // Load dữ liệu bảng điều khiển nhân viên
             loadEmployeeData();
             validateDeadline();
+            loadDraft();
             
             window.scrollTo(0, 0);
         }
@@ -889,17 +989,16 @@ ${divider}
                 // Google Apps Script thường trả về opaque response khi dùng no-cors hoặc redirect
                 // Nếu fetch không throw error (network error), ta coi như thành công
                 
-                // Tùy chọn link báo cáo dựa theo loại báo cáo
-                const docLink = reportType === 'Tuần' 
-                    ? "https://docs.google.com/document/d/1jHeC7qyUeQqWae1pX6Y2r5vcq-bSx1LXXCAVNFV6vRI/edit?tab=t.0" 
-                    : "https://docs.google.com/document/d/1KyRElS8TmLbv0Q-Hm7gXl0F3GOIf3dvuNjfS_f167Zo/edit?tab=t.0";
-                
-                // Hiển thị thông báo thành công và link xem lại
-                showMessage(`✅ Đã gửi thành công báo cáo ${reportType} của ${currentUser.name}!<br><br><a href="${docLink}" target="_blank" class="underline text-blue-700 hover:text-blue-900 font-black">👉 Bấm vào đây để xem lại báo cáo trên Google Doc</a>`, 'text-green-800', 'bg-green-100', 'border-green-400');
+                // Hiển thị thông báo thành công
+                showMessage(`✅ Đã gửi thành công báo cáo ${reportType} của ${currentUser.name}!`, 'text-green-800', 'bg-green-100', 'border-green-400');
                 
                 // Reset form tự động nhưng giữ lại ngày hiện tại và label phương hướng
                 const currentDate = document.getElementById('report-date').value;
                 reportForm.reset();
+                
+                // Xóa nháp sau khi gửi thành công
+                const draftKey = `draft_${currentUser.name}_${reportType}`;
+                localStorage.removeItem(draftKey);
                 document.getElementById('report-date').value = currentDate;
                 planLabel.textContent = 'Phương hướng tuần tới';
                 
@@ -1039,23 +1138,20 @@ ${divider}
                 }
             } else {
                 const diffMs = now.getTime() - deadline.getTime();
-                const diffDays = diffMs / (1000 * 60 * 60 * 24);
-                const isTooLate = diffDays > 2;
+                const isLate = diffMs > 0;
+                const isTooLate = isLate && (diffMs / (1000 * 60 * 60 * 24) > 2);
 
                 let warningTime = new Date(startOfPeriod);
                 if (periodType === 'Tuan') {
                     warningTime.setDate(startOfPeriod.getDate() + 4); // Thứ 6
                     warningTime.setHours(17, 0, 0, 0);
                 } else {
-                    warningTime.setDate(23); // Ngày 23
-                    warningTime.setHours(17, 0, 0, 0);
+                    warningTime = new Date(startOfPeriod.getFullYear(), startOfPeriod.getMonth(), 23, 17, 0, 0, 0);
                 }
 
-                let notSubmittingTitle = `Chưa đến hạn nộp báo cáo ${reportTypeStr.toLowerCase()}`;
-                if (now >= warningTime) {
-                    notSubmittingTitle = `Đến hạn nộp báo cáo ${reportTypeStr.toLowerCase()}`;
-                }
-
+                let notSubmittingTitle = "";
+                let notSubmittingDesc = "Vui lòng hoàn thành và nộp đúng hạn.";
+                
                 if (isTooLate) {
                     statusContainer.className = "rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between border bg-rose-50 border-rose-200 gap-3";
                     statusContainer.innerHTML = `
@@ -1074,25 +1170,37 @@ ${divider}
                             Đừng nản lòng, hãy cố gắng hoàn thành ở kỳ tới!
                         </button>
                     `;
+                    return;
+                } 
+                
+                if (isLate) {
+                    notSubmittingTitle = `Đã trễ hạn nộp báo cáo ${reportTypeStr.toLowerCase()}`;
+                    notSubmittingDesc = "Vẫn còn thời gian nộp bổ sung. Vui lòng nộp ngay!";
+                } else if (now >= warningTime) {
+                    notSubmittingTitle = `Đến hạn nộp báo cáo ${reportTypeStr.toLowerCase()}`;
+                    notSubmittingDesc = "Đã đến thời gian nộp báo cáo. Vui lòng hoàn thành.";
                 } else {
-                    statusContainer.className = "rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between border bg-rose-50 border-rose-200 gap-3";
-                    statusContainer.innerHTML = `
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full bg-rose-100 flex items-center justify-center text-rose-600 border border-rose-200 flex-shrink-0">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
-                                </svg>
-                            </div>
-                            <div>
-                                <p class="text-sm font-bold text-rose-800">${notSubmittingTitle}</p>
-                                <p class="text-xs text-rose-700 mt-0.5">Vui lòng hoàn thành và nộp đúng hạn.</p>
-                            </div>
-                        </div>
-                        <button onclick="document.getElementById('report-form').scrollIntoView({behavior: 'smooth'})" class="w-full sm:w-auto bg-rose-600 hover:bg-rose-700 text-white font-bold px-4 py-2 rounded-xl text-sm transition shadow-md active:scale-95 duration-200">
-                            Nộp ngay
-                        </button>
-                    `;
+                    notSubmittingTitle = `Chưa đến hạn nộp báo cáo ${reportTypeStr.toLowerCase()}`;
+                    notSubmittingDesc = "Bạn có thể chuẩn bị trước nội dung.";
                 }
+
+                statusContainer.className = "rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between border bg-rose-50 border-rose-200 gap-3";
+                statusContainer.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-rose-100 flex items-center justify-center text-rose-600 border border-rose-200 flex-shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold text-rose-800">${notSubmittingTitle}</p>
+                            <p class="text-xs text-rose-700 mt-0.5">${notSubmittingDesc}</p>
+                        </div>
+                    </div>
+                    <button onclick="switchTab('form')" class="w-full sm:w-auto bg-rose-600 hover:bg-rose-700 text-white font-bold px-4 py-2 rounded-xl text-sm transition shadow-md active:scale-95 duration-200">
+                        Nộp ngay
+                    </button>
+                `;
             }
         }
 
