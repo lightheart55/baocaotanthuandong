@@ -184,6 +184,12 @@
                     </svg>
                     Dashboard Cá Nhân
                 </button>
+                <button type="button" id="tab-bienban" onclick="switchTab('bienban')" class="py-3 px-4 border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium flex items-center transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                    </svg>
+                    Biên Bản
+                </button>
                 <button type="button" id="tab-form" onclick="switchTab('form')" class="py-3 px-4 border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium flex items-center transition">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -193,6 +199,74 @@
             </div>
 
             <div id="dashboard-content">
+                <!-- Thống kê 3 tháng cá nhân -->
+                <div class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-2xl p-5 mb-6 shadow-md relative overflow-hidden">
+                    <div class="absolute -right-6 -top-6 w-32 h-32 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
+                    <div class="relative z-10">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-3">
+                            <h3 class="font-bold text-lg flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012-2h-2a2 2 0 01-2-2z" />
+                                </svg>
+                                Thống kê cá nhân
+                            </h3>
+                            <select id="stat-period-filter" onchange="calculatePersonalStats()" class="bg-white text-blue-800 text-sm rounded-lg focus:ring-blue-300 focus:border-blue-300 block w-full sm:w-auto p-2 shadow-sm font-bold outline-none cursor-pointer">
+                                <!-- Tùy chọn sẽ được tạo bằng JS -->
+                            </select>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- Báo cáo Tuần -->
+                            <div class="bg-white/10 rounded-xl p-4 backdrop-blur-sm border border-white/20">
+                                <h4 id="stat-week-label" class="text-sm font-bold text-blue-100 mb-3 uppercase tracking-wider">Giao ban Tuần</h4>
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-sm font-medium">🟢 Đúng hạn</span>
+                                    <span id="stat-personal-week-ontime" class="font-bold text-lg">0</span>
+                                </div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-sm font-medium">🟡 Trễ hạn</span>
+                                    <span id="stat-personal-week-late" class="font-bold text-lg text-yellow-300">0</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm font-medium text-red-200">🔴 Chưa nộp (Khóa sổ)</span>
+                                    <span id="stat-personal-week-missing" class="font-bold text-lg text-red-300">0</span>
+                                </div>
+                            </div>
+                            <!-- Báo cáo Tháng -->
+                            <div class="bg-white/10 rounded-xl p-4 backdrop-blur-sm border border-white/20">
+                                <h4 id="stat-month-label" class="text-sm font-bold text-blue-100 mb-3 uppercase tracking-wider">Báo cáo Tháng</h4>
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-sm font-medium">🟢 Đúng hạn</span>
+                                    <span id="stat-personal-month-ontime" class="font-bold text-lg">0</span>
+                                </div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-sm font-medium">🟡 Trễ hạn</span>
+                                    <span id="stat-personal-month-late" class="font-bold text-lg text-yellow-300">0</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm font-medium text-red-200">🔴 Chưa nộp (Khóa sổ)</span>
+                                    <span id="stat-personal-month-missing" class="font-bold text-lg text-red-300">0</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Lời giải thích -->
+                        <div class="mt-4 text-xs text-blue-50 bg-white/10 p-3 rounded-lg border border-white/20 flex items-start backdrop-blur-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 flex-shrink-0 mt-0.5 text-blue-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <div>
+                                <p class="mb-1"><b class="text-white">Tại sao có 13 tuần?</b> Một Quý (3 tháng) có khoảng 90 ngày, tương đương với <b>13 tuần</b> (13 lần báo cáo).</p>
+                                <ul class="list-disc ml-4 space-y-1 mt-1 text-blue-100">
+                                    <li><b>Hệ thống bắt đầu hoạt động:</b> Từ ngày 11/04/2026. Dữ liệu Báo cáo Tuần tính từ <b>Tuần 15 của năm (tức Tuần 2 Tháng 4/2026)</b>. Dữ liệu Báo cáo Tháng bắt đầu từ <b>Tháng 4/2026</b>. Các kỳ trước mốc này sẽ mặc định báo "Chưa nộp" do chưa có phần mềm, bạn có thể bỏ qua.</li>
+                                    <li><b>Giai đoạn trước 10/08/2026:</b> Báo cáo nộp trong tuần/tháng đều được tính là hợp lệ.</li>
+                                    <li><b>Giai đoạn từ 10/08/2026:</b> Bắt đầu áp dụng Thống nhất thời gian qui định nộp, khóa sổ.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
                 <!-- Employee Dashboard (Tiến độ của tôi) -->
                 <div id="employee-dashboard" class="bg-white border border-slate-200 rounded-2xl p-5 mb-6 shadow-sm">
                     <h3 class="font-bold text-slate-800 text-base md:text-lg mb-4 flex items-center">
@@ -238,9 +312,9 @@
                             </svg>
                             <div>
                                 <p class="text-sm text-yellow-800 font-medium">
-                                    <span class="font-bold">LƯU Ý THỜI HẠN:</span><br>
-                                    - Báo cáo giao ban <b>TUẦN</b>: Nộp trước <b>17 giờ chiều CHỦ NHẬT</b>.<br>
-                                    - Báo cáo <b>THÁNG</b>: Nộp trước <b>17 giờ chiều NGÀY 25</b> hàng tháng.
+                                    <span class="font-bold">LƯU Ý THỜI HẠN NỘP BÁO CÁO:</span><br>
+                                    - <b>TUẦN</b>: Mở từ <b>17g Thứ 6</b> đến 24g Chủ Nhật (Đúng hạn). Trễ hạn: 00g Thứ 2 đến 12g trưa Thứ 2. <b>Sau 12g trưa Thứ 2 khóa sổ (Chưa nộp)</b>.<br>
+                                    - <b>THÁNG</b>: Mở từ <b>17g ngày 25</b> đến 24g ngày 25 (Đúng hạn). Trễ hạn: 00g ngày 26 đến 12g trưa ngày 26. <b>Sau 12g trưa ngày 26 khóa sổ (Chưa nộp)</b>.
                                 </p>
                             </div>
                         </div>
@@ -258,6 +332,60 @@
                     <div id="document-items" class="space-y-2 mt-2">
                         <!-- Danh sách link sẽ được chèn vào đây -->
                     </div>
+                </div>
+            </div>
+
+            <!-- BIÊN BẢN CƠ QUAN SECTION -->
+            <div id="bienban-content" class="hidden">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-bold text-gray-800 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                        </svg>
+                        Biên Bản Cuộc Họp
+                    </h3>
+                    <button type="button" id="btn-add-bienban" onclick="openBienBanModal()" class="hidden bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-1.5 px-3 rounded-lg text-sm transition shadow-sm flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                        </svg>
+                        Đăng Biên Bản
+                    </button>
+                </div>
+                
+                <div id="bienban-list" class="space-y-3">
+                    <!-- Danh sách biên bản sẽ load vào đây -->
+                </div>
+            </div>
+
+            <!-- MODAL THÊM BIÊN BẢN -->
+            <div id="bienban-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 hidden z-50 flex items-center justify-center p-4 backdrop-blur-sm transition-opacity">
+                <div class="bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden transform scale-95 opacity-0 transition-all duration-300" id="bienban-modal-content">
+                    <div class="bg-indigo-600 px-6 py-4 flex justify-between items-center">
+                        <h3 id="bienban-modal-title" class="text-lg font-bold text-white">Thêm Biên Bản Mới</h3>
+                        <button type="button" onclick="closeBienBanModal()" class="text-white hover:text-indigo-200 focus:outline-none">
+                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                        </button>
+                    </div>
+                    <form id="bienban-form" class="p-6">
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm font-bold mb-2">Tên / Chủ đề biên bản <span class="text-red-500">*</span></label>
+                            <input type="text" id="bienban-title" class="shadow-sm border border-gray-300 rounded-lg w-full py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="VD: Biên bản họp giao ban Tháng 8" required>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm font-bold mb-2">Ngày họp <span class="text-red-500">*</span></label>
+                            <input type="date" id="bienban-date" class="shadow-sm border border-gray-300 rounded-lg w-full py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                        </div>
+                        <div class="mb-5">
+                            <label class="block text-gray-700 text-sm font-bold mb-2">Link Google Drive <span class="text-red-500">*</span></label>
+                            <input type="url" id="bienban-link" class="shadow-sm border border-gray-300 rounded-lg w-full py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="https://drive.google.com/..." required>
+                        </div>
+                        <div class="flex justify-end space-x-3 mt-6">
+                            <button type="button" onclick="closeBienBanModal()" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition">Hủy</button>
+                            <button type="submit" id="btn-submit-bienban" class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition shadow-sm font-medium flex items-center">
+                                Gửi Biên Bản
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
 
@@ -569,7 +697,242 @@
                 });
                 document.getElementById('document-list').classList.remove('hidden');
             }
+
+            // Gọi renderBienBanList() để tải danh sách biên bản
+            renderBienBanList();
         }
+
+        // ================= BIÊN BẢN CƠ QUAN =================
+        let editingBienBan = null; // Biến lưu trạng thái đang sửa
+
+        function renderBienBanList() {
+            if (!systemData.baoCao) return;
+            const bienBanList = systemData.baoCao.filter(r => r.loai === 'Biên Bản Họp');
+            const listContainer = document.getElementById('bienban-list');
+            if (!listContainer) return;
+            
+            listContainer.innerHTML = '';
+            
+            // Xây dựng danh sách HỦY BIÊN BẢN
+            const huyList = systemData.baoCao.filter(r => r.loai === 'HỦY BIÊN BẢN');
+            const deletedSet = new Set(huyList.map(r => r.thoiGian + '___' + r.noidung));
+            
+            // Lọc ra các biên bản hợp lệ (chưa bị hủy)
+            const validBienBanList = bienBanList.filter(r => !deletedSet.has(r.thoiGian + '___' + r.noidung));
+
+            if (validBienBanList.length === 0) {
+                listContainer.innerHTML = '<p class="text-gray-500 italic text-sm text-center py-4 bg-gray-50 rounded-lg">Chưa có biên bản nào được đăng.</p>';
+                return;
+            }
+
+            // Hàm hỗ trợ parse Date từ dd/mm/yyyy
+            function parseDate(dateStr) {
+                const parts = dateStr.split('/');
+                if(parts.length === 3) return new Date(parts[2], parts[1] - 1, parts[0]);
+                return new Date(0);
+            }
+
+            // Sắp xếp danh sách hợp lệ theo ngày giảm dần (mới nhất lên trên)
+            const sortedList = [...validBienBanList].sort((a, b) => parseDate(b.thoiGian) - parseDate(a.thoiGian));
+
+            // Kiểm tra xem user hiện tại có quyền Sửa/Xóa hay không
+            const allowedNames = ['Trâm', 'Tươi', 'Duyên'];
+            const hasEditPermission = currentUser && (allowedNames.some(name => currentUser.name.includes(name)) || currentUser.isAdmin);
+
+            sortedList.forEach(bb => {
+                // Tách nội dung và link
+                let title = bb.noidung;
+                let link = "#";
+                if (bb.noidung && bb.noidung.includes('|')) {
+                    const parts = bb.noidung.split('|');
+                    title = parts[0].trim();
+                    link = parts[1].trim();
+                }
+
+                // Nút Edit/Delete chỉ hiện nếu có quyền
+                let actionHtml = '';
+                if (hasEditPermission) {
+                    // Escape strings cẩn thận cho DOM
+                    const safeThoiGian = bb.thoiGian.replace(/'/g, "\\'");
+                    const safeNoidung = bb.noidung.replace(/'/g, "\\'");
+                    const safeTitle = title.replace(/'/g, "\\'");
+                    const safeLink = link.replace(/'/g, "\\'");
+                    
+                    actionHtml = `
+                        <div class="flex space-x-2 mt-3 sm:mt-0 justify-end w-full sm:w-auto">
+                            <button onclick="editBienBan('${safeTitle}', '${safeLink}', '${safeThoiGian}', '${safeNoidung}')" class="px-3 py-1.5 bg-yellow-50 text-yellow-600 hover:bg-yellow-100 rounded-lg text-xs font-bold transition flex items-center shadow-sm border border-yellow-100">
+                                <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>Sửa
+                            </button>
+                            <button onclick="deleteBienBan('${safeThoiGian}', '${safeNoidung}')" class="px-3 py-1.5 bg-red-50 text-red-600 hover:bg-red-100 rounded-lg text-xs font-bold transition flex items-center shadow-sm border border-red-100">
+                                <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>Xóa
+                            </button>
+                        </div>
+                    `;
+                }
+
+                const itemHtml = `
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex flex-col hover:shadow-md transition">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+                            <div class="mb-3 sm:mb-0 w-full sm:w-auto flex-1 pr-4">
+                                <h4 class="font-bold text-gray-800 text-base leading-tight">${title}</h4>
+                                <div class="flex flex-wrap items-center text-xs text-gray-500 mt-2 gap-x-4 gap-y-1">
+                                    <span class="flex items-center"><svg class="w-3.5 h-3.5 mr-1 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg><span class="font-bold text-gray-700">${bb.thoiGian}</span></span>
+                                    <span class="flex items-center"><svg class="w-3.5 h-3.5 mr-1 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>${bb.nhanVien}</span>
+                                </div>
+                            </div>
+                            <div class="flex flex-col sm:items-end w-full sm:w-auto shrink-0 gap-2 mt-2 sm:mt-0">
+                                <a href="${link}" target="_blank" class="px-4 py-2 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-lg text-sm font-bold transition flex items-center justify-center shadow-sm border border-indigo-100 w-full sm:w-auto">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
+                                    Xem Biên Bản
+                                </a>
+                                ${actionHtml}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                listContainer.insertAdjacentHTML('beforeend', itemHtml);
+            });
+        }
+
+        function deleteBienBan(thoiGian, noidung) {
+            if (!confirm("Bạn có chắc chắn muốn XÓA biên bản này? (Không thể hoàn tác)")) return;
+            if (!currentUser) return;
+            
+            const payload = {
+                nhanVien: currentUser.name,
+                loai: 'HỦY BIÊN BẢN',
+                thoiGian: thoiGian,
+                noidung: noidung,
+                mucDo: 'Hoàn thành' // dummy data
+            };
+
+            fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) })
+            .then(res => res.json())
+            .then(res => {
+                if(res.result === 'success') {
+                    if(!systemData.baoCao) systemData.baoCao = [];
+                    systemData.baoCao.push(payload); // Thêm event hủy vào local data
+                    renderBienBanList(); // Render lại giao diện
+                    alert('Đã xóa biên bản thành công!');
+                } else {
+                    alert('Lỗi khi xóa: ' + res.error);
+                }
+            })
+            .catch(err => alert('Có lỗi mạng khi xóa biên bản.'));
+        }
+
+        function editBienBan(title, link, thoiGian, noidung) {
+            editingBienBan = { thoiGian: thoiGian, noidung: noidung };
+            
+            document.getElementById('bienban-title').value = title;
+            document.getElementById('bienban-link').value = link;
+            
+            // Format ngày từ dd/mm/yyyy -> yyyy-mm-dd
+            const parts = thoiGian.split('/');
+            if (parts.length === 3) {
+                document.getElementById('bienban-date').value = `${parts[2]}-${parts[1]}-${parts[0]}`;
+            }
+
+            document.getElementById('bienban-modal-title').innerText = "Sửa Biên Bản";
+            
+            document.getElementById('bienban-modal').classList.remove('hidden');
+            setTimeout(() => {
+                document.getElementById('bienban-modal-content').classList.remove('scale-95', 'opacity-0');
+            }, 10);
+        }
+
+        function openBienBanModal() {
+            editingBienBan = null; // Reset trạng thái
+            document.getElementById('bienban-form').reset();
+            document.getElementById('bienban-modal-title').innerText = "Thêm Biên Bản Mới";
+
+            document.getElementById('bienban-modal').classList.remove('hidden');
+            setTimeout(() => {
+                document.getElementById('bienban-modal-content').classList.remove('scale-95', 'opacity-0');
+            }, 10);
+            
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            document.getElementById('bienban-date').value = `${yyyy}-${mm}-${dd}`;
+        }
+
+        function closeBienBanModal() {
+            document.getElementById('bienban-modal-content').classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                document.getElementById('bienban-modal').classList.add('hidden');
+            }, 300);
+        }
+
+        document.getElementById('bienban-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            if (!currentUser) return;
+            
+            const btnSubmit = document.getElementById('btn-submit-bienban');
+            const originalText = btnSubmit.innerHTML;
+            btnSubmit.innerHTML = `<svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Đang lưu...`;
+            btnSubmit.disabled = true;
+
+            const title = document.getElementById('bienban-title').value;
+            const link = document.getElementById('bienban-link').value;
+            const date = document.getElementById('bienban-date').value;
+            
+            const dateParts = date.split('-');
+            const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
+
+            try {
+                // Nếu đang Sửa -> Gửi lệnh Hủy cái cũ trước
+                if (editingBienBan) {
+                    const deletePayload = {
+                        nhanVien: currentUser.name,
+                        loai: 'HỦY BIÊN BẢN',
+                        thoiGian: editingBienBan.thoiGian,
+                        noidung: editingBienBan.noidung,
+                        mucDo: 'Hoàn thành'
+                    };
+                    const resDel = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(deletePayload) }).then(r => r.json());
+                    if (resDel.result === 'success') {
+                        if(!systemData.baoCao) systemData.baoCao = [];
+                        systemData.baoCao.push(deletePayload);
+                    } else {
+                        throw new Error('Lỗi khi hủy biên bản cũ');
+                    }
+                }
+
+                // Gửi lệnh Thêm mới
+                const addPayload = {
+                    nhanVien: currentUser.name,
+                    loai: 'Biên Bản Họp',
+                    thoiGian: formattedDate,
+                    noidung: `${title} | ${link}`,
+                    mucDo: 'Hoàn thành'
+                };
+                
+                const resAdd = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(addPayload) }).then(r => r.json());
+                
+                if (resAdd.result === 'success') {
+                    if(!systemData.baoCao) systemData.baoCao = [];
+                    systemData.baoCao.push(addPayload);
+                    
+                    alert(editingBienBan ? 'Đã cập nhật biên bản thành công!' : 'Đã lưu biên bản thành công!');
+                    closeBienBanModal();
+                    renderBienBanList();
+                } else {
+                    alert('Lỗi: ' + resAdd.error);
+                }
+            } catch (error) {
+                console.error(error);
+                alert('Có lỗi mạng xảy ra khi xử lý biên bản.');
+            } finally {
+                btnSubmit.innerHTML = originalText;
+                btnSubmit.disabled = false;
+            }
+        });
+        // ================= HẾT PHẦN BIÊN BẢN =================
 
         // Lấy số tuần trong năm (ISO Week)
         function getISOWeekNumber(date) {
@@ -627,23 +990,39 @@
         function switchTab(tabName) {
             const dashboardContent = document.getElementById('dashboard-content');
             const formContent = document.getElementById('form-content');
+            const bienbanContent = document.getElementById('bienban-content');
+            
             const tabDashboard = document.getElementById('tab-dashboard');
             const tabForm = document.getElementById('tab-form');
+            const tabBienban = document.getElementById('tab-bienban');
+
+            const allContents = [dashboardContent, formContent, bienbanContent];
+            const allTabs = [tabDashboard, tabForm, tabBienban];
+
+            allContents.forEach(content => {
+                if(content) content.classList.add('hidden');
+            });
+            allTabs.forEach(tab => {
+                if(tab) {
+                    tab.classList.remove('border-medical', 'text-medical');
+                    tab.classList.add('border-transparent', 'text-gray-500');
+                }
+            });
 
             if (tabName === 'dashboard') {
                 dashboardContent.classList.remove('hidden');
-                formContent.classList.add('hidden');
                 tabDashboard.classList.add('border-medical', 'text-medical');
                 tabDashboard.classList.remove('border-transparent', 'text-gray-500');
-                tabForm.classList.remove('border-medical', 'text-medical');
-                tabForm.classList.add('border-transparent', 'text-gray-500');
-            } else {
-                dashboardContent.classList.add('hidden');
+            } else if (tabName === 'form') {
                 formContent.classList.remove('hidden');
                 tabForm.classList.add('border-medical', 'text-medical');
                 tabForm.classList.remove('border-transparent', 'text-gray-500');
-                tabDashboard.classList.remove('border-medical', 'text-medical');
-                tabDashboard.classList.add('border-transparent', 'text-gray-500');
+            } else if (tabName === 'bienban') {
+                if (bienbanContent) bienbanContent.classList.remove('hidden');
+                if (tabBienban) {
+                    tabBienban.classList.add('border-medical', 'text-medical');
+                    tabBienban.classList.remove('border-transparent', 'text-gray-500');
+                }
             }
         }
 
@@ -870,75 +1249,23 @@
             const planText = formatText(document.getElementById('task-plan').value);
             const issuesText = formatText(document.getElementById('task-issues').value);
 
-            // Tính toán Trễ hạn / Đúng hạn và Thông tin Tuần/Tháng dựa trên ngày báo cáo được chọn
-            let isLate = false;
-            let periodInfo = '';
-            let titlePrefix = '';
-            let statusText = '';
-            let statusIcon = '';
-
-            // Lấy ngày báo cáo do người dùng chọn (chứ không phải ngày nộp hiện tại)
-            const reportDateInput = document.getElementById('report-date').value;
-            const [yStr, mStr, dStr] = reportDateInput.split('-');
-            const reportDateObj = new Date(yStr, parseInt(mStr) - 1, dStr);
-            let deadline;
-
-            if (reportType === 'Tuần') {
-                // Tính thứ 2 và chủ nhật của tuần được chọn
-                const d = new Date(reportDateObj.getTime());
-                const day = d.getDay();
-                const diffToMonday = d.getDate() - day + (day === 0 ? -6 : 1);
-                const monday = new Date(new Date(d.getTime()).setDate(diffToMonday));
-                const sunday = new Date(new Date(d.getTime()).setDate(diffToMonday + 6));
-                
-                // Hạn chót nộp báo cáo tuần: Chủ nhật của tuần đó, 17:00
-                deadline = new Date(sunday.getTime());
-                deadline.setHours(17, 0, 0, 0);
-                
-                // Lấy số tuần trong năm (ISO Week)
-                const d2 = new Date(reportDateObj.getTime());
-                d2.setHours(0, 0, 0, 0);
-                d2.setDate(d2.getDate() + 3 - (d2.getDay() + 6) % 7);
-                const week1 = new Date(d2.getFullYear(), 0, 4);
-                const weekNum = 1 + Math.round(((d2.getTime() - week1.getTime()) / 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);
-
-                const formatDate = (dateObj) => `${String(dateObj.getDate()).padStart(2, '0')}/${String(dateObj.getMonth() + 1).padStart(2, '0')}/${dateObj.getFullYear()}`;
-                
-                periodInfo = `Tuần ${weekNum}/${d2.getFullYear()} (Từ ${formatDate(monday)} đến ${formatDate(sunday)})`;
-                titlePrefix = `BÁO CÁO GIAO BAN TUẦN ${weekNum}`;
-            } else {
-                // Báo cáo tháng
-                const month = String(reportDateObj.getMonth() + 1).padStart(2, '0');
-                const year = reportDateObj.getFullYear();
-                
-                // Hạn chót nộp báo cáo tháng: Ngày 25 của tháng đó, 17:00
-                deadline = new Date(year, reportDateObj.getMonth(), 25, 17, 0, 0, 0);
-                
-                periodInfo = `Tháng ${month}/${year}`;
-                titlePrefix = `BÁO CÁO THÁNG ${month}`;
-            }
-
-            // So sánh thời gian nộp thực tế (now) với hạn chót (deadline)
-            const diffMs = now.getTime() - deadline.getTime();
+            // Sử dụng logic mới cực kỳ nghiêm ngặt
+            const status = getReportingStatus(reportType, now);
             
-            if (diffMs <= 0) {
-                isLate = false;
-                statusText = '[ĐÚNG HẠN]';
-                statusIcon = '🟢';
-            } else {
-                isLate = true;
-                const diffDays = diffMs / (1000 * 60 * 60 * 24);
-                
-                if (diffDays <= 2) {
-                    // Nằm trong thời gian được nộp bổ sung (trong vòng 2 ngày)
-                    statusText = '[TRỄ HẠN - BỔ SUNG]';
-                    statusIcon = '🟡';
-                } else {
-                    // Quá 2 ngày vẫn cho nộp, nhưng đánh dấu là quá 2 ngày
-                    statusText = '[TRỄ HẠN - QUÁ 2 NGÀY]';
-                    statusIcon = '🔴';
-                }
+            if (!status.isOpen) {
+                showMessage('❌ Hệ thống đã khóa sổ. Không thể nộp báo cáo lúc này.', 'text-red-700', 'bg-red-100', 'border-red-400');
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('opacity-75', 'cursor-not-allowed');
+                submitText.textContent = 'Gửi báo cáo';
+                submitSpinner.classList.add('hidden');
+                return;
             }
+
+            const isLate = status.isLate;
+            const periodInfo = status.periodInfo;
+            const titlePrefix = status.titlePrefix;
+            const statusText = status.statusText;
+            const statusIcon = status.statusIcon;
 
             // Tạo nội dung report có cấu trúc rõ ràng (RAW STRING)
             const routingLabel = reportType === 'Tuần' ? '[LOAI:TUAN]' : '[LOAI:THANG]';
@@ -1044,6 +1371,19 @@ ${divider}
         // Load dữ liệu bảng điều khiển cho Nhân Viên
         function loadEmployeeData() {
             if (!currentUser || currentUser.isAdmin) return;
+            calculatePersonalStats();
+            // Kiểm tra phân quyền hiển thị nút Thêm Biên Bản
+            const allowedNames = ['Trâm', 'Tươi', 'Duyên'];
+            const isAllowed = allowedNames.some(name => currentUser.name.includes(name));
+            
+            if (isAllowed || currentUser.isAdmin) {
+                document.getElementById('btn-add-bienban').classList.remove('hidden');
+            } else {
+                document.getElementById('btn-add-bienban').classList.add('hidden');
+            }
+
+            // Gọi render lại nếu lỡ systemData đã load trước khi login
+            renderBienBanList();
             const statusContainer = document.getElementById('employee-report-status');
             if (!statusContainer) return;
             
@@ -1203,6 +1543,187 @@ ${divider}
                 `;
             }
         }
+
+        let isStatFilterInitialized = false;
+        function initStatPeriodFilter() {
+            if (isStatFilterInitialized) return;
+            const select = document.getElementById('stat-period-filter');
+            if (!select) return;
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = now.getMonth() + 1; // 1-12
+            
+            // Determine current quarter
+            let currentQ = 1;
+            if (month >= 4 && month <= 6) currentQ = 2;
+            if (month >= 7 && month <= 9) currentQ = 3;
+            if (month >= 10 && month <= 12) currentQ = 4;
+            
+            select.innerHTML = '';
+            for (let i = 1; i <= 4; i++) {
+                const opt = document.createElement('option');
+                opt.value = `Q${i}_${year}`;
+                opt.textContent = `Quý ${i} / ${year}`;
+                if (i === currentQ) opt.selected = true;
+                select.appendChild(opt);
+            }
+            
+            const optYear = document.createElement('option');
+            optYear.value = `Y_${year}`;
+            optYear.textContent = `Cả năm ${year}`;
+            select.appendChild(optYear);
+            
+            isStatFilterInitialized = true;
+        }
+
+        function calculatePersonalStats() {
+            if (!currentUser || currentUser.isAdmin) return;
+            initStatPeriodFilter();
+            
+            const select = document.getElementById('stat-period-filter');
+            let filterValue = select ? select.value : '';
+            if (!filterValue) return;
+            
+            const [filterType, filterYearStr] = filterValue.split('_');
+            const filterYear = parseInt(filterYearStr, 10);
+            
+            let startMonth = 1; // 1-indexed
+            let endMonth = 12;
+            let periodLabel = `Năm ${filterYear}`;
+            
+            if (filterType.startsWith('Q')) {
+                const q = parseInt(filterType.charAt(1), 10);
+                startMonth = (q - 1) * 3 + 1;
+                endMonth = q * 3;
+                periodLabel = `Quý ${q}/${filterYear}`;
+            }
+            
+            // Cập nhật nhãn
+            const elWeekLabel = document.getElementById('stat-week-label');
+            const elMonthLabel = document.getElementById('stat-month-label');
+            if (elWeekLabel) elWeekLabel.textContent = `Giao ban Tuần (${periodLabel})`;
+            if (elMonthLabel) elMonthLabel.textContent = `Báo cáo Tháng (${periodLabel})`;
+            
+            const allReports = systemData.baoCao || [];
+            const empReports = allReports.filter(r => r && r.nhanVien === currentUser.name);
+            
+            const now = new Date();
+            let weekOntime = 0, weekLate = 0, weekMissing = 0;
+            let monthOntime = 0, monthLate = 0, monthMissing = 0;
+            const strictLockDate = new Date(2026, 7, 10, 0, 0, 0); // 10/08/2026
+            
+            // 1. TÍNH SỐ LIỆU CHO THÁNG
+            for (let m = startMonth; m <= endMonth; m++) {
+                let windowOpen, windowClose;
+                let targetMonthStart = new Date(filterYear, m - 1, 1, 0, 0, 0, 0);
+                
+                if (targetMonthStart < strictLockDate) {
+                    // Giai đoạn 1: Trước 10/08/2026 (Nới lỏng - Nguyên tháng)
+                    windowOpen = new Date(filterYear, m - 1, 1, 0, 0, 0, 0);
+                    windowClose = new Date(filterYear, m, 0, 23, 59, 59, 999); // Ngày cuối tháng
+                } else {
+                    // Giai đoạn 2: Khắt khe
+                    windowOpen = new Date(filterYear, m - 1, 25, 17, 0, 0, 0);
+                    windowClose = new Date(filterYear, m - 1, 26, 12, 0, 0, 0);
+                }
+                
+                if (now < windowOpen) continue; // Chưa tới đợt báo cáo này
+                
+                const monthReports = empReports.filter(r => {
+                    if (!r.loai || !r.loai.toLowerCase().includes('tháng')) return false;
+                    const reportDate = parseReportDate(r.thoiGian);
+                    if (!reportDate) return false;
+                    return reportDate >= windowOpen && reportDate <= windowClose;
+                });
+                
+                if (monthReports.length > 0) {
+                    const latest = monthReports[monthReports.length - 1];
+                    if (latest.rawText && latest.rawText.includes('[TRỄ HẠN')) {
+                        monthLate++;
+                    } else {
+                        monthOntime++;
+                    }
+                } else {
+                    if (now > windowClose) {
+                        monthMissing++;
+                    }
+                }
+            }
+            
+            // 2. TÍNH SỐ LIỆU CHO TUẦN
+            // Tìm tất cả Chủ Nhật trong Quý/Năm
+            let iterDate = new Date(filterYear, startMonth - 1, 1);
+            let quarterEndDate = new Date(filterYear, endMonth, 0, 23, 59, 59, 999);
+            
+            // Nhích tới Chủ Nhật đầu tiên
+            while (iterDate.getDay() !== 0) {
+                iterDate.setDate(iterDate.getDate() + 1);
+            }
+            
+            while (iterDate <= quarterEndDate) {
+                let targetSunday = new Date(iterDate);
+                targetSunday.setHours(23, 59, 59, 999);
+                
+                let windowOpen, windowClose;
+                
+                if (targetSunday < strictLockDate) {
+                    // Giai đoạn 1: Trước 10/08/2026 (Nới lỏng - Từ Thứ 2 đến Chủ nhật của tuần đó)
+                    windowOpen = new Date(targetSunday);
+                    windowOpen.setDate(targetSunday.getDate() - 6);
+                    windowOpen.setHours(0, 0, 0, 0);
+                    
+                    windowClose = new Date(targetSunday);
+                    windowClose.setHours(23, 59, 59, 999);
+                } else {
+                    // Giai đoạn 2: Khắt khe
+                    windowOpen = new Date(targetSunday);
+                    windowOpen.setDate(targetSunday.getDate() - 2);
+                    windowOpen.setHours(17, 0, 0, 0);
+                    
+                    windowClose = new Date(targetSunday);
+                    windowClose.setDate(targetSunday.getDate() + 1);
+                    windowClose.setHours(12, 0, 0, 0);
+                }
+                
+                if (now > windowOpen) { // Nếu đã mở sổ
+                    const weekReports = empReports.filter(r => {
+                        if (!r.loai || !r.loai.toLowerCase().includes('tuần')) return false;
+                        const reportDate = parseReportDate(r.thoiGian);
+                        if (!reportDate) return false;
+                        return reportDate >= windowOpen && reportDate <= windowClose;
+                    });
+                    
+                    if (weekReports.length > 0) {
+                        const latest = weekReports[weekReports.length - 1];
+                        if (latest.rawText && latest.rawText.includes('[TRỄ HẠN')) {
+                            weekLate++;
+                        } else {
+                            weekOntime++;
+                        }
+                    } else {
+                        if (now > windowClose) {
+                            weekMissing++;
+                        }
+                    }
+                }
+                
+                // Tiếp tục Chủ Nhật tuần sau
+                iterDate.setDate(iterDate.getDate() + 7);
+            }
+            
+            const elWeekOntime = document.getElementById('stat-personal-week-ontime');
+            if (elWeekOntime) {
+                elWeekOntime.textContent = weekOntime;
+                document.getElementById('stat-personal-week-late').textContent = weekLate;
+                document.getElementById('stat-personal-week-missing').textContent = weekMissing;
+                document.getElementById('stat-personal-month-ontime').textContent = monthOntime;
+                document.getElementById('stat-personal-month-late').textContent = monthLate;
+                document.getElementById('stat-personal-month-missing').textContent = monthMissing;
+            }
+        }
+
+        // Khởi chạy timer tự động check đóng/mở form
+        setInterval(validateDeadline, 60000);
 
         // Hàm chuyển đổi chuỗi ngày DD/MM/YYYY HH:mm hoặc Javascript Date string thành đối tượng Date
         function parseReportDate(dateStr) {
@@ -1444,39 +1965,121 @@ ${divider}
             }
         }
 
+        // Hàm tính toán tình trạng đóng/mở và thông tin kỳ báo cáo
+        function getReportingStatus(reportType, now = new Date()) {
+            let isOpen = false;
+            let isLate = false;
+            let statusText = '';
+            let statusIcon = '';
+            let periodInfo = '';
+            let titlePrefix = '';
+            
+            if (reportType === 'Tuần') {
+                const day = now.getDay(); // 0 is Sunday, 1 is Monday, 5 is Friday
+                const hours = now.getHours();
+                
+                let targetSunday = new Date(now);
+                targetSunday.setHours(23, 59, 59, 999);
+                
+                if ((day === 5 && hours >= 17) || day === 6 || day === 0) {
+                    isOpen = true;
+                    isLate = false;
+                    const diff = day === 0 ? 0 : (7 - day);
+                    targetSunday.setDate(now.getDate() + diff);
+                } else if (day === 1 && hours < 12) {
+                    isOpen = true;
+                    isLate = true;
+                    targetSunday.setDate(now.getDate() - 1);
+                } else {
+                    isOpen = false;
+                    // Find the last Sunday for display purposes
+                    let offset = day === 0 ? 7 : day; 
+                    if (day === 1 && hours >= 12) offset = 1; // It's Monday afternoon, target is previous Sunday
+                    else if (day >= 2 && day <= 5) offset = day;
+                    targetSunday.setDate(now.getDate() - offset);
+                }
+                
+                const targetMonday = new Date(targetSunday);
+                targetMonday.setDate(targetSunday.getDate() - 6);
+                targetMonday.setHours(0, 0, 0, 0);
+                
+                const weekNum = getISOWeekNumber(targetMonday);
+                const formatDate = (dateObj) => `${String(dateObj.getDate()).padStart(2, '0')}/${String(dateObj.getMonth() + 1).padStart(2, '0')}/${dateObj.getFullYear()}`;
+                
+                periodInfo = `Tuần ${weekNum}/${targetMonday.getFullYear()} (Từ ${formatDate(targetMonday)} đến ${formatDate(targetSunday)})`;
+                titlePrefix = `BÁO CÁO GIAO BAN TUẦN ${weekNum}`;
+                
+            } else {
+                const date = now.getDate();
+                const hours = now.getHours();
+                
+                let targetMonthDate = new Date(now);
+                
+                if (date === 25 && hours >= 17) {
+                    isOpen = true;
+                    isLate = false;
+                } else if (date === 26 && hours < 12) {
+                    isOpen = true;
+                    isLate = true;
+                    // If it's the 26th, it's for the current month
+                } else {
+                    isOpen = false;
+                    // If it's before the 25th, the target month is the PREVIOUS month
+                    if (date < 25) {
+                        targetMonthDate.setMonth(now.getMonth() - 1);
+                    }
+                }
+                
+                const month = String(targetMonthDate.getMonth() + 1).padStart(2, '0');
+                const year = targetMonthDate.getFullYear();
+                
+                periodInfo = `Tháng ${month}/${year}`;
+                titlePrefix = `BÁO CÁO THÁNG ${month}`;
+            }
+            
+            if (isOpen) {
+                if (!isLate) {
+                    statusText = '[ĐÚNG HẠN]';
+                    statusIcon = '🟢';
+                } else {
+                    statusText = '[TRỄ HẠN - BỔ SUNG]';
+                    statusIcon = '🟡';
+                }
+            } else {
+                statusText = '[CHƯA NỘP / KHÓA SỔ]';
+                statusIcon = '🔴';
+            }
+            
+            return { isOpen, isLate, statusText, statusIcon, periodInfo, titlePrefix };
+        }
+
         // Validate hạn chót trực tiếp trên form
         function validateDeadline() {
             if (!currentUser || currentUser.isAdmin) return;
-            const reportDateInput = document.getElementById('report-date').value;
             const reportTypeRadio = document.querySelector('input[name="report-type"]:checked');
-            if (!reportDateInput || !reportTypeRadio) return;
+            if (!reportTypeRadio) return;
             const reportType = reportTypeRadio.value;
 
-            const [yStr, mStr, dStr] = reportDateInput.split('-');
-            const reportDateObj = new Date(yStr, parseInt(mStr) - 1, dStr);
-            let deadline;
             const now = new Date();
-
-            if (reportType === 'Tuần') {
-                const d = new Date(reportDateObj.getTime());
-                const day = d.getDay();
-                const diffToMonday = d.getDate() - day + (day === 0 ? -6 : 1);
-                const sunday = new Date(new Date(d.getTime()).setDate(diffToMonday + 6));
-                deadline = new Date(sunday.getTime());
-                deadline.setHours(17, 0, 0, 0);
-            } else {
-                const year = reportDateObj.getFullYear();
-                deadline = new Date(year, reportDateObj.getMonth(), 25, 17, 0, 0, 0);
-            }
-
-            const diffMs = now.getTime() - deadline.getTime();
-            const diffDays = diffMs / (1000 * 60 * 60 * 24);
+            const status = getReportingStatus(reportType, now);
             
-            submitBtn.disabled = false;
-            submitBtn.classList.remove('opacity-50', 'cursor-not-allowed', 'bg-gray-400');
-            submitBtn.classList.add('bg-medical', 'hover:bg-medical-dark');
-            if (submitMessage.innerHTML.includes('quá thời hạn') || submitMessage.innerHTML.includes('Kỳ báo cáo này')) {
-                submitMessage.classList.add('hidden');
+            if (!status.isOpen) {
+                submitBtn.disabled = true;
+                submitBtn.classList.add('opacity-50', 'cursor-not-allowed', 'bg-gray-400');
+                submitBtn.classList.remove('bg-medical', 'hover:bg-medical-dark');
+                showMessage(`❌ <b>Hệ thống đã khóa sổ báo cáo ${reportType}!</b><br>Kỳ báo cáo này đã khép lại. Vui lòng chờ đến đợt mở sổ tiếp theo.`, 'text-red-700', 'bg-red-100', 'border-red-400', true);
+            } else {
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('opacity-50', 'cursor-not-allowed', 'bg-gray-400');
+                submitBtn.classList.add('bg-medical', 'hover:bg-medical-dark');
+                
+                if (status.isLate) {
+                    showMessage(`⚠️ <b>Đang trong thời gian nộp bù (Trễ hạn)</b><br>Báo cáo ${reportType} của bạn sẽ bị đánh dấu trễ hạn. Nhanh chóng nộp trước khi khóa sổ!`, 'text-yellow-700', 'bg-yellow-100', 'border-yellow-400', true);
+                } else {
+                    if (submitMessage.innerHTML.includes('khóa sổ') || submitMessage.innerHTML.includes('Trễ hạn')) {
+                        submitMessage.classList.add('hidden');
+                    }
+                }
             }
         }
 
