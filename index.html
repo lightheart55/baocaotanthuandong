@@ -66,9 +66,173 @@
             0% { transform: translateX(100%); }
             100% { transform: translateX(-100%); }
         }
+        /* --- TOGGLE CARD (CHỌ LOẠI BÁO CÁO) --- */
+        .report-type-toggle {
+            display: flex;
+            background: #f1f5f9;
+            border-radius: 14px;
+            padding: 4px;
+            gap: 4px;
+            border: 1px solid #e2e8f0;
+        }
+        .report-type-toggle input[type="radio"] {
+            display: none;
+        }
+        .report-type-toggle label {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.92rem;
+            color: #64748b;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+        .report-type-toggle input[type="radio"]:checked + label {
+            background: white;
+            color: #2563eb;
+            box-shadow: 0 2px 8px rgba(37,99,235,0.15);
+            border: 1px solid #bfdbfe;
+        }
+        .report-type-toggle label:hover {
+            color: #2563eb;
+            background: white/50;
+        }
+        /* --- TEXTAREA CHARACTER COUNTER --- */
+        .textarea-wrapper {
+            position: relative;
+        }
+        .char-counter {
+            position: absolute;
+            bottom: 10px;
+            right: 12px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: #94a3b8;
+            pointer-events: none;
+            background: white;
+            padding: 1px 6px;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+        }
+        .char-counter.warn { color: #f59e0b; border-color: #fde68a; }
+        .char-counter.good { color: #10b981; border-color: #a7f3d0; }
+        .content-hints {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 8px;
+        }
+        .hint-chip {
+            display: inline-flex;
+            align-items: center;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            color: #2563eb;
+            font-size: 0.73rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.15s;
+            user-select: none;
+        }
+        .hint-chip:hover {
+            background: #2563eb;
+            color: white;
+            border-color: #2563eb;
+        }
+        .hint-chip:active { transform: scale(0.95); }
+        /* --- TRANG BẢO TRÌ --- */
+        #maintenance-screen {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%);
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+            padding: 2rem;
+        }
+        #maintenance-screen.active {
+            display: flex;
+        }
+        .maintenance-icon {
+            width: 100px;
+            height: 100px;
+            background: rgba(255,255,255,0.07);
+            border-radius: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            border: 1px solid rgba(255,255,255,0.12);
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); }
+        }
+        .maintenance-badge {
+            display: inline-block;
+            background: rgba(251,191,36,0.15);
+            border: 1px solid rgba(251,191,36,0.4);
+            color: #fbbf24;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            padding: 0.35rem 1rem;
+            border-radius: 999px;
+            margin-bottom: 1.2rem;
+        }
+        .maintenance-progress {
+            width: 200px;
+            height: 4px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 999px;
+            margin: 2rem auto 0;
+            overflow: hidden;
+        }
+        .maintenance-progress-bar {
+            height: 100%;
+            width: 40%;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            border-radius: 999px;
+            animation: progress-anim 2s ease-in-out infinite alternate;
+        }
+        @keyframes progress-anim {
+            0% { width: 20%; margin-left: 0; }
+            100% { width: 60%; margin-left: 20%; }
+        }
     </style>
 </head>
 <body class="bg-slate-50 min-h-screen font-sans text-slate-800 selection:bg-medical selection:text-white">
+
+    <!-- ====== TRANG BẢO TRÌ (Admin bật/tắt) ====== -->
+    <div id="maintenance-screen">
+        <div style="max-width:420px;width:100%;">
+            <div class="maintenance-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="none" viewBox="0 0 24 24" stroke="#60a5fa" stroke-width="1.4">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 004.486-6.336l-3.276 3.277a3.004 3.004 0 01-2.25-2.25l3.276-3.276a4.5 4.5 0 00-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437l1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008z" />
+                </svg>
+            </div>
+            <div class="maintenance-badge">⚙️ Đang bảo trì</div>
+            <h1 style="color:#f1f5f9;font-size:1.9rem;font-weight:800;margin:0 0 0.75rem;line-height:1.2;">Hệ thống đang<br>nâng cấp</h1>
+            <p style="color:#94a3b8;font-size:0.95rem;line-height:1.7;margin:0 0 0.5rem;">Chúng tôi đang thực hiện cập nhật để mang đến trải nghiệm tốt hơn.</p>
+            <p style="color:#64748b;font-size:0.85rem;">Vui lòng quay lại sau ít phút. Xin cảm ơn! 🙏</p>
+            <div class="maintenance-progress"><div class="maintenance-progress-bar"></div></div>
+            <p style="color:#334155;font-size:0.78rem;margin-top:2rem;">Điểm Y Tế Tân Thuận Đông</p>
+        </div>
+    </div>
+
     <!-- App Container -->
     <div id="app" class="max-w-md mx-auto mt-4 md:mt-10 bg-white rounded-2xl shadow-premium overflow-hidden md:max-w-2xl border border-slate-100 relative z-10">
         <!-- Announcement Bar (Chữ chạy) -->
@@ -84,7 +248,7 @@
         </div>
 
         <!-- Header -->
-        <div class="bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 text-white text-center py-8 px-5 relative overflow-hidden shadow-md">
+        <div id="main-header" class="bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 text-white text-center py-8 px-5 relative overflow-hidden shadow-md">
             <!-- Background Decoration / Micro-aesthetics -->
             <div class="absolute top-0 left-0 w-full h-full overflow-hidden opacity-30 pointer-events-none">
                 <div class="absolute -top-12 -right-12 w-48 h-48 bg-white rounded-full blur-3xl opacity-20"></div>
@@ -130,60 +294,277 @@
                     </p>
                 </div>
                 <div>
-                    <button type="submit" class="bg-medical hover:bg-medical-dark text-white font-bold py-3 px-4 rounded-lg focus:outline-none focus:shadow-outline w-full transition duration-300 shadow-md">
-                        Đăng nhập
+                    <button id="login-btn" type="submit" disabled
+                        class="bg-medical hover:bg-medical-dark text-white font-bold py-3 px-4 rounded-lg focus:outline-none focus:shadow-outline w-full transition duration-300 shadow-md flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-wait">
+                        <svg class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Đang tải dữ liệu...
                     </button>
                 </div>
             </form>
         </div>
 
         <!-- Report Section -->
-        <div id="report-section" class="p-6 md:p-8 hidden">
-            <div class="flex justify-between items-center mb-5 border-b pb-3">
-                <h2 class="text-xl font-bold text-gray-800">Phiếu Báo Cáo</h2>
-                <div class="flex items-center space-x-4">
-                    <button type="button" onclick="openPasswordModal()" class="text-sm text-indigo-600 hover:text-indigo-800 font-medium flex items-center transition">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" /></svg>
-                        Đổi mật khẩu
-                    </button>
-                    <button type="button" id="logout-btn" class="text-sm text-red-500 hover:text-red-700 font-medium flex items-center transition">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                        </svg>
-                        Đăng xuất
-                    </button>
-                </div>
-            </div>
-            
-            <div class="bg-blue-50 border-l-4 border-medical p-4 mb-6 rounded-r-lg shadow-sm">
-                <p class="text-gray-800 text-lg font-bold mb-1">Chào <span id="current-user-name" class="text-medical"></span></p>
-                <div class="mt-2 pt-2 border-t border-blue-100">
-                    <p class="text-sm text-gray-600 font-semibold mb-1">Nhiệm vụ của bạn:</p>
-                    <p id="current-user-tasks" class="text-sm text-gray-800 font-medium leading-relaxed"></p>
-                </div>
-            </div>
+        <div id="report-section" class="px-5 md:px-8 pb-6 md:pb-8 pt-4 hidden">
 
-            <!-- Lời nhắn cá nhân -->
-            <div id="personal-message" class="bg-green-50 border border-green-200 rounded-lg p-4 mb-6 hidden">
-                <div class="flex items-start">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-600 mr-2 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-                    </svg>
-                    <div>
-                        <p class="text-sm font-bold text-green-800 mb-1">Thông báo dành cho bạn:</p>
-                        <p id="personal-message-text" class="text-sm text-green-700 italic"></p>
+            
+            <!-- ===== WELCOME CARD PREMIUM ===== -->
+
+            <!-- Header Card (gradient) -->
+            <div class="relative bg-gradient-to-br from-slate-800 via-blue-900 to-indigo-900 text-white rounded-2xl p-5 mb-3 shadow-xl overflow-hidden">
+                <!-- dot pattern background -->
+                <div class="absolute inset-0 opacity-[0.04]" style="background-image:radial-gradient(circle at 1.5px 1.5px,white 1.5px,transparent 0);background-size:22px 22px"></div>
+                <!-- glow blobs -->
+                <div class="absolute -right-12 -top-12 w-48 h-48 bg-blue-500/30 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute -left-10 -bottom-10 w-36 h-36 bg-indigo-600/20 rounded-full blur-2xl pointer-events-none"></div>
+
+                <div class="relative z-10">
+                    <!-- Greeting row -->
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex-1 mr-3">
+                            <p class="text-blue-300 text-[11px] font-bold uppercase tracking-[0.15em] mb-1">Xin chào 👋</p>
+                            <h2 id="current-user-name" class="text-xl font-black leading-tight text-white"></h2>
+                            <p id="current-user-tasks" class="text-slate-300 text-[11px] mt-1.5 leading-relaxed line-clamp-2"></p>
+                        </div>
+                        <style>
+                            summary::-webkit-details-marker { display: none; }
+                        </style>
+                        <details class="relative group">
+                            <summary class="w-12 h-12 bg-blue-500/25 border border-blue-400/30 rounded-2xl flex items-center justify-center flex-shrink-0 backdrop-blur-sm cursor-pointer hover:bg-blue-500/40 transition list-none select-none">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-200" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                            </summary>
+                            <div class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-2xl border border-slate-100 overflow-hidden z-50">
+                                <button type="button" onclick="openPasswordModal(); this.closest('details').removeAttribute('open');" class="w-full text-left px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50 flex items-center transition border-b border-slate-50">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" /></svg>
+                                    Đổi mật khẩu
+                                </button>
+                                <button type="button" id="logout-btn" class="w-full text-left px-4 py-3 text-sm font-bold text-red-600 hover:bg-red-50 flex items-center transition">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
+                                    Đăng xuất
+                                </button>
+                            </div>
+                        </details>
+                    </div>
+
+                    <!-- Dynamic Alerts (Thay thế Marquee cũ) -->
+                    <div id="wc-dynamic-alerts" class="flex flex-col gap-2.5 mb-4">
+                        <!-- JS sẽ chèn các alert vào đây -->
+                    </div>
+
+                    <!-- Status pills: Tuần + Tháng -->
+                    <div class="grid grid-cols-2 gap-2.5 mb-4">
+                        <div id="wc-week-status" class="rounded-xl p-3 border transition-all duration-300 bg-white/8 border-white/15">
+                            <p class="text-[10px] font-bold text-blue-300 uppercase tracking-widest mb-2">Tuần này</p>
+                            <div class="flex items-center gap-2">
+                                <span id="wc-week-icon" class="text-2xl leading-none">⏳</span>
+                                <div>
+                                    <p id="wc-week-label" class="text-sm font-extrabold text-white leading-tight">Đang tải...</p>
+                                    <p id="wc-week-sub" class="text-[10px] text-blue-300 mt-0.5"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="wc-month-status" class="rounded-xl p-3 border transition-all duration-300 bg-white/8 border-white/15">
+                            <p class="text-[10px] font-bold text-blue-300 uppercase tracking-widest mb-2">Tháng này</p>
+                            <div class="flex items-center gap-2">
+                                <span id="wc-month-icon" class="text-2xl leading-none">⏳</span>
+                                <div>
+                                    <p id="wc-month-label" class="text-sm font-extrabold text-white leading-tight">Đang tải...</p>
+                                    <p id="wc-month-sub" class="text-[10px] text-blue-300 mt-0.5"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lời nhắn cá nhân (nếu có) -->
+                    <div id="personal-message" class="hidden mb-3">
+                        <div class="bg-amber-500/20 border border-amber-400/40 rounded-xl px-4 py-3 flex items-start gap-3">
+                            <span class="text-amber-300 text-lg mt-0.5">💬</span>
+                            <div>
+                                <p class="text-[10px] font-bold text-amber-300 uppercase tracking-wider mb-0.5">Tin nhắn từ BS Tâm</p>
+                                <p id="personal-message-text" class="text-xs font-semibold text-amber-100 leading-relaxed"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action buttons -->
+                    <div class="flex gap-2">
+                        <button onclick="switchTab('form')" class="flex-1 bg-white text-blue-900 hover:bg-blue-50 font-extrabold py-2.5 px-4 rounded-xl text-sm transition active:scale-95 duration-200 shadow-lg shadow-blue-900/30 flex items-center justify-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+                            Nộp báo cáo
+                        </button>
+                        <button onclick="switchTab('bienban')" class="px-4 bg-white/10 hover:bg-white/20 text-white font-bold py-2.5 rounded-xl text-sm transition active:scale-95 duration-200 border border-white/20 flex items-center justify-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
+                            Biên bản
+                        </button>
                     </div>
                 </div>
             </div>
 
-            <!-- Tabs Navigation -->
-            <div class="flex space-x-2 mb-6 border-b border-gray-200">
-                <button type="button" id="tab-dashboard" onclick="switchTab('dashboard')" class="py-3 px-4 border-b-2 border-medical text-medical font-bold flex items-center transition">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-                    </svg>
-                    Dashboard Cá Nhân
+            <!-- Thống kê Card (trắng, sạch) -->
+            <details class="bg-white rounded-2xl border border-slate-100 shadow-sm mb-3 overflow-hidden group">
+                <summary class="px-4 py-3 border-b border-slate-50 flex items-center justify-between cursor-pointer hover:bg-slate-50 transition list-none">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-7 h-7 bg-blue-50 rounded-lg flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012-2h-2a2 2 0 01-2-2z" /></svg>
+                        </div>
+                        <h3 class="text-sm font-bold text-slate-700">Thống kê cá nhân</h3>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <select id="stat-period-filter" onchange="calculatePersonalStats()" onclick="event.stopPropagation()" class="text-xs font-bold text-slate-600 bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1.5 outline-none cursor-pointer focus:ring-2 focus:ring-blue-300 transition">
+                            <!-- options by JS -->
+                        </select>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-400 group-open:rotate-180 transition-transform ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                    </div>
+                </summary>
+                <div class="p-4 grid grid-cols-2 gap-4">
+                    <div>
+                        <p id="stat-week-label" class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2.5">Giao ban Tuần</p>
+                        <div class="space-y-1.5">
+                            <div class="flex items-center justify-between bg-emerald-50 border border-emerald-100 rounded-xl px-3 py-2">
+                                <span class="text-xs font-semibold text-emerald-700">🟢 Đúng hạn</span>
+                                <span id="stat-personal-week-ontime" class="text-base font-black text-emerald-700">0</span>
+                            </div>
+                            <div class="flex items-center justify-between bg-amber-50 border border-amber-100 rounded-xl px-3 py-2">
+                                <span class="text-xs font-semibold text-amber-700">🟡 Trễ hạn</span>
+                                <span id="stat-personal-week-late" class="text-base font-black text-amber-700">0</span>
+                            </div>
+                            <div class="flex items-center justify-between bg-red-50 border border-red-100 rounded-xl px-3 py-2">
+                                <span class="text-xs font-semibold text-red-700">🔴 Khóa sổ</span>
+                                <span id="stat-personal-week-missing" class="text-base font-black text-red-700">0</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <p id="stat-month-label" class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2.5">Báo cáo Tháng</p>
+                        <div class="space-y-1.5">
+                            <div class="flex items-center justify-between bg-emerald-50 border border-emerald-100 rounded-xl px-3 py-2">
+                                <span class="text-xs font-semibold text-emerald-700">🟢 Đúng hạn</span>
+                                <span id="stat-personal-month-ontime" class="text-base font-black text-emerald-700">0</span>
+                            </div>
+                            <div class="flex items-center justify-between bg-amber-50 border border-amber-100 rounded-xl px-3 py-2">
+                                <span class="text-xs font-semibold text-amber-700">🟡 Trễ hạn</span>
+                                <span id="stat-personal-month-late" class="text-base font-black text-amber-700">0</span>
+                            </div>
+                            <div class="flex items-center justify-between bg-red-50 border border-red-100 rounded-xl px-3 py-2">
+                                <span class="text-xs font-semibold text-red-700">🔴 Khóa sổ</span>
+                                <span id="stat-personal-month-missing" class="text-base font-black text-red-700">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Ghi chú -->
+                <details class="border-t border-slate-50">
+                    <summary class="px-4 py-2.5 text-[11px] text-slate-400 font-semibold cursor-pointer hover:text-slate-600 transition select-none list-none flex items-center gap-1.5">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        Ghi chú về cách tính
+                    </summary>
+                    <div class="px-4 pb-3 text-[11px] text-slate-500 space-y-1 leading-relaxed">
+                        <p>• Hệ thống bắt đầu từ <b>11/04/2026</b>. Các kỳ trước mốc này mặc định "Chưa nộp" do chưa có phần mềm, có thể bỏ qua.</p>
+                        <p>• Trước <b>10/08/2026</b>: nộp bất kỳ lúc nào trong tuần/tháng đều hợp lệ.</p>
+                        <p>• Từ <b>10/08/2026</b>: áp dụng quy định thời hạn nghiêm ngặt.</p>
+                    </div>
+                </details>
+                </details>
+
+            <!-- Tiến độ Card (trắng, sạch) -->
+            <details class="bg-white rounded-2xl border border-slate-100 shadow-sm mb-3 overflow-hidden group">
+                <summary class="px-4 py-3 border-b border-slate-50 flex items-center justify-between cursor-pointer hover:bg-slate-50 transition list-none">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-7 h-7 bg-indigo-50 rounded-lg flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>
+                        </div>
+                        <h3 class="text-sm font-bold text-slate-700">Tiến độ nộp báo cáo</h3>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <select id="employee-report-type" class="text-xs font-bold text-slate-600 bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1.5 outline-none cursor-pointer focus:ring-2 focus:ring-indigo-300 transition" onclick="event.stopPropagation()">
+                            <!-- options by JS -->
+                        </select>
+                        <button onclick="event.stopPropagation(); loadEmployeeData()" class="w-8 h-8 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-lg flex items-center justify-center transition active:scale-95" title="Làm mới">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                        </button>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-400 group-open:rotate-180 transition-transform ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                    </div>
+                </summary>
+                <div id="employee-report-status" class="px-4 py-3">
+                    <div class="flex items-center gap-2 text-slate-400">
+                        <svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                        <span class="text-xs font-medium">Đang tải dữ liệu...</span>
+                    </div>
+                </div>
+            </details>
+
+            <!-- Công văn & Tài liệu Card -->
+            <details class="bg-white rounded-2xl border border-slate-100 shadow-sm mb-3 overflow-hidden group">
+                <summary class="px-4 py-3 flex items-center justify-between cursor-pointer hover:bg-slate-50 transition list-none">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-7 h-7 bg-cyan-50 rounded-lg flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-cyan-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                        </div>
+                        <h3 class="text-sm font-bold text-slate-700">Công văn & Tài liệu</h3>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span id="wc-doc-count" class="text-[10px] font-bold text-cyan-600 bg-cyan-100 px-2 py-0.5 rounded-full hidden">0</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-400 group-open:rotate-180 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                    </div>
+                </summary>
+                <div id="wc-doc-list" class="border-t border-slate-50 max-h-60 overflow-y-auto divide-y divide-slate-50">
+                    <p class="text-xs text-slate-400 italic text-center py-6">Không có tài liệu mới.</p>
+                </div>
+            </details>
+
+            <!-- Thông báo Card (expandable) -->
+            <div class="bg-white rounded-2xl border border-slate-100 shadow-sm mb-5 overflow-hidden">
+                <button type="button" onclick="toggleWcNotifications()" class="w-full px-4 py-3 flex items-center justify-between hover:bg-slate-50 transition group">
+                    <div class="flex items-center gap-2.5">
+                        <div class="relative">
+                            <div class="w-7 h-7 bg-rose-50 rounded-lg flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-rose-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>
+                            </div>
+                            <span id="wc-notif-badge" class="hidden absolute -top-1.5 -right-1.5 bg-rose-500 text-white text-[9px] font-black rounded-full min-w-[16px] h-4 flex items-center justify-center px-1 leading-none">0</span>
+                        </div>
+                        <div class="text-left">
+                            <h3 class="text-sm font-bold text-slate-700" id="wc-notif-label">Thông báo từ BS Tâm</h3>
+                            <p class="text-[11px] text-slate-400">Nhấn để xem nội dung</p>
+                        </div>
+                    </div>
+                    <svg id="wc-notif-chevron" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-300 group-hover:text-slate-400 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
                 </button>
+                <div id="wc-notif-list" class="hidden border-t border-slate-50 max-h-72 overflow-y-auto divide-y divide-slate-50">
+                    <p class="text-xs text-slate-400 italic text-center py-6">Không có thông báo mới.</p>
+                </div>
+            </div>
+
+            <!-- Quy định thời hạn (collapsible) -->
+            <details class="bg-white rounded-2xl border border-slate-100 shadow-sm mb-5 overflow-hidden">
+                <summary class="px-4 py-3 text-[11px] font-bold text-slate-500 cursor-pointer hover:text-slate-700 hover:bg-slate-50 transition select-none list-none flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                    QUY ĐỊNH THỚI HẠN NỘP BÁO CÁO
+                </summary>
+                <div class="px-4 pb-4 text-[11px] text-slate-600 space-y-2 border-t border-slate-50">
+                    <div class="pt-3 p-3 bg-blue-50 rounded-xl">
+                        <p class="font-bold text-blue-800 mb-1">⏰ BÁO CÁO TUẦN</p>
+                        <p class="text-blue-700">Mở: 17g Thứ 6 → 24g Chủ Nhật → Đúng hạn</p>
+                        <p class="text-amber-700">Trễ: 00g – 12g trưa Thứ 2 → Trễ hạn</p>
+                        <p class="text-red-700 font-semibold">Sau 12g trưa Thứ 2 → Khóa sổ (không thể nộp)</p>
+                    </div>
+                    <div class="p-3 bg-purple-50 rounded-xl">
+                        <p class="font-bold text-purple-800 mb-1">📅 BÁO CÁO THÁNG</p>
+                        <p class="text-purple-700">Mở: 17g ngày 25 → 24g ngày 25 → Đúng hạn</p>
+                        <p class="text-amber-700">Trễ: 00g – 12g trưa ngày 26 → Trễ hạn</p>
+                        <p class="text-red-700 font-semibold">Sau 12g trưa ngày 26 → Khóa sổ (không thể nộp)</p>
+                    </div>
+                </div>
+            </details>
+
+            <!-- ===== KẾT THÚC WELCOME CARD ===== -->
+
+
+            <!-- Tabs Navigation (bỏ tab Dashboard vì đã tích hợp vào welcome card) -->
+            <div class="flex space-x-2 mb-6 border-b border-gray-200">
+                <!-- Tab ẩn để không phá vỡ JS switchTab('dashboard') -->
+                <button type="button" id="tab-dashboard" onclick="switchTab('dashboard')" class="hidden"></button>
                 <button type="button" id="tab-bienban" onclick="switchTab('bienban')" class="py-3 px-4 border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium flex items-center transition">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
@@ -198,141 +579,8 @@
                 </button>
             </div>
 
-            <div id="dashboard-content">
-                <!-- Thống kê 3 tháng cá nhân -->
-                <div class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-2xl p-5 mb-6 shadow-md relative overflow-hidden">
-                    <div class="absolute -right-6 -top-6 w-32 h-32 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
-                    <div class="relative z-10">
-                        <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-3">
-                            <h3 class="font-bold text-lg flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012-2h-2a2 2 0 01-2-2z" />
-                                </svg>
-                                Thống kê cá nhân
-                            </h3>
-                            <select id="stat-period-filter" onchange="calculatePersonalStats()" class="bg-white text-blue-800 text-sm rounded-lg focus:ring-blue-300 focus:border-blue-300 block w-full sm:w-auto p-2 shadow-sm font-bold outline-none cursor-pointer">
-                                <!-- Tùy chọn sẽ được tạo bằng JS -->
-                            </select>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <!-- Báo cáo Tuần -->
-                            <div class="bg-white/10 rounded-xl p-4 backdrop-blur-sm border border-white/20">
-                                <h4 id="stat-week-label" class="text-sm font-bold text-blue-100 mb-3 uppercase tracking-wider">Giao ban Tuần</h4>
-                                <div class="flex justify-between items-center mb-2">
-                                    <span class="text-sm font-medium">🟢 Đúng hạn</span>
-                                    <span id="stat-personal-week-ontime" class="font-bold text-lg">0</span>
-                                </div>
-                                <div class="flex justify-between items-center mb-2">
-                                    <span class="text-sm font-medium">🟡 Trễ hạn</span>
-                                    <span id="stat-personal-week-late" class="font-bold text-lg text-yellow-300">0</span>
-                                </div>
-                                <div class="flex justify-between items-center">
-                                    <span class="text-sm font-medium text-red-200">🔴 Chưa nộp (Khóa sổ)</span>
-                                    <span id="stat-personal-week-missing" class="font-bold text-lg text-red-300">0</span>
-                                </div>
-                            </div>
-                            <!-- Báo cáo Tháng -->
-                            <div class="bg-white/10 rounded-xl p-4 backdrop-blur-sm border border-white/20">
-                                <h4 id="stat-month-label" class="text-sm font-bold text-blue-100 mb-3 uppercase tracking-wider">Báo cáo Tháng</h4>
-                                <div class="flex justify-between items-center mb-2">
-                                    <span class="text-sm font-medium">🟢 Đúng hạn</span>
-                                    <span id="stat-personal-month-ontime" class="font-bold text-lg">0</span>
-                                </div>
-                                <div class="flex justify-between items-center mb-2">
-                                    <span class="text-sm font-medium">🟡 Trễ hạn</span>
-                                    <span id="stat-personal-month-late" class="font-bold text-lg text-yellow-300">0</span>
-                                </div>
-                                <div class="flex justify-between items-center">
-                                    <span class="text-sm font-medium text-red-200">🔴 Chưa nộp (Khóa sổ)</span>
-                                    <span id="stat-personal-month-missing" class="font-bold text-lg text-red-300">0</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Lời giải thích -->
-                        <div class="mt-4 text-xs text-blue-50 bg-white/10 p-3 rounded-lg border border-white/20 flex items-start backdrop-blur-sm">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 flex-shrink-0 mt-0.5 text-blue-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            <div>
-                                <p class="mb-1"><b class="text-white">Tại sao có 13 tuần?</b> Một Quý (3 tháng) có khoảng 90 ngày, tương đương với <b>13 tuần</b> (13 lần báo cáo).</p>
-                                <ul class="list-disc ml-4 space-y-1 mt-1 text-blue-100">
-                                    <li><b>Hệ thống bắt đầu hoạt động:</b> Từ ngày 11/04/2026. Dữ liệu Báo cáo Tuần tính từ <b>Tuần 15 của năm (tức Tuần 2 Tháng 4/2026)</b>. Dữ liệu Báo cáo Tháng bắt đầu từ <b>Tháng 4/2026</b>. Các kỳ trước mốc này sẽ mặc định báo "Chưa nộp" do chưa có phần mềm, bạn có thể bỏ qua.</li>
-                                    <li><b>Giai đoạn trước 10/08/2026:</b> Báo cáo nộp trong tuần/tháng đều được tính là hợp lệ.</li>
-                                    <li><b>Giai đoạn từ 10/08/2026:</b> Bắt đầu áp dụng Thống nhất thời gian qui định nộp, khóa sổ.</li>
-                                </ul>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-                <!-- Employee Dashboard (Tiến độ của tôi) -->
-                <div id="employee-dashboard" class="bg-white border border-slate-200 rounded-2xl p-5 mb-6 shadow-sm">
-                    <h3 class="font-bold text-slate-800 text-base md:text-lg mb-4 flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-medical" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012-2h-2a2 2 0 01-2-2z" />
-                        </svg>
-                        Tiến độ nộp báo cáo của bạn
-                    </h3>
-                    
-                    <div class="flex flex-col sm:flex-row sm:items-center gap-3 mb-4">
-                        <span class="text-sm font-semibold text-slate-600 whitespace-nowrap">Chọn kỳ báo cáo:</span>
-                        <div class="relative w-full sm:w-56">
-                            <select id="employee-report-type" class="w-full appearance-none border border-slate-200 rounded-xl py-2 px-4 pr-10 focus:outline-none focus:ring-2 focus:ring-medical focus:border-transparent bg-slate-50 text-slate-700 font-semibold shadow-sm transition">
-                                <!-- Các option sẽ được JS tạo tự động -->
-                            </select>
-                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-500">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                                </svg>
-                            </div>
-                        </div>
-                        <button type="button" onclick="loadEmployeeData()" class="ml-auto bg-slate-100 hover:bg-slate-200 text-slate-700 py-2 px-3 rounded-xl text-sm font-semibold transition flex items-center active:scale-95 duration-200 shadow-sm border border-slate-200">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                            </svg>
-                            Làm mới
-                        </button>
-                    </div>
-
-                    <div id="employee-report-status" class="rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between border bg-slate-50 border-slate-100 gap-3">
-                        <!-- Trạng thái sẽ được JS render vào đây -->
-                        <div class="flex items-center text-slate-500">
-                            <svg class="animate-spin mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                            <span class="text-sm font-medium">Đang tải dữ liệu...</span>
-                        </div>
-                    </div>
-
-                    <!-- Hướng dẫn nộp báo cáo (Được mang vào trong Dashboard) -->
-                    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-5 rounded-r-lg shadow-sm">
-                        <div class="flex items-start">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-500 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            <div>
-                                <p class="text-sm text-yellow-800 font-medium">
-                                    <span class="font-bold">LƯU Ý THỜI HẠN NỘP BÁO CÁO:</span><br>
-                                    - <b>TUẦN</b>: Mở từ <b>17g Thứ 6</b> đến 24g Chủ Nhật (Đúng hạn). Trễ hạn: 00g Thứ 2 đến 12g trưa Thứ 2. <b>Sau 12g trưa Thứ 2 khóa sổ (Chưa nộp)</b>.<br>
-                                    - <b>THÁNG</b>: Mở từ <b>17g ngày 25</b> đến 24g ngày 25 (Đúng hạn). Trễ hạn: 00g ngày 26 đến 12g trưa ngày 26. <b>Sau 12g trưa ngày 26 khóa sổ (Chưa nộp)</b>.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Công văn / Tài liệu -->
-                <div id="document-list" class="bg-white border border-gray-200 rounded-lg p-4 mb-6 hidden shadow-sm">
-                    <h3 class="text-sm font-bold text-gray-800 mb-2 flex items-center border-b pb-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1 text-medical" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                        </svg>
-                        Công văn & Tài liệu triển khai
-                    </h3>
-                    <div id="document-items" class="space-y-2 mt-2">
-                        <!-- Danh sách link sẽ được chèn vào đây -->
-                    </div>
-                </div>
+            <div id="dashboard-content" class="hidden">
+                <!-- giữ để không vỡ switchTab -->
             </div>
 
             <!-- BIÊN BẢN CƠ QUAN SECTION -->
@@ -392,17 +640,19 @@
             <div id="form-content" class="hidden">
                 <form id="report-form">
                 <div class="mb-5">
-                    <label class="block text-gray-700 text-sm font-bold mb-2">
+                    <label class="block text-gray-700 text-sm font-bold mb-3">
                         Loại báo cáo <span class="text-red-500">*</span>
                     </label>
-                    <div class="flex space-x-6">
-                        <label class="flex items-center cursor-pointer">
-                            <input type="radio" name="report-type" value="Tuần" class="form-radio h-5 w-5 text-medical focus:ring-medical border-gray-300" checked>
-                            <span class="ml-2 text-gray-700 font-medium">Giao ban Tuần</span>
+                    <div class="report-type-toggle">
+                        <input type="radio" name="report-type" id="rt-week" value="Tuần" checked>
+                        <label for="rt-week">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                            Giao ban Tuần
                         </label>
-                        <label class="flex items-center cursor-pointer">
-                            <input type="radio" name="report-type" value="Tháng" class="form-radio h-5 w-5 text-medical focus:ring-medical border-gray-300">
-                            <span class="ml-2 text-gray-700 font-medium">Báo cáo Tháng</span>
+                        <input type="radio" name="report-type" id="rt-month" value="Tháng">
+                        <label for="rt-month">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                            Báo cáo Tháng
                         </label>
                     </div>
                 </div>
@@ -418,21 +668,58 @@
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="task-content">
                         Nội dung đã làm <span class="text-red-500">*</span>
                     </label>
-                    <textarea id="task-content" rows="4" placeholder="- Khám sàng lọc được...&#10;- Truyền thông GDSK...&#10;- Quản lý hồ sơ..." class="shadow-sm border border-gray-300 rounded-lg w-full py-3 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-medical focus:border-transparent bg-white" required></textarea>
+                    <div class="textarea-wrapper">
+                        <textarea id="task-content" rows="5"
+                            oninput="updateCharCount(this, 'cnt-content', 50)"
+                            placeholder="- Khám sàng lọc được...&#10;- Truyền thông GDSK...&#10;- Quản lý hồ sơ..."
+                            class="shadow-sm border border-gray-300 rounded-lg w-full py-3 px-3 pb-8 text-gray-700 focus:outline-none focus:ring-2 focus:ring-medical focus:border-transparent bg-white" required></textarea>
+                        <span id="cnt-content" class="char-counter">0 ký tự</span>
+                    </div>
+                    <!-- Gợi ý nhanh -->
+                    <div class="content-hints" id="hints-content">
+                        <span class="hint-chip" onclick="appendHint('task-content', '- Khám chữa bệnh được ... lượt\n', 'cnt-content', 50)">+ Khám bệnh</span>
+                        <span class="hint-chip" onclick="appendHint('task-content', '- Truyền thông GDSK về ...\n', 'cnt-content', 50)">+ Truyền thông</span>
+                        <span class="hint-chip" onclick="appendHint('task-content', '- Tiêm chủng cho ... đối tượng\n', 'cnt-content', 50)">+ Tiêm chủng</span>
+                        <span class="hint-chip" onclick="appendHint('task-content', '- Giám sát sự kiện dịch bệnh\n', 'cnt-content', 50)">+ Giám sát dịch</span>
+                        <span class="hint-chip" onclick="appendHint('task-content', '- Cập nhật hồ sơ bệnh nhân\n', 'cnt-content', 50)">+ Hồ sơ</span>
+                        <span class="hint-chip" onclick="appendHint('task-content', '- Họi họ giao ban \n', 'cnt-content', 50)">+ Họi họ</span>
+                    </div>
                 </div>
 
                 <div class="mb-5">
                     <label id="plan-label" class="block text-gray-700 text-sm font-bold mb-2" for="task-plan">
                         Phương hướng tuần tới
                     </label>
-                    <textarea id="task-plan" rows="3" placeholder="Ghi rõ các công việc dự kiến thực hiện..." class="shadow-sm border border-gray-300 rounded-lg w-full py-3 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-medical focus:border-transparent bg-white"></textarea>
+                    <div class="textarea-wrapper">
+                        <textarea id="task-plan" rows="3"
+                            oninput="updateCharCount(this, 'cnt-plan', 30)"
+                            placeholder="Ghi rõ các công việc dự kiến thực hiện..."
+                            class="shadow-sm border border-gray-300 rounded-lg w-full py-3 px-3 pb-8 text-gray-700 focus:outline-none focus:ring-2 focus:ring-medical focus:border-transparent bg-white"></textarea>
+                        <span id="cnt-plan" class="char-counter">0 ký tự</span>
+                    </div>
+                    <div class="content-hints">
+                        <span class="hint-chip" onclick="appendHint('task-plan', '- Tiếp tục triển khai các nhiệm vụ thường xuyên\n', 'cnt-plan', 30)">+ Tiếp tục công việc</span>
+                        <span class="hint-chip" onclick="appendHint('task-plan', '- Tăng cường công tác phòng chống dịch\n', 'cnt-plan', 30)">+ Phòng chống dịch</span>
+                        <span class="hint-chip" onclick="appendHint('task-plan', '- Cập nhật báo cáo thống kê\n', 'cnt-plan', 30)">+ Thống kê</span>
+                    </div>
                 </div>
 
                 <div class="mb-6">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="task-issues">
                         Khó khăn / Kiến nghị
                     </label>
-                    <textarea id="task-issues" rows="3" placeholder="Ghi nhận những khó khăn gặp phải hoặc đề xuất hỗ trợ..." class="shadow-sm border border-gray-300 rounded-lg w-full py-3 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-medical focus:border-transparent bg-white"></textarea>
+                    <div class="textarea-wrapper">
+                        <textarea id="task-issues" rows="3"
+                            oninput="updateCharCount(this, 'cnt-issues', 20)"
+                            placeholder="Ghi nhận những khó khăn gặp phải hoặc đề xuất hỗ trợ..."
+                            class="shadow-sm border border-gray-300 rounded-lg w-full py-3 px-3 pb-8 text-gray-700 focus:outline-none focus:ring-2 focus:ring-medical focus:border-transparent bg-white"></textarea>
+                        <span id="cnt-issues" class="char-counter">0 ký tự</span>
+                    </div>
+                    <div class="content-hints">
+                        <span class="hint-chip" onclick="appendHint('task-issues', '- Không có khó khăn.\n', 'cnt-issues', 20)">+ Không khó khăn</span>
+                        <span class="hint-chip" onclick="appendHint('task-issues', '- Thiếu trang thiết bị, vật tư y tế\n', 'cnt-issues', 20)">+ Thiếu trang thiết bị</span>
+                        <span class="hint-chip" onclick="appendHint('task-issues', '- Đề nghị hỗ trợ thêm nhân lực\n', 'cnt-issues', 20)">+ Nhân lực</span>
+                    </div>
                 </div>
 
                 <div id="submit-message" class="mb-5 text-center text-sm font-bold hidden transition-all duration-300"></div>
@@ -560,8 +847,123 @@
                     <!-- Danh sách nhân viên sẽ được load bằng JS -->
                 </ul>
             </div>
-            
+
+            <!-- ===== PANEL QUẢN LÝ THÔNG BÁO (ADMIN) ===== -->
+            <div class="mt-2 mb-4">
+                <!-- Header -->
+                <div class="flex items-center space-x-3 mb-5 border-t border-slate-100 pt-5">
+                    <div class="bg-amber-500/10 p-2 rounded-xl text-amber-600">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                        </svg>
+                    </div>
+                    <h2 class="text-xl font-black text-slate-800 tracking-tight">Quản Lý Thông Báo</h2>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+
+                    <!-- Card 1: Gửi Thông Báo Broadcast -->
+                    <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-5">
+                        <h3 class="font-bold text-slate-700 text-sm mb-4 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
+                            </svg>
+                            Gửi Thông Báo Broadcast
+                        </h3>
+                        <form id="admin-broadcast-form" onsubmit="sendBroadcast(event)">
+                            <div class="mb-3">
+                                <label class="block text-xs font-bold text-slate-600 mb-1.5">Loại thông báo</label>
+                                <select id="broadcast-type" class="w-full border border-slate-200 rounded-xl py-2 px-3 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 bg-slate-50">
+                                    <option value="Chữ chạy">🔤 Chữ chạy (ticker)</option>
+                                    <option value="Công văn">📄 Công văn / Tài liệu (có link)</option>
+                                    <option value="Thông báo">📢 Thông báo chung</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="block text-xs font-bold text-slate-600 mb-1.5">Nội dung</label>
+                                <textarea id="broadcast-content" rows="3" required placeholder="Nhập nội dung thông báo..." class="w-full border border-slate-200 rounded-xl py-2 px-3 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 bg-white resize-none"></textarea>
+                            </div>
+                            <div class="mb-4" id="broadcast-link-wrap">
+                                <label class="block text-xs font-bold text-slate-600 mb-1.5">Link đính kèm (nếu có)</label>
+                                <input type="url" id="broadcast-link" placeholder="https://drive.google.com/..." class="w-full border border-slate-200 rounded-xl py-2 px-3 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 bg-white">
+                            </div>
+                            <div id="broadcast-result" class="hidden text-xs font-bold p-2 rounded-lg mb-3 text-center"></div>
+                            <button type="submit" id="broadcast-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 px-4 rounded-xl transition shadow-md text-sm flex items-center justify-center active:scale-95 duration-200">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" /></svg>
+                                <span id="broadcast-btn-text">Gửi thông báo</span>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Card 2: Gửi Lời Nhắn Cá Nhân -->
+                    <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-5">
+                        <h3 class="font-bold text-slate-700 text-sm mb-4 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                            </svg>
+                            Gửi Lời Nhắn Cá Nhân
+                        </h3>
+                        <form id="admin-personal-msg-form" onsubmit="sendPersonalMessage(event)">
+                            <div class="mb-3">
+                                <label class="block text-xs font-bold text-slate-600 mb-1.5">Gửi đến nhân viên</label>
+                                <select id="msg-target-employee" class="w-full border border-slate-200 rounded-xl py-2 px-3 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-400 bg-slate-50">
+                                    <!-- Sẽ được điền bằng JS -->
+                                </select>
+                            </div>
+                            <div class="mb-4">
+                                <label class="block text-xs font-bold text-slate-600 mb-1.5">Nội dung lời nhắn</label>
+                                <textarea id="personal-msg-content" rows="4" required placeholder="Ví dụ: Bạn ơi nhớ nộp báo cáo tuần trước 5h chiều nhé!" class="w-full border border-slate-200 rounded-xl py-2 px-3 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-400 bg-white resize-none"></textarea>
+                            </div>
+                            <div id="personal-msg-result" class="hidden text-xs font-bold p-2 rounded-lg mb-3 text-center"></div>
+                            <div class="flex gap-2">
+                                <button type="submit" id="personal-msg-btn" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-4 rounded-xl transition shadow-md text-sm flex items-center justify-center active:scale-95 duration-200">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" /></svg>
+                                    <span id="personal-msg-btn-text">Gửi nhắn</span>
+                                </button>
+                                <button type="button" onclick="deletePersonalMessage()" class="bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 font-bold py-2.5 px-3 rounded-xl transition text-sm flex items-center active:scale-95 duration-200" title="Xóa lời nhắn của người này">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Danh sách thông báo đang hiển thị -->
+                <div class="bg-white rounded-2xl border border-slate-100 shadow-sm mt-5 overflow-hidden">
+                    <div class="bg-slate-50/70 border-b border-slate-100 px-5 py-3.5 flex justify-between items-center">
+                        <h3 class="font-bold text-slate-700 text-sm flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                            </svg>
+                            Thông báo đang hiển thị
+                        </h3>
+                        <button onclick="renderAdminThongBaoList()" class="text-xs text-indigo-600 hover:text-indigo-800 font-semibold transition">↻ Làm mới</button>
+                    </div>
+                    <div id="admin-thongbao-list" class="divide-y divide-slate-50 max-h-64 overflow-y-auto">
+                        <p class="text-xs text-slate-400 italic text-center py-6">Đang tải...</p>
+                    </div>
+                </div>
+
+                <!-- Danh sách lời nhắn cá nhân đang có -->
+                <div class="bg-white rounded-2xl border border-slate-100 shadow-sm mt-5 overflow-hidden">
+                    <div class="bg-slate-50/70 border-b border-slate-100 px-5 py-3.5 flex justify-between items-center">
+                        <h3 class="font-bold text-slate-700 text-sm flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
+                            </svg>
+                            Lời nhắn cá nhân hiện có
+                        </h3>
+                        <button onclick="renderAdminLoiNhanList()" class="text-xs text-indigo-600 hover:text-indigo-800 font-semibold transition">↻ Làm mới</button>
+                    </div>
+                    <div id="admin-loinhan-list" class="divide-y divide-slate-50 max-h-64 overflow-y-auto">
+                        <p class="text-xs text-slate-400 italic text-center py-6">Đang tải...</p>
+                    </div>
+                </div>
+            </div>
+            <!-- ===== KẾT THÚC PANEL THÔNG BÁO ===== -->
+
         </div>
+
 
         <!-- Modal Xem Báo Cáo -->
         <div id="report-modal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm">
@@ -637,6 +1039,12 @@
         const DEFAULT_PASSWORD = '123456';
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw1BzGJUTyQ9zRKiPe2QfS-XjHYcs3K8fiYuFnIkO_E8x3VI0JRtojndZbpynY8cawaTw/exec';
 
+        // ====== CHẾ ĐỘ BẢO TRÌ ======
+        // Đặt true để bật trang bảo trì (nhân viên không vào được)
+        // Đặt false để mở lại bình thường
+        // Admin đăng nhập vẫn vào được bình thường dù bật bảo trì
+        const MAINTENANCE_MODE = false;
+
         // 2. DOM Elements
         const loginSection = document.getElementById('login-section');
         const reportSection = document.getElementById('report-section');
@@ -661,6 +1069,7 @@
 
         let currentUser = null;
         let systemData = { thongBao: [], loiNhan: {} };
+        let systemDataReady = false; // Flag: dữ liệu đã tải xong chưa
 
         // Hàm tải dữ liệu từ Google Sheets
         async function fetchSystemData() {
@@ -669,9 +1078,36 @@
                 const response = await fetch(SCRIPT_URL);
                 const data = await response.json();
                 systemData = data;
+                systemDataReady = true;
                 renderSystemData();
+                // Kiểm tra nếu admin bật bảo trì qua Sheets
+                checkMaintenanceMode();
             } catch (e) {
-                console.log("Chưa cài đặt Backend cho tính năng tương tác hoặc lỗi tải dữ liệu:", e);
+                console.log("Chưa cài đặt Backend hoặc lỗi tải dữ liệu:", e);
+                systemDataReady = true; // Dù lỗi vẫn cho đăng nhập với MK mặc định
+            } finally {
+                // Mở khóa nút đăng nhập sau khi dữ liệu đã sẵn sàng
+                const loginBtn = document.getElementById('login-btn');
+                if (loginBtn) {
+                    loginBtn.disabled = false;
+                    loginBtn.innerHTML = `Đăng nhập`;
+                }
+            }
+        }
+
+        // Kiểm tra & bật/tắt trang bảo trì
+        function checkMaintenanceMode() {
+            const maintenanceScreen = document.getElementById('maintenance-screen');
+            if (!maintenanceScreen) return;
+            // Ưu tiên: flag trong code trước, sau đó đọc từ Sheets (systemData.baoTri)
+            const isMaintenanceOn = MAINTENANCE_MODE || (systemData && systemData.baoTri === true);
+            // Admin đã đăng nhập vẫn thấy app bình thường
+            if (isMaintenanceOn && (!currentUser || !currentUser.isAdmin)) {
+                maintenanceScreen.classList.add('active');
+                document.getElementById('app').style.display = 'none';
+            } else {
+                maintenanceScreen.classList.remove('active');
+                document.getElementById('app').style.display = '';
             }
         }
 
@@ -1172,6 +1608,7 @@
             loginError.classList.add('hidden');
             loginSection.classList.remove('hidden');
             reportSection.classList.add('hidden');
+            document.getElementById('main-header').classList.remove('hidden');
             window.scrollTo(0, 0);
         });
 
@@ -1179,6 +1616,7 @@
         function showReportSection() {
             loginSection.classList.add('hidden');
             reportSection.classList.remove('hidden');
+            document.getElementById('main-header').classList.add('hidden');
             
             document.getElementById('current-user-name').textContent = currentUser.name;
             document.getElementById('current-user-tasks').textContent = currentUser.tasks;
@@ -1207,6 +1645,10 @@
             loadEmployeeData();
             validateDeadline();
             loadDraft();
+
+            // Render welcome card (gọi ngay + gọi lại sau khi dữ liệu tải xong)
+            renderWelcomeCard();
+            setTimeout(renderWelcomeCard, 800);
             
             window.scrollTo(0, 0);
         }
@@ -1353,8 +1795,14 @@ ${divider}
         function showAdminSection() {
             loginSection.classList.add('hidden');
             adminSection.classList.remove('hidden');
+            document.getElementById('main-header').classList.add('hidden');
             document.getElementById('admin-user-name').textContent = currentUser.name;
             loadAdminData();
+            populateMsgTargetSelect();
+            setTimeout(() => {
+                renderAdminThongBaoList();
+                renderAdminLoiNhanList();
+            }, 600);
             window.scrollTo(0, 0);
         }
 
@@ -1363,6 +1811,7 @@ ${divider}
             loginForm.reset();
             adminSection.classList.add('hidden');
             loginSection.classList.remove('hidden');
+            document.getElementById('main-header').classList.remove('hidden');
             window.scrollTo(0, 0);
         });
 
@@ -2086,6 +2535,8 @@ ${divider}
         const passwordModal = document.getElementById('password-modal');
         function openPasswordModal() {
             passwordModal.classList.remove('hidden');
+            // FIX: Fetch data mới nhất để đảm bảo MK đã đổi được nhận ra
+            fetchSystemData();
         }
         function closePasswordModal() {
             passwordModal.classList.add('hidden');
@@ -2192,6 +2643,508 @@ ${divider}
             reportModal.classList.remove('hidden');
         }
 
+        // ====== TIỆN ÍCH FORM: ĐẾM KÝ TỰ & GỢI Ý NHANH ======
+        function updateCharCount(textarea, counterId, goodThreshold) {
+            const el = document.getElementById(counterId);
+            if (!el) return;
+            const len = textarea.value.length;
+            el.textContent = len + ' ký tự';
+            el.className = 'char-counter';
+            if (len >= goodThreshold) el.classList.add('good');
+            else if (len >= Math.floor(goodThreshold / 2)) el.classList.add('warn');
+        }
+
+        function appendHint(textareaId, text, counterId, goodThreshold) {
+            const ta = document.getElementById(textareaId);
+            if (!ta) return;
+            ta.value += text;
+            ta.focus();
+            updateCharCount(ta, counterId, goodThreshold);
+        }
+
+        // ====== WELCOME CARD — Mini Dashboard Nhân Viên ======
+
+        function toggleWcNotifications() {
+            const list = document.getElementById('wc-notif-list');
+            const chevron = document.getElementById('wc-notif-chevron');
+            if (!list) return;
+            const isHidden = list.classList.contains('hidden');
+            list.classList.toggle('hidden', !isHidden);
+            if (chevron) chevron.style.transform = isHidden ? 'rotate(180deg)' : '';
+            // Điền nội dung khi mở lần đầu
+            if (isHidden) renderWcNotifList();
+        }
+
+        function renderWcNotifList() {
+            const list = document.getElementById('wc-notif-list');
+            if (!list) return;
+            const items = (systemData.thongBao || []).filter(tb => tb.loai === 'Thông báo' || !tb.loai); // Default to thông báo if undefined
+            
+            // Cập nhật số đếm
+            const notifLabelEl = document.getElementById('wc-notif-label');
+            if (notifLabelEl) {
+                notifLabelEl.textContent = items.length > 0
+                    ? `${items.length} thông báo từ BS Tâm`
+                    : 'Thông báo từ BS Tâm';
+            }
+
+            if (items.length === 0) {
+                list.innerHTML = '<p class="text-xs text-blue-200 italic text-center py-4">Không có thông báo mới.</p>';
+                return;
+            }
+            list.innerHTML = items.map(tb => {
+                return `
+                <div class="px-4 py-3 border-b border-white/10 last:border-0">
+                    <div class="flex items-start gap-2">
+                        <span class="text-base leading-none mt-0.5">📢</span>
+                        <div class="flex-1 min-w-0">
+                            <p class="text-xs font-bold text-white leading-relaxed">${tb.noiDung || ''}</p>
+                            ${tb.link ? `<a href="${tb.link}" target="_blank" rel="noopener" class="inline-flex items-center gap-1 text-blue-200 hover:text-white underline mt-1 text-[11px] font-semibold transition"><svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg> Xem đính kèm</a>` : ''}
+                            ${tb.thoiGian ? `<p class="text-[10px] text-blue-300 mt-1">${tb.thoiGian}</p>` : ''}
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        function renderWcDocList() {
+            const list = document.getElementById('wc-doc-list');
+            const countEl = document.getElementById('wc-doc-count');
+            if (!list || !countEl) return;
+            const items = (systemData.thongBao || []).filter(tb => tb.loai === 'Công văn');
+            
+            if (items.length > 0) {
+                countEl.textContent = items.length;
+                countEl.classList.remove('hidden');
+            } else {
+                countEl.classList.add('hidden');
+            }
+
+            if (items.length === 0) {
+                list.innerHTML = '<p class="text-xs text-slate-400 italic text-center py-6">Không có tài liệu mới.</p>';
+                return;
+            }
+            list.innerHTML = items.map(tb => {
+                return `
+                <div class="px-4 py-3 hover:bg-slate-50 transition">
+                    <div class="flex items-start gap-3">
+                        <span class="text-lg leading-none mt-0.5">📄</span>
+                        <div class="flex-1 min-w-0">
+                            <p class="text-xs font-bold text-slate-700 leading-relaxed">${tb.noiDung || ''}</p>
+                            ${tb.link ? `<a href="${tb.link}" target="_blank" rel="noopener" class="inline-flex items-center gap-1 text-blue-600 hover:text-blue-800 underline mt-1 text-[11px] font-semibold transition"><svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg> Mở tài liệu</a>` : ''}
+                            ${tb.thoiGian ? `<p class="text-[10px] text-slate-400 mt-1">${tb.thoiGian}</p>` : ''}
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        // (Marquee đã được thay thế bằng Alert box trong renderWelcomeCard)
+
+        function renderWelcomeCard() {
+            if (!currentUser || currentUser.isAdmin) return;
+
+            const now = new Date();
+            const allReports = systemData.baoCao || [];
+            const empReports = allReports.filter(r => r && r.nhanVien === currentUser.name);
+
+            // --- Tuần hiện tại ---
+            const day = now.getDay();
+            const mondayOffset = (day === 0) ? -6 : 1 - day;
+            const startOfWeek = new Date(now);
+            startOfWeek.setDate(now.getDate() + mondayOffset);
+            startOfWeek.setHours(0, 0, 0, 0);
+            const endOfWeek = new Date(startOfWeek);
+            endOfWeek.setDate(startOfWeek.getDate() + 6);
+            endOfWeek.setHours(23, 59, 59, 999);
+
+            const weekReports = empReports.filter(r => {
+                if (!r.loai || !r.loai.toLowerCase().includes('tuần')) return false;
+                const d = parseReportDate(r.thoiGian);
+                return d && d >= startOfWeek && d <= endOfWeek;
+            });
+
+            // --- Tháng hiện tại ---
+            const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0, 0);
+            const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
+
+            const monthReports = empReports.filter(r => {
+                if (!r.loai || !r.loai.toLowerCase().includes('tháng')) return false;
+                const d = parseReportDate(r.thoiGian);
+                return d && d >= startOfMonth && d <= endOfMonth;
+            });
+
+            const weekSubmitted = weekReports.length > 0;
+            const monthSubmitted = monthReports.length > 0;
+
+            // Tính mốc thời gian Tuần (Tuần hiện tại)
+            const weekOpenTime = new Date(startOfWeek);
+            weekOpenTime.setDate(startOfWeek.getDate() + 4); // Thứ 6
+            weekOpenTime.setHours(17, 0, 0, 0);
+
+            const weekLockTime = new Date(startOfWeek);
+            weekLockTime.setDate(startOfWeek.getDate() + 7); // Thứ 2 tuần sau
+            weekLockTime.setHours(12, 0, 0, 0);
+
+            // Cập nhật ô Tuần
+            const weekIconEl = document.getElementById('wc-week-icon');
+            const weekLabelEl = document.getElementById('wc-week-label');
+            const weekSubEl = document.getElementById('wc-week-sub');
+            if (weekIconEl && weekLabelEl) {
+                if (weekSubmitted) {
+                    weekIconEl.textContent = '✅'; 
+                    weekLabelEl.textContent = 'Đã nộp';
+                    weekLabelEl.className = 'text-sm font-extrabold text-emerald-400 leading-tight';
+                    if (weekSubEl) weekSubEl.textContent = 'Hoàn thành';
+                } else {
+                    if (now < weekOpenTime) {
+                        weekIconEl.textContent = '⏳'; 
+                        weekLabelEl.textContent = 'Chờ nộp';
+                        weekLabelEl.className = 'text-sm font-extrabold text-slate-300 leading-tight';
+                        if (weekSubEl) weekSubEl.textContent = 'Mở lúc 17g Thứ 6';
+                    } else if (now > weekLockTime) {
+                        weekIconEl.textContent = '🔒'; 
+                        weekLabelEl.textContent = 'Khóa sổ';
+                        weekLabelEl.className = 'text-sm font-extrabold text-red-400 leading-tight';
+                        if (weekSubEl) weekSubEl.textContent = 'Đã quá hạn nộp';
+                    } else {
+                        weekIconEl.textContent = '✍️'; 
+                        weekLabelEl.textContent = 'Chưa nộp';
+                        weekLabelEl.className = 'text-sm font-extrabold text-amber-400 leading-tight';
+                        if (weekSubEl) weekSubEl.textContent = 'Đang mở nộp';
+                    }
+                }
+            }
+
+            // Tính mốc thời gian Tháng
+            const monthOpenTime = new Date(now.getFullYear(), now.getMonth(), 25, 17, 0, 0, 0);
+            const monthLockTime = new Date(now.getFullYear(), now.getMonth(), 26, 12, 0, 0, 0);
+
+            // Cập nhật ô Tháng
+            const monthIconEl = document.getElementById('wc-month-icon');
+            const monthLabelEl = document.getElementById('wc-month-label');
+            const monthSubEl = document.getElementById('wc-month-sub');
+            if (monthIconEl && monthLabelEl) {
+                if (monthSubmitted) {
+                    monthIconEl.textContent = '✅'; 
+                    monthLabelEl.textContent = 'Đã nộp';
+                    monthLabelEl.className = 'text-sm font-extrabold text-emerald-400 leading-tight';
+                    if (monthSubEl) monthSubEl.textContent = 'Hoàn thành';
+                } else {
+                    if (now < monthOpenTime) {
+                        monthIconEl.textContent = '⏳'; 
+                        monthLabelEl.textContent = 'Chờ nộp';
+                        monthLabelEl.className = 'text-sm font-extrabold text-slate-300 leading-tight';
+                        if (monthSubEl) monthSubEl.textContent = 'Mở lúc 17g ngày 25';
+                    } else if (now > monthLockTime) {
+                        monthIconEl.textContent = '🔒'; 
+                        monthLabelEl.textContent = 'Khóa sổ';
+                        monthLabelEl.className = 'text-sm font-extrabold text-red-400 leading-tight';
+                        if (monthSubEl) monthSubEl.textContent = 'Đã quá hạn nộp';
+                    } else {
+                        monthIconEl.textContent = '✍️'; 
+                        monthLabelEl.textContent = 'Chưa nộp';
+                        monthLabelEl.className = 'text-sm font-extrabold text-amber-400 leading-tight';
+                        if (monthSubEl) monthSubEl.textContent = 'Đang mở nộp';
+                    }
+                }
+            }
+
+            // --- XỬ LÝ CẢNH BÁO NỘP BÁO CÁO (DYNAMIC ALERTS) ---
+            const alertsContainer = document.getElementById('wc-dynamic-alerts');
+            if (alertsContainer) {
+                alertsContainer.innerHTML = '';
+                
+                const createAlert = (type, title, desc) => {
+                    if (type === 'warning') {
+                        return `
+                        <div class="bg-rose-50 border border-rose-100 rounded-xl p-3 flex items-start gap-3 shadow-sm">
+                            <div class="bg-rose-100 text-rose-500 rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
+                            </div>
+                            <div>
+                                <h4 class="text-rose-800 font-bold text-sm leading-tight">${title}</h4>
+                                <p class="text-rose-600 text-xs mt-1 leading-relaxed">${desc}</p>
+                            </div>
+                        </div>`;
+                    } else if (type === 'success') {
+                        return `
+                        <div class="bg-emerald-50 border border-emerald-100 rounded-xl p-3 flex items-start gap-3 shadow-sm">
+                            <div class="bg-emerald-100 text-emerald-500 rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+                            </div>
+                            <div>
+                                <h4 class="text-emerald-800 font-bold text-sm leading-tight">${title}</h4>
+                                <p class="text-emerald-600 text-xs mt-1 leading-relaxed">${desc}</p>
+                            </div>
+                        </div>`;
+                    }
+                };
+
+                // Kiểm tra Tuần
+                if (now >= weekOpenTime && now <= weekLockTime) {
+                    if (weekSubmitted) {
+                        alertsContainer.innerHTML += createAlert('success', 'ĐÃ NỘP XONG BÁO CÁO TUẦN', 'Cảm ơn bạn đã nộp báo cáo đúng hạn. Chúc bạn làm việc hiệu quả!');
+                    } else {
+                        alertsContainer.innerHTML += createAlert('warning', 'BẠN CHƯA NỘP BÁO CÁO TUẦN', 'Đã đến thời gian nộp báo cáo. Vui lòng hoàn thành trước 12g trưa Thứ 2.');
+                    }
+                }
+                
+                // Kiểm tra Tháng
+                if (now >= monthOpenTime && now <= monthLockTime) {
+                    if (monthSubmitted) {
+                        alertsContainer.innerHTML += createAlert('success', 'ĐÃ NỘP XONG BÁO CÁO THÁNG', 'Cảm ơn bạn đã nộp báo cáo đúng hạn. Chúc bạn làm việc hiệu quả!');
+                    } else {
+                        alertsContainer.innerHTML += createAlert('warning', 'BẠN CHƯA NỘP BÁO CÁO THÁNG', 'Đã đến thời gian nộp báo cáo. Vui lòng hoàn thành trước 12g trưa ngày 26.');
+                    }
+                }
+
+                // Xử lý thông báo "Chữ chạy" (Broadcast của Admin)
+                // (Đã bỏ theo yêu cầu của user vì đã có chữ chạy ở trên)
+            }
+
+            // Xử lý hiển thị Lời nhắn cá nhân & tự động xóa nếu đã nộp
+            const personalMessageEl = document.getElementById('personal-message');
+            const personalMessageText = document.getElementById('personal-message-text');
+            if (personalMessageEl && personalMessageText && systemData.loiNhan) {
+                const msg = systemData.loiNhan[currentUser.name];
+                if (msg) {
+                    const isAutoReminder = msg.includes('Hệ thống tự động');
+                    let shouldHide = false;
+                    
+                    if (isAutoReminder) {
+                        const msgLower = msg.toLowerCase();
+                        if (msgLower.includes('tuần') && weekSubmitted) shouldHide = true;
+                        if (msgLower.includes('tháng') && monthSubmitted) shouldHide = true;
+                    }
+
+                    if (!shouldHide) {
+                        personalMessageText.textContent = msg;
+                        personalMessageEl.classList.remove('hidden');
+                    } else {
+                        personalMessageEl.classList.add('hidden');
+                    }
+                } else {
+                    personalMessageEl.classList.add('hidden');
+                }
+            } else if (personalMessageEl) {
+                personalMessageEl.classList.add('hidden');
+            }
+
+            // Cập nhật các danh sách thông báo
+            renderWcDocList();
+            renderWcNotifList();
+        }
+
+        // ====== ADMIN: QUẢN LÝ THÔNG BÁO ======
+
+        // Điền danh sách nhân viên vào select của form Admin
+        function populateMsgTargetSelect() {
+            const sel = document.getElementById('msg-target-employee');
+            if (!sel) return;
+            sel.innerHTML = '';
+            employees.filter(e => !e.isAdmin).forEach(emp => {
+                const opt = document.createElement('option');
+                opt.value = emp.name;
+                opt.textContent = emp.name;
+                sel.appendChild(opt);
+            });
+        }
+
+        // Gửi thông báo broadcast
+        async function sendBroadcast(e) {
+            e.preventDefault();
+            const btn = document.getElementById('broadcast-btn');
+            const btnText = document.getElementById('broadcast-btn-text');
+            const resultEl = document.getElementById('broadcast-result');
+
+            const tenLoai = document.getElementById('broadcast-type').value;
+            const noiDung = document.getElementById('broadcast-content').value.trim();
+            const link = document.getElementById('broadcast-link').value.trim();
+
+            if (!noiDung) return;
+
+            btn.disabled = true;
+            btnText.textContent = 'Đang gửi...';
+            resultEl.className = 'hidden text-xs font-bold p-2 rounded-lg mb-3 text-center';
+
+            const now = new Date();
+            const thoiGian = `${String(now.getDate()).padStart(2,'0')}/${String(now.getMonth()+1).padStart(2,'0')}/${now.getFullYear()} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+
+            const payload = { loai: 'ThongBao', tenLoai, noiDung, link, thoiGian };
+
+            try {
+                const res = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                if (data.result === 'success') {
+                    // Cập nhật local systemData
+                    if (!systemData.thongBao) systemData.thongBao = [];
+                    systemData.thongBao.push({ loai: tenLoai, noiDung, link, thoiGian, id: data.id || '' });
+                    renderSystemData();
+                    renderAdminThongBaoList();
+                    document.getElementById('admin-broadcast-form').reset();
+                    resultEl.className = 'text-xs font-bold p-2 rounded-lg mb-3 text-center bg-emerald-50 text-emerald-700 border border-emerald-200';
+                    resultEl.textContent = '✅ Đã gửi thông báo thành công!';
+                } else {
+                    throw new Error(data.error || 'Lỗi không xác định');
+                }
+            } catch (err) {
+                resultEl.className = 'text-xs font-bold p-2 rounded-lg mb-3 text-center bg-rose-50 text-rose-700 border border-rose-200';
+                resultEl.textContent = '❌ Gửi thất bại: ' + err.message;
+            } finally {
+                btn.disabled = false;
+                btnText.textContent = 'Gửi thông báo';
+                setTimeout(() => { resultEl.className = 'hidden'; }, 4000);
+            }
+        }
+
+        // Gửi lời nhắn cá nhân
+        async function sendPersonalMessage(e) {
+            e.preventDefault();
+            const btn = document.getElementById('personal-msg-btn');
+            const btnText = document.getElementById('personal-msg-btn-text');
+            const resultEl = document.getElementById('personal-msg-result');
+
+            const nhanVien = document.getElementById('msg-target-employee').value;
+            const noiDung = document.getElementById('personal-msg-content').value.trim();
+            if (!nhanVien || !noiDung) return;
+
+            btn.disabled = true;
+            btnText.textContent = 'Đang gửi...';
+            resultEl.className = 'hidden';
+
+            const now = new Date();
+            const thoiGian = `${String(now.getDate()).padStart(2,'0')}/${String(now.getMonth()+1).padStart(2,'0')}/${now.getFullYear()} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+
+            const payload = { loai: 'LoiNhan', nhanVien, noiDung, thoiGian };
+
+            try {
+                const res = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                if (data.result === 'success') {
+                    // Cập nhật local
+                    if (!systemData.loiNhan) systemData.loiNhan = {};
+                    systemData.loiNhan[nhanVien] = noiDung;
+                    renderAdminLoiNhanList();
+                    document.getElementById('personal-msg-content').value = '';
+                    resultEl.className = 'text-xs font-bold p-2 rounded-lg mb-3 text-center bg-emerald-50 text-emerald-700 border border-emerald-200';
+                    resultEl.textContent = `✅ Đã gửi nhắn cho ${nhanVien}!`;
+                } else {
+                    throw new Error(data.error || 'Lỗi không xác định');
+                }
+            } catch (err) {
+                resultEl.className = 'text-xs font-bold p-2 rounded-lg mb-3 text-center bg-rose-50 text-rose-700 border border-rose-200';
+                resultEl.textContent = '❌ Gửi thất bại: ' + err.message;
+            } finally {
+                btn.disabled = false;
+                btnText.textContent = 'Gửi nhắn';
+                setTimeout(() => { resultEl.className = 'hidden'; }, 4000);
+            }
+        }
+
+        // Xóa lời nhắn cá nhân
+        async function deletePersonalMessage() {
+            const nhanVien = document.getElementById('msg-target-employee').value;
+            if (!nhanVien) return;
+            if (!confirm(`Xóa lời nhắn của ${nhanVien}?`)) return;
+
+            const now = new Date();
+            const thoiGian = `${String(now.getDate()).padStart(2,'0')}/${String(now.getMonth()+1).padStart(2,'0')}/${now.getFullYear()}`;
+            const payload = { loai: 'XoaLoiNhan', nhanVien, thoiGian };
+
+            try {
+                await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify(payload)
+                });
+                if (systemData.loiNhan) delete systemData.loiNhan[nhanVien];
+                renderAdminLoiNhanList();
+                alert(`Đã xóa lời nhắn của ${nhanVien}.`);
+            } catch (err) {
+                alert('Lỗi khi xóa: ' + err.message);
+            }
+        }
+
+        // Xóa một thông báo broadcast
+        async function deleteThongBao(id, noiDung) {
+            if (!confirm(`Xóa thông báo:\n"${noiDung.substring(0,60)}..."?`)) return;
+            const payload = { loai: 'XoaThongBao', id };
+            try {
+                await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify(payload)
+                });
+                if (systemData.thongBao) {
+                    systemData.thongBao = systemData.thongBao.filter(tb => tb.id !== id);
+                }
+                renderSystemData();
+                renderAdminThongBaoList();
+            } catch (err) {
+                alert('Lỗi khi xóa: ' + err.message);
+            }
+        }
+
+        // Render danh sách thông báo broadcast trong Admin panel
+        function renderAdminThongBaoList() {
+            const container = document.getElementById('admin-thongbao-list');
+            if (!container) return;
+            const list = systemData.thongBao || [];
+            if (list.length === 0) {
+                container.innerHTML = '<p class="text-xs text-slate-400 italic text-center py-6">Chưa có thông báo nào.</p>';
+                return;
+            }
+            container.innerHTML = list.map(tb => {
+                const loaiIcon = tb.loai === 'Chữ chạy' ? '🔤' : tb.loai === 'Công văn' ? '📄' : '📢';
+                const idSafe = (tb.id || '').replace(/'/g, "\\'");
+                const noidungSafe = (tb.noiDung || '').substring(0, 50).replace(/'/g, "\\'");
+                return `
+                <div class="px-4 py-3 flex items-start justify-between gap-3 hover:bg-slate-50 transition">
+                    <div class="flex-1 min-w-0">
+                        <span class="inline-flex items-center gap-1 text-xs font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full mb-1">${loaiIcon} ${tb.loai}</span>
+                        <p class="text-xs text-slate-700 font-medium leading-relaxed truncate">${tb.noiDung || ''}</p>
+                        ${tb.thoiGian ? `<p class="text-[10px] text-slate-400 mt-0.5">${tb.thoiGian}</p>` : ''}
+                    </div>
+                    ${tb.id ? `<button onclick="deleteThongBao('${idSafe}', '${noidungSafe}')" class="flex-shrink-0 text-rose-400 hover:text-rose-600 transition p-1 rounded-lg hover:bg-rose-50" title="Xóa">
+                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                    </button>` : ''}
+                </div>`;
+            }).join('');
+        }
+
+        // Render danh sách lời nhắn cá nhân trong Admin panel
+        function renderAdminLoiNhanList() {
+            const container = document.getElementById('admin-loinhan-list');
+            if (!container) return;
+            const loiNhan = systemData.loiNhan || {};
+            const keys = Object.keys(loiNhan);
+            if (keys.length === 0) {
+                container.innerHTML = '<p class="text-xs text-slate-400 italic text-center py-6">Chưa có lời nhắn nào.</p>';
+                return;
+            }
+            container.innerHTML = keys.map(name => {
+                const msg = loiNhan[name] || '';
+                return `
+                <div class="px-4 py-3 flex items-start justify-between gap-3 hover:bg-slate-50 transition">
+                    <div class="flex-1 min-w-0">
+                        <p class="text-xs font-bold text-emerald-700">${name}</p>
+                        <p class="text-xs text-slate-600 mt-0.5 leading-relaxed">${msg}</p>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+
+
         // Chạy khởi tạo khi load trang
         init();
 
@@ -2204,5 +3157,6 @@ ${divider}
             });
         }
     </script>
+
 </body>
 </html>
