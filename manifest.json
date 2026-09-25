@@ -1,18 +1,21 @@
 {
-  "name": "Báo Cáo Trạm Y Tế",
-  "short_name": "Báo Cáo TYT",
-  "start_url": "/",
-  "scope": "/",
+  "name": "KSK Tân Thuận Đông",
+  "short_name": "KSK TTD",
+  "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#eff6ff",
-  "theme_color": "#007bff",
-  "description": "Ứng dụng báo cáo công việc nội bộ Trạm Y Tế",
+  "background_color": "#f1f5f9",
+  "theme_color": "#10b981",
+  "description": "Hệ thống nhập liệu Đồng bộ Dữ liệu Tuyến Cơ sở",
   "icons": [
     {
-      "src": "https://cdn-icons-png.flaticon.com/512/2966/2966327.png",
+      "src": "https://ui-avatars.com/api/?name=KSK&background=10b981&color=fff&size=192&font-size=0.4&bold=true",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://ui-avatars.com/api/?name=KSK&background=10b981&color=fff&size=512&font-size=0.4&bold=true",
       "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/png"
     }
   ]
 }
